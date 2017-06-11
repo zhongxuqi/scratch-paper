@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="169dp" 
+	android:minHeight="300dp" 
+	android:initialLayout="@layout/paper_widget"
+	android:configure="com.musketeer.scratchpaper.activity.PaperSelectActivity"> 
+</appwidget-provider>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="paper_images_small">
+        <item>@mipmap/bg_paper_small</item>
+    </array>
+    
+    <array name="paper_images">
+        <item>@mipmap/bg_paper</item>
+    </array>
+    
+    <array name="desk_images">
+        <item>@mipmap/bg_desk_default</item>
+    </array>
+    
+    <string-array name="paper_size">
+        <item>小</item>
+        <item>中</item>
+        <item>大</item>
+    </string-array>
+    
+</resources>

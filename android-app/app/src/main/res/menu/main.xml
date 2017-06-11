@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.scratchpaper.MainActivity" >
+    
+    <item 
+	    android:id="@+id/setting"
+	    android:title="@string/setting"
+	    android:showAsAction="never"/>
+    
+	<item 
+	    android:id="@+id/help"
+	    android:title="@string/app_help"
+	    android:showAsAction="never"/>
+
+</menu>

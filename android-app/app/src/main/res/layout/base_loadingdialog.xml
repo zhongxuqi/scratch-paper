@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="15dp"
+    android:background="@drawable/custom_dialog_bg"
+    android:orientation="horizontal"
+    android:gravity="center_vertical" >
+
+    <com.musketeer.baselibrary.view.RotateImageView
+        android:id="@+id/loading_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/bg_audio_record_normal" />
+
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="2dp"
+        android:padding="5dp"
+        android:textSize="@dimen/title_size"
+        android:textColor="@color/white" />
+
+</LinearLayout>

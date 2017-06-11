@@ -1,0 +1,12 @@
+*.iml
+.gradle
+/android-app/local.properties
+/android-app/.idea/workspace.xml
+/android-app/.idea/libraries
+.DS_Store
+/android-app/build
+/android-app/captures
+.externalNativeBuild
+
+*.apk
+/android-app/app/build
