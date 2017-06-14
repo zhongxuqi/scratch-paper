@@ -10,14 +10,13 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.GridView
 
-import com.musketeer.baselibrary.Activity.BaseActivity
-import com.musketeer.baselibrary.util.LogUtils
-import com.musketeer.baselibrary.util.SharePreferenceUtils
 import com.musketeer.scratchpaper.R
 import com.musketeer.scratchpaper.adapter.PaperListAdapter
 import com.musketeer.scratchpaper.common.SharePreferenceConfig
 import com.musketeer.scratchpaper.paperfile.PaperFileUtils
 import com.musketeer.scratchpaper.utils.AppPreferenceUtils
+import com.musketeer.scratchpaper.utils.LogUtils
+import com.musketeer.scratchpaper.utils.SharePreferenceUtils
 import com.umeng.analytics.MobclickAgent
 
 class PaperSelectActivity : BaseActivity(), OnItemClickListener {

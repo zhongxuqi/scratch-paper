@@ -14,8 +14,6 @@ package com.musketeer.scratchpaper
 
 import android.os.Environment
 
-import com.musketeer.baselibrary.BaseApplication
-import com.musketeer.baselibrary.util.LogUtils
 import com.musketeer.scratchpaper.utils.FileUtils
 import com.umeng.analytics.MobclickAgent
 

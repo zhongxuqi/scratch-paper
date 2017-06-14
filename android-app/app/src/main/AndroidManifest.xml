@@ -17,14 +17,16 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         tools:replace="android:icon, android:theme">
-        <activity
-            android:name=".activity.MainActivity"
-            android:label="@string/app_chinese_name">
+        <activity android:name=".WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.MainActivity"
+            android:label="@string/app_chinese_name">
         </activity>
         <activity
             android:name=".activity.EditPaperActivity"
@@ -77,8 +79,6 @@
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="XiaoMi" />
-
-        <activity android:name=".WelcomeActivity"></activity>
     </application>
 
 </manifest>

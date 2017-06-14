@@ -14,7 +14,6 @@ package com.musketeer.scratchpaper.utils
 
 import android.content.Context
 
-import com.musketeer.baselibrary.util.SharePreferenceUtils
 import com.musketeer.scratchpaper.MainApplication
 import com.musketeer.scratchpaper.R
 import com.musketeer.scratchpaper.common.SharePreferenceConfig

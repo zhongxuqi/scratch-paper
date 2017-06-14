@@ -5,13 +5,12 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 
-import com.musketeer.baselibrary.Activity.BaseActivity
-import com.musketeer.baselibrary.util.SharePreferenceUtils
-import com.musketeer.baselibrary.view.TouchImageView
 import com.musketeer.scratchpaper.R
 import com.musketeer.scratchpaper.common.SharePreferenceConfig
 import com.musketeer.scratchpaper.paperfile.PaperFileUtils
 import com.musketeer.scratchpaper.utils.FileUtils
+import com.musketeer.scratchpaper.utils.SharePreferenceUtils
+import com.musketeer.scratchpaper.view.TouchImageView
 import com.umeng.analytics.MobclickAgent
 
 class BrowsePaperActivity : BaseActivity() {

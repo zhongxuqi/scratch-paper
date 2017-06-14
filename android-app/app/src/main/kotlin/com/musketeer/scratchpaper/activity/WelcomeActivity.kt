@@ -1,28 +1,34 @@
 package com.musketeer.scratchpaper
 
 import android.os.Bundle
-import com.musketeer.baselibrary.Activity.BaseActivity
+import android.os.Handler
+import android.widget.ImageView
+import com.musketeer.scratchpaper.activity.BaseActivity
+import com.musketeer.scratchpaper.activity.MainActivity
 
 class WelcomeActivity : BaseActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private var mWelcomeView: ImageView? = null
+
+    override fun setContentView(savedInstanceState: Bundle?) {
         setContentView(R.layout.activity_welcome)
     }
 
-    override fun setContentView(savedInstanceState: Bundle?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     override fun initView() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        supportActionBar!!.hide()
+        mWelcomeView = findViewById(R.id.welcome_image) as ImageView
     }
 
     override fun initEvent() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Handler().postDelayed(object: Runnable{
+            override fun run() {
+                startActivity(MainActivity::class.java)
+                finish()
+            }
+        }, 2000)
     }
 
     override fun initData() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        mWelcomeView!!.setImageResource(R.mipmap.welcome)
     }
 }

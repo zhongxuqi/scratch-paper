@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 
-import com.musketeer.baselibrary.Activity.BaseActivity
 import com.musketeer.scratchpaper.R
 import com.umeng.analytics.MobclickAgent
 

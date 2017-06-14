@@ -22,14 +22,13 @@ import android.widget.EditText
 import android.widget.ListView
 import android.widget.TextView
 
-import com.musketeer.baselibrary.Activity.BaseActivity
-import com.musketeer.baselibrary.util.TimeUtils
 import com.musketeer.scratchpaper.MainApplication
 import com.musketeer.scratchpaper.R
 import com.musketeer.scratchpaper.adapter.PaperListAdapter
 import com.musketeer.scratchpaper.paperfile.PaperFileUtils
 import com.musketeer.scratchpaper.utils.AppPreferenceUtils
 import com.musketeer.scratchpaper.utils.FileUtils
+import com.musketeer.scratchpaper.utils.TimeUtils
 import com.musketeer.scratchpaper.view.ScratchPaperView
 import com.musketeer.scratchpaper.view.ScratchPaperView.DrawStroke
 import com.umeng.analytics.MobclickAgent
@@ -420,7 +419,6 @@ class EditPaperActivity : BaseActivity(), OnItemClickListener {
     }
 
     companion object {
-
         private val KEY_STORE_BITMAP = "store_bitmap"
         private val KEY_STORE_STROKE = "store_stroke"
     }

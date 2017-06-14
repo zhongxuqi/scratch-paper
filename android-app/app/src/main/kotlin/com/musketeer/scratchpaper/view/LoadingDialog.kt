@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.content.Context
 import android.widget.TextView
 
-import com.musketeer.baselibrary.view.RotateImageView
 import com.musketeer.scratchpaper.R
 
 class LoadingDialog(context: Context) : Dialog(context, R.style.BaseDialog) {

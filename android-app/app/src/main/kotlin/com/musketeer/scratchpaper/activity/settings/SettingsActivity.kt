@@ -1,13 +1,11 @@
 package com.musketeer.scratchpaper.activity.settings
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.View.OnClickListener
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
@@ -15,13 +13,12 @@ import android.widget.NumberPicker
 import android.widget.Spinner
 import android.widget.TextView
 
-import com.musketeer.baselibrary.Activity.BaseActivity
-import com.musketeer.baselibrary.util.SharePreferenceUtils
 import com.musketeer.scratchpaper.MainApplication
 import com.musketeer.scratchpaper.R
+import com.musketeer.scratchpaper.activity.BaseActivity
 import com.musketeer.scratchpaper.common.SharePreferenceConfig
 import com.musketeer.scratchpaper.utils.AppPreferenceUtils
-import com.musketeer.scratchpaper.view.BaseDialog
+import com.musketeer.scratchpaper.utils.SharePreferenceUtils
 import com.umeng.analytics.MobclickAgent
 
 class SettingsActivity : BaseActivity() {
