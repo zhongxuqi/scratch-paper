@@ -28,6 +28,7 @@ import android.view.View
 
 import com.musketeer.scratchpaper.R
 import com.musketeer.scratchpaper.utils.ImageUtils
+import com.musketeer.scratchpaper.utils.LogUtils
 
 import java.util.LinkedList
 
@@ -35,6 +36,9 @@ import java.util.LinkedList
  * @author zhongxuqi
  */
 class ScratchPaperView : SurfaceView, SurfaceHolder.Callback {
+    companion object {
+        val TAG = "ScratchPaperView"
+    }
 
     //app config
     /**
@@ -64,8 +68,7 @@ class ScratchPaperView : SurfaceView, SurfaceHolder.Callback {
     private var state: State? = null
 
     //finger point notice
-    private var isPointNotice = false
-    private val pointNoticeRadius = 30
+    var isErase = false
     private val mNoticePaint = Paint()
 
     //finger point location
@@ -211,10 +214,10 @@ class ScratchPaperView : SurfaceView, SurfaceHolder.Callback {
                         }
                     }
 
-                    //draw paper background
+                    // draw paper background
                     canvas.drawBitmap(mPaperBackGround!!, mMatrix, null)
 
-                    //draw strokes
+                    // draw strokes
                     for (i in mStrokeList.indices) {
                         val realStartX = LastLocation.x + mStrokeList[i].startX * LastScale
                         val realStartY = LastLocation.y + mStrokeList[i].startY * LastScale
@@ -224,7 +227,7 @@ class ScratchPaperView : SurfaceView, SurfaceHolder.Callback {
                         //check if inside of screen
                         if (realStartX > 0 && realStartX < width && realStartY > 0 && realStartY < height || realEndX > 0 && realEndX < width && realEndY > 0 && realEndY < height) {
                             mPaint.color = mStrokeList[i].color
-                            //							mPaint.setStrokeWidth(mStrokeList.get(i).strokeWidth);
+                            // mPaint.setStrokeWidth(mStrokeList.get(i).strokeWidth);
                             mPaint.setStrokeWidth(if (mStrokeList[i].strokeWidth * LastScale / maxScale >= 1)
                                 mStrokeList[i].strokeWidth * LastScale / maxScale
                             else
@@ -233,10 +236,13 @@ class ScratchPaperView : SurfaceView, SurfaceHolder.Callback {
                         }
                     }
 
-                    if (isPointNotice && currFingerPoint != null) {
-                        mNoticePaint.strokeWidth = pointNoticeRadius * LastScale
-                        mNoticePaint.color = resources.getColor(R.color.app_theme_color)
-                        canvas.drawCircle(currFingerPoint!!.x, currFingerPoint!!.y, pointNoticeRadius.toFloat(), mNoticePaint)
+                    if (isErase && currFingerPoint != null) {
+                        mNoticePaint.setStrokeWidth(if (strokeWidth / maxScale >= 1)
+                            strokeWidth / maxScale
+                        else
+                            1F)
+                        mNoticePaint.color = Color.GREEN
+                        canvas.drawPoint(currFingerPoint!!.x, currFingerPoint!!.y, mNoticePaint)
                     }
 
                     // point canvas
@@ -330,8 +336,10 @@ class ScratchPaperView : SurfaceView, SurfaceHolder.Callback {
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_POINTER_UP -> {
                     currFingerPoint = null
                     v.performClick()
+                    LogUtils.d(TAG, "event.pointerCount: "+event.pointerCount)
                     when (event.pointerCount) {
-                        2 -> setStateByPointerCount(0)
+                        1 -> setStateByPointerCount(0)
+                        2 -> setStateByPointerCount(1)
                     }
                 }
             }
@@ -370,7 +378,11 @@ class ScratchPaperView : SurfaceView, SurfaceHolder.Callback {
                 stroke.endX > 0 - offsetXY[0] && stroke.endX <= paperWidth + offsetXY[0] &&
                 stroke.endY > 0 - offsetXY[1] && stroke.endY <= paperHeight + offsetXY[1]) {
             stroke.color = color
-            stroke.strokeWidth = strokeWidth
+            if (isErase) {
+                stroke.strokeWidth = (strokeWidth.toFloat() / LastScale).toInt()
+            } else {
+                stroke.strokeWidth = strokeWidth
+            }
             mStrokeList.add(stroke)
         }
     }
@@ -444,10 +456,6 @@ class ScratchPaperView : SurfaceView, SurfaceHolder.Callback {
         internal var strokeWidth: Int = 0
     }
 
-    fun setIsPointNotice(isPointNotice: Boolean) {
-        this.isPointNotice = isPointNotice
-    }
-
     /**
      * 删除最后一次操作
      */
@@ -506,9 +514,6 @@ class ScratchPaperView : SurfaceView, SurfaceHolder.Callback {
             val mCanvas = Canvas(mPaperBackGround!!)
 
             for (i in mStrokeList.indices) {
-                if (mStrokeList[i] == null) {
-                    continue
-                }
                 val realStartX = mStrokeList[i].startX
                 val realStartY = mStrokeList[i].startY
                 val realEndX = mStrokeList[i].endX

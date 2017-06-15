@@ -132,25 +132,25 @@ class EditPaperActivity : BaseActivity(), OnItemClickListener {
                 mPaint!!.setIcon(R.mipmap.paint_setting_black)
                 mScratchPaper!!.color = Color.BLACK
                 mScratchPaper!!.strokeWidth = 5
-                mScratchPaper!!.setIsPointNotice(false)
+                mScratchPaper!!.isErase = false
             }
             R.id.red -> {
                 mPaint!!.setIcon(R.mipmap.paint_setting_red)
                 mScratchPaper!!.color = Color.RED
                 mScratchPaper!!.strokeWidth = 5
-                mScratchPaper!!.setIsPointNotice(false)
+                mScratchPaper!!.isErase = false
             }
             R.id.blue -> {
                 mPaint!!.setIcon(R.mipmap.paint_setting_blue)
                 mScratchPaper!!.color = Color.BLUE
                 mScratchPaper!!.strokeWidth = 5
-                mScratchPaper!!.setIsPointNotice(false)
+                mScratchPaper!!.isErase = false
             }
             R.id.eraser -> {
                 mPaint!!.setIcon(R.mipmap.icon_eraser)
                 mScratchPaper!!.color = Color.WHITE
-                mScratchPaper!!.strokeWidth = 40
-                mScratchPaper!!.setIsPointNotice(true)
+                mScratchPaper!!.strokeWidth = 240
+                mScratchPaper!!.isErase = true
             }
             R.id.save -> {
                 if (mDialog != null) {
@@ -294,7 +294,7 @@ class EditPaperActivity : BaseActivity(), OnItemClickListener {
     protected fun savePaper() {
         // TODO Auto-generated method stub
         val filename = mDialog!!.findViewById(R.id.filename) as EditText
-        if (filename.text == null || filename.text.toString().length == 0) {
+        if (filename.text == null || filename.text.isEmpty()) {
             showCustomToast(R.string.name_no_null)
             return
         }
@@ -304,7 +304,7 @@ class EditPaperActivity : BaseActivity(), OnItemClickListener {
         //启动纸张保存进程
         Thread(Runnable {
             // TODO Auto-generated method stub
-            if (paper_name != null && paper_name!!.length > 0) {
+            if (paper_name.isNotEmpty()) {
                 PaperFileUtils.deletePaper(paper_name)
             }
 
