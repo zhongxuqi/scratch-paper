@@ -8,10 +8,7 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.view.View.OnClickListener
 import android.view.animation.Animation
 import android.view.animation.Animation.AnimationListener
@@ -361,6 +358,28 @@ class MainActivity : BaseActivity(), OnItemClickListener, OnItemLongClickListene
     public override fun onPause() {
         super.onPause()
         MobclickAgent.onPause(this)
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            val buider = AlertDialog.Builder(this)
+            var mExitDialog: AlertDialog? = null
+            buider.setNegativeButton(getText(R.string.cancel), object: DialogInterface.OnClickListener {
+                override fun onClick(dialog: DialogInterface?, which: Int) {
+                    mExitDialog?.dismiss()
+                }
+            })
+            buider.setPositiveButton(getText(R.string.quit), object: DialogInterface.OnClickListener {
+                override fun onClick(dialog: DialogInterface?, which: Int) {
+                    this@MainActivity.finish()
+                    mExitDialog?.dismiss()
+                }
+            })
+            mExitDialog = buider.create()
+            mExitDialog.show()
+            return true
+        }
+        return false
     }
 
     companion object {
