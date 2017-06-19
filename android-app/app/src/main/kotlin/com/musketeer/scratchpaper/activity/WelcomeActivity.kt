@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.musketeer.scratchpaper.R
+import com.musketeer.scratchpaper.common.Contants
 import com.musketeer.scratchpaper.utils.LogUtils
 import com.qq.e.ads.splash.SplashAD
 import com.qq.e.ads.splash.SplashADListener
@@ -39,7 +40,7 @@ class WelcomeActivity : BaseActivity() {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_PERMISSIONS)
         }
         mWelcomeView = findViewById(R.id.adcontent) as RelativeLayout
-        val splashAD = SplashAD(this, mWelcomeView!!, View(this), "1103577955", "8040328324309898", object: SplashADListener{
+        SplashAD(this, mWelcomeView!!, View(this), Contants.AD_APPID, Contants.AD_LARGE, object: SplashADListener{
             override fun onNoAD(ecode: Int) {
                 LogUtils.d(TAG, "ecode:$ecode")
             }

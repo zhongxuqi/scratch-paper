@@ -13,24 +13,30 @@ import android.view.View.OnClickListener
 import android.view.animation.Animation
 import android.view.animation.Animation.AnimationListener
 import android.view.animation.AnimationUtils
-import android.widget.AdapterView
+import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.AdapterView.OnItemLongClickListener
-import android.widget.EditText
-import android.widget.GridView
-import android.widget.ImageView
-import android.widget.TextView
 
 import com.musketeer.scratchpaper.MainApplication
 import com.musketeer.scratchpaper.R
 import com.musketeer.scratchpaper.activity.settings.SettingsActivity
 import com.musketeer.scratchpaper.adapter.PaperListAdapter
+import com.musketeer.scratchpaper.common.Contants
 import com.musketeer.scratchpaper.common.SharePreferenceConfig
 import com.musketeer.scratchpaper.paperfile.PaperFileUtils
 import com.musketeer.scratchpaper.utils.AppPreferenceUtils
+import com.musketeer.scratchpaper.utils.LogUtils
 import com.musketeer.scratchpaper.utils.SharePreferenceUtils
 import com.musketeer.scratchpaper.view.BaseDialog
 import com.musketeer.scratchpaper.view.LoadingDialog
+import com.qq.e.ads.banner.ADSize
+import com.qq.e.ads.banner.AbstractBannerADListener
+import com.qq.e.ads.banner.BannerView
+import com.qq.e.ads.nativ.NativeAD
+import com.qq.e.ads.nativ.NativeADDataRef
+import com.qq.e.ads.splash.SplashAD
+import com.qq.e.ads.splash.SplashADListener
+import com.squareup.picasso.Picasso
 import com.umeng.analytics.MobclickAgent
 
 import org.w3c.dom.Text
@@ -364,6 +370,40 @@ class MainActivity : BaseActivity(), OnItemClickListener, OnItemLongClickListene
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             val buider = AlertDialog.Builder(this)
             var mExitDialog: AlertDialog? = null
+            val view = layoutInflater.inflate(R.layout.dialog_exit, null)
+            val adView = view.findViewById(R.id.exit_dialog) as RelativeLayout
+            val adImageView = view.findViewById(R.id.ad_image) as ImageView
+            val nativeAD = NativeAD(this, Contants.AD_APPID, Contants.AD_SMALL, object: NativeAD.NativeAdListener {
+                override fun onADStatusChanged(p0: NativeADDataRef?) {
+                    LogUtils.d(TAG, "onADStatusChanged: $p0")
+                    p0?.onExposured(adImageView)
+                    Picasso.with(this@MainActivity).load(p0?.imgUrl).into(adImageView)
+                    adImageView.setOnClickListener {
+                        p0?.onClicked(adImageView)
+                    }
+                }
+
+                override fun onADError(p0: NativeADDataRef?, p1: Int) {
+                    LogUtils.d(TAG, "onADError")
+                }
+
+                override fun onADLoaded(list: MutableList<NativeADDataRef>?) {
+                    LogUtils.d(TAG, "onADLoaded")
+                    if (list == null || list.size <= 0) return
+                    val adItem = list[0]
+                    Picasso.with(this@MainActivity).load(adItem.imgUrl).into(adImageView)
+                    adItem.onExposured(adImageView)
+                    adImageView.setOnClickListener {
+                        adItem.onClicked(adImageView)
+                    }
+                }
+
+                override fun onNoAD(p0: Int) {
+                    LogUtils.d(TAG, "onNoAD")
+                }
+            })
+            nativeAD.loadAD(1)
+            buider.setView(adView)
             buider.setNegativeButton(getText(R.string.cancel), object: DialogInterface.OnClickListener {
                 override fun onClick(dialog: DialogInterface?, which: Int) {
                     mExitDialog?.dismiss()
@@ -383,6 +423,7 @@ class MainActivity : BaseActivity(), OnItemClickListener, OnItemLongClickListene
     }
 
     companion object {
+        private val TAG = "MainActivity"
         private val ADD_NEW_PAPER = 1
         private val EDIT_NEW_PAPER = 2
         private val CHANGE_SETTINGS = 3
