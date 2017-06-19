@@ -3,12 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.musketeer.scratchpaper.WelcomeActivity">
-    <ImageView
-        android:id="@+id/welcome_image"
-        android:layout_height="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/adcontent"
         android:layout_width="match_parent"
-        android:src="@mipmap/welcome"
-        android:scaleType="fitXY"/>
+        android:layout_height="match_parent">
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/skip_button"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/bg_button_dark"
+        android:textSize="16sp"
+        android:layout_margin="10dp"
+        android:padding="7dp"
+        android:textColor="@color/white"/>
 </RelativeLayout>
