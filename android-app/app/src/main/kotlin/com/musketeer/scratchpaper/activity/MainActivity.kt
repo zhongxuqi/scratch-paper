@@ -371,7 +371,7 @@ class MainActivity : BaseActivity(), OnItemClickListener, OnItemLongClickListene
             val buider = AlertDialog.Builder(this)
             var mExitDialog: AlertDialog? = null
             val view = layoutInflater.inflate(R.layout.dialog_exit, null)
-            val adView = view.findViewById(R.id.exit_dialog) as RelativeLayout
+            val adView = view.findViewById(R.id.exit_dialog)
             val adImageView = view.findViewById(R.id.ad_image) as ImageView
             val nativeAD = NativeAD(this, Contants.AD_APPID, Contants.AD_SMALL, object: NativeAD.NativeAdListener {
                 override fun onADStatusChanged(p0: NativeADDataRef?) {
@@ -403,18 +403,14 @@ class MainActivity : BaseActivity(), OnItemClickListener, OnItemLongClickListene
                 }
             })
             nativeAD.loadAD(1)
+            adView.findViewById(R.id.btn_cancel).setOnClickListener {
+                mExitDialog?.dismiss()
+            }
+            adView.findViewById(R.id.btn_exit).setOnClickListener {
+                finish()
+                mExitDialog?.dismiss()
+            }
             buider.setView(adView)
-            buider.setNegativeButton(getText(R.string.cancel), object: DialogInterface.OnClickListener {
-                override fun onClick(dialog: DialogInterface?, which: Int) {
-                    mExitDialog?.dismiss()
-                }
-            })
-            buider.setPositiveButton(getText(R.string.quit), object: DialogInterface.OnClickListener {
-                override fun onClick(dialog: DialogInterface?, which: Int) {
-                    this@MainActivity.finish()
-                    mExitDialog?.dismiss()
-                }
-            })
             mExitDialog = buider.create()
             mExitDialog.show()
             return true
