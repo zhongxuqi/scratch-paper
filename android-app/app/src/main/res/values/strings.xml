@@ -71,6 +71,7 @@
     <string name="look_content">查看内容</string>
     <string name="edit_content">编辑内容</string>
     <string name="rename">重命名</string>
+    <string name="share">分享</string>
     <string name="delete">删除</string>
     <string name="affirm_delete">是否删除草稿?</string>
     <string name="add_new_paper">添加新草稿</string>
@@ -92,4 +93,5 @@
     <string name="edit">编辑</string>
     <string name="title_activity_paper_select">草稿纸选择</string>
 
+    <string name="close_hint">关闭APP请再次点击返回键</string>
 </resources>

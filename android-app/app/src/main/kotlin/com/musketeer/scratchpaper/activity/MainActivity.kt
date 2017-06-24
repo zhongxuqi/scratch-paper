@@ -27,21 +27,27 @@ import com.musketeer.scratchpaper.paperfile.PaperFileUtils
 import com.musketeer.scratchpaper.utils.AppPreferenceUtils
 import com.musketeer.scratchpaper.utils.LogUtils
 import com.musketeer.scratchpaper.utils.SharePreferenceUtils
-import com.musketeer.scratchpaper.view.BaseDialog
-import com.musketeer.scratchpaper.view.LoadingDialog
-import com.qq.e.ads.banner.ADSize
-import com.qq.e.ads.banner.AbstractBannerADListener
-import com.qq.e.ads.banner.BannerView
-import com.qq.e.ads.nativ.NativeAD
-import com.qq.e.ads.nativ.NativeADDataRef
-import com.qq.e.ads.splash.SplashAD
-import com.qq.e.ads.splash.SplashADListener
-import com.squareup.picasso.Picasso
+import com.qq.e.ads.interstitial.InterstitialAD
+import com.qq.e.ads.interstitial.InterstitialADListener
 import com.umeng.analytics.MobclickAgent
+import com.umeng.socialize.ShareAction
+import com.umeng.socialize.UMShareAPI
+import com.umeng.socialize.UMShareListener
+import com.umeng.socialize.bean.SHARE_MEDIA
+import com.umeng.socialize.media.UMImage
+import com.umeng.socialize.shareboard.SnsPlatform
+import com.umeng.socialize.utils.ShareBoardlistener
 
-import org.w3c.dom.Text
+import java.io.File
 
 class MainActivity : BaseActivity(), OnItemClickListener, OnItemLongClickListener {
+
+    companion object {
+        private val TAG = "MainActivity"
+        private val ADD_NEW_PAPER = 1
+        private val EDIT_NEW_PAPER = 2
+        private val CHANGE_SETTINGS = 3
+    }
 
     //	private DrawerLayout mDrawerLayout;
     //	private ActionBarDrawerToggle mDrawerToggle;
@@ -61,6 +67,9 @@ class MainActivity : BaseActivity(), OnItemClickListener, OnItemLongClickListene
     private var mDialog: AlertDialog? = null
     private var mLoadingDialog: AlertDialog? = null
     private var loadingText: TextView? = null
+
+    private var closeTime: Long = 0
+    private var interstitialAD: InterstitialAD? = null
 
     private val handler = object : Handler() {
         override //当有消息发送出来的时候就执行Handler的这个方法
@@ -257,7 +266,7 @@ class MainActivity : BaseActivity(), OnItemClickListener, OnItemLongClickListene
                 mDialog!!.dismiss()
 
                 val rename = mDialog!!.findViewById(R.id.edittext) as EditText
-                if (rename.text.toString() == null || rename.text.toString().length == 0) {
+                if (rename.text.isEmpty()) {
                     showCustomToast(R.string.name_no_null)
                     return@OnClickListener
                 }
@@ -277,8 +286,8 @@ class MainActivity : BaseActivity(), OnItemClickListener, OnItemLongClickListene
                         //删除文件
                         PaperFileUtils.deletePaper(mAdapter!!.getItem(selectPosition))
 
-                        mPaperList!!.removeAt(selectPosition)
-                        mPaperList!!.add(selectPosition, paper_name)
+                        mPaperList.removeAt(selectPosition)
+                        mPaperList.add(selectPosition, paper_name)
                     }
                     handler.sendEmptyMessage(0)
                 }).start()
@@ -286,6 +295,40 @@ class MainActivity : BaseActivity(), OnItemClickListener, OnItemLongClickListene
             mDialog = builder.create()
             mDialog!!.show()
         })
+        val shareButton = contentView.findViewById(R.id.share) as TextView
+        shareButton.setOnClickListener {
+            LogUtils.d(TAG, "file: ${mAdapter?.getItem(selectPosition)}")
+            val filePath = PaperFileUtils.getPaperPath(mAdapter!!.getItem(selectPosition))
+            val image = UMImage(this, File(filePath))
+            image.setThumb(UMImage(this, File(filePath)))
+            image.compressStyle = UMImage.CompressStyle.SCALE
+            ShareAction(this).withText(mAdapter?.getItem(selectPosition)).withMedia(image)
+                .setDisplayList(SHARE_MEDIA.SINA,SHARE_MEDIA.QQ, SHARE_MEDIA.WEIXIN)
+            .setShareboardclickCallback(object: ShareBoardlistener{
+            override fun onclick(p0: SnsPlatform?, p1: SHARE_MEDIA?) {
+                ShareAction(this@MainActivity).setPlatform(p1).withText(mAdapter?.getItem(selectPosition)).withMedia(image)
+                    .setCallback(object: UMShareListener{
+                        override fun onResult(p0: SHARE_MEDIA?) {
+                            LogUtils.d(TAG, "onResult SHARE_MEDIA: $p0")
+                        }
+
+                        override fun onCancel(p0: SHARE_MEDIA?) {
+                            LogUtils.d(TAG, "onCancel SHARE_MEDIA: $p0")
+                        }
+
+                        override fun onError(p0: SHARE_MEDIA?, p1: Throwable?) {
+                            p1?.printStackTrace()
+                            LogUtils.d(TAG, "onError SHARE_MEDIA: $p0")
+                        }
+
+                        override fun onStart(p0: SHARE_MEDIA?) {
+                            LogUtils.d(TAG, "onStart SHARE_MEDIA: $p0")
+                        }
+                    }).share()
+            }
+        }).open()
+            mDialog?.dismiss()
+        }
         mDialog!!.show()
     }
 
@@ -314,6 +357,7 @@ class MainActivity : BaseActivity(), OnItemClickListener, OnItemLongClickListene
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, data)
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             ADD_NEW_PAPER -> refreshViews()
             EDIT_NEW_PAPER -> refreshViews()
@@ -368,60 +412,54 @@ class MainActivity : BaseActivity(), OnItemClickListener, OnItemLongClickListene
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            val buider = AlertDialog.Builder(this)
-            var mExitDialog: AlertDialog? = null
-            val view = layoutInflater.inflate(R.layout.dialog_exit, null)
-            val adView = view.findViewById(R.id.exit_dialog)
-            val adImageView = view.findViewById(R.id.ad_image) as ImageView
-            val nativeAD = NativeAD(this, Contants.AD_APPID, Contants.AD_SMALL, object: NativeAD.NativeAdListener {
-                override fun onADStatusChanged(p0: NativeADDataRef?) {
-                    LogUtils.d(TAG, "onADStatusChanged: $p0")
-                    p0?.onExposured(adImageView)
-                    Picasso.with(this@MainActivity).load(p0?.imgUrl).into(adImageView)
-                    adImageView.setOnClickListener {
-                        p0?.onClicked(adImageView)
-                    }
+            var ret: Boolean = true
+            if (System.currentTimeMillis() - closeTime > 2000) {
+                if (interstitialAD != null) {
+                    ret = false
                 }
-
-                override fun onADError(p0: NativeADDataRef?, p1: Int) {
-                    LogUtils.d(TAG, "onADError")
-                }
-
-                override fun onADLoaded(list: MutableList<NativeADDataRef>?) {
-                    LogUtils.d(TAG, "onADLoaded")
-                    if (list == null || list.size <= 0) return
-                    val adItem = list[0]
-                    Picasso.with(this@MainActivity).load(adItem.imgUrl).into(adImageView)
-                    adItem.onExposured(adImageView)
-                    adImageView.setOnClickListener {
-                        adItem.onClicked(adImageView)
-                    }
-                }
-
-                override fun onNoAD(p0: Int) {
-                    LogUtils.d(TAG, "onNoAD")
-                }
-            })
-            nativeAD.loadAD(1)
-            adView.findViewById(R.id.btn_cancel).setOnClickListener {
-                mExitDialog?.dismiss()
-            }
-            adView.findViewById(R.id.btn_exit).setOnClickListener {
+                closeTime = System.currentTimeMillis()
+                showCustomToast(R.string.close_hint)
+            } else {
+                interstitialAD?.closePopupWindow()
                 finish()
-                mExitDialog?.dismiss()
             }
-            buider.setView(adView)
-            mExitDialog = buider.create()
-            mExitDialog.show()
-            return true
+            if (interstitialAD == null) {
+                interstitialAD = InterstitialAD(this, Contants.AD_APPID, Contants.AD_SMALL)
+                interstitialAD?.setADListener(object: InterstitialADListener{
+                    override fun onADExposure() {
+                        LogUtils.d(TAG, "onADExposure")
+                    }
+
+                    override fun onADOpened() {
+                        LogUtils.d(TAG, "onADOpened")
+                    }
+
+                    override fun onADClosed() {
+                        LogUtils.d(TAG, "onADClosed")
+                        interstitialAD = null
+                    }
+
+                    override fun onADLeftApplication() {
+                        LogUtils.d(TAG, "onADLeftApplication")
+                    }
+
+                    override fun onADReceive() {
+                        LogUtils.d(TAG, "onADReceive")
+                        interstitialAD?.show()
+                    }
+
+                    override fun onNoAD(p0: Int) {
+                        LogUtils.d(TAG, "onNoAD $p0")
+                    }
+
+                    override fun onADClicked() {
+                        LogUtils.d(TAG, "onADClicked")
+                    }
+                })
+                interstitialAD?.loadAD()
+            }
+            return ret
         }
         return false
-    }
-
-    companion object {
-        private val TAG = "MainActivity"
-        private val ADD_NEW_PAPER = 1
-        private val EDIT_NEW_PAPER = 2
-        private val CHANGE_SETTINGS = 3
     }
 }

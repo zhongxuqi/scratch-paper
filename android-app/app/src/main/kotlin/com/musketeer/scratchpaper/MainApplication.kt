@@ -16,6 +16,9 @@ import android.os.Environment
 
 import com.musketeer.scratchpaper.utils.FileUtils
 import com.umeng.analytics.MobclickAgent
+import com.umeng.socialize.Config
+import com.umeng.socialize.PlatformConfig
+import com.umeng.socialize.UMShareAPI
 
 import java.io.File
 import java.util.HashMap
@@ -35,6 +38,13 @@ class MainApplication : BaseApplication() {
         MobclickAgent.startWithConfigure(MobclickAgent.UMAnalyticsConfig(this, "56ecff3ce0f55ac331000a80", "XiaoMi"))
 
         iniEnv()
+
+        // share sdk init
+        PlatformConfig.setWeixin("", "")
+        PlatformConfig.setSinaWeibo("2709929479", "7e3d71dc4b12ebca23a7305ec82cc692", "http://sns.whalecloud.com")
+        PlatformConfig.setQQZone("1103577955", "4gx4VFqF6ME4dbl0")
+        Config.DEBUG = true
+        UMShareAPI.get(this)
     }
 
     /**
