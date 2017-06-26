@@ -7,6 +7,8 @@ import android.os.Handler
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.view.KeyEvent
+import android.view.View
+import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.musketeer.scratchpaper.R
@@ -19,12 +21,14 @@ class WelcomeActivity : BaseActivity() {
     companion object {
         val TAG = "WelcomeActivity"
         val REQUEST_PERMISSIONS = 0
-        val handler = Handler()
     }
 
+    private var mImageView: ImageView? = null
     private var mWelcomeView: RelativeLayout? = null
     private var mSkipButton: TextView? = null
     private var hasSkip: Boolean = false
+    private var hasPresent: Boolean = false
+    private val handler = Handler()
 
     override fun setContentView(savedInstanceState: Bundle?) {
         setContentView(R.layout.activity_welcome)
@@ -38,6 +42,7 @@ class WelcomeActivity : BaseActivity() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_PERMISSIONS)
         }
+        mImageView = findViewById(R.id.welcome_image) as ImageView
         mSkipButton = findViewById(R.id.skip_button) as TextView
         mWelcomeView = findViewById(R.id.adcontent) as RelativeLayout
         SplashAD(this, mWelcomeView!!, mSkipButton, Contants.AD_APPID, Contants.AD_LARGE, object: SplashADListener{
@@ -51,6 +56,8 @@ class WelcomeActivity : BaseActivity() {
 
             override fun onADPresent() {
                 LogUtils.d(TAG, "onADPresent")
+                hasPresent = true
+                mImageView?.visibility = View.GONE
             }
 
             override fun onADClicked() {
@@ -61,7 +68,7 @@ class WelcomeActivity : BaseActivity() {
             override fun onADTick(millisUntilFinished: Long) {
                 val tickTime = Math.round(millisUntilFinished/1000F)
                 this@WelcomeActivity.mSkipButton?.setText("点击跳过 (${tickTime}s)")
-                if (millisUntilFinished - 500 <= 0) {
+                if (millisUntilFinished - 1000 <= 0) {
                     start()
                 }
 
@@ -70,18 +77,21 @@ class WelcomeActivity : BaseActivity() {
     }
 
     override fun initEvent() {
+        mSkipButton?.setText("点击跳过")
         mSkipButton?.setOnClickListener {
             start()
         }
+        handler.postDelayed(object: Runnable{
+            override fun run() {
+                if (!hasPresent) {
+                    start()
+                }
+            }
+        }, 3000)
     }
 
     override fun initData() {
 
-    }
-
-    override fun onResume() {
-        super.onResume()
-        LogUtils.d(TAG, "onResume")
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
