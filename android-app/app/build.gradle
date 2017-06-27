@@ -4,13 +4,12 @@ apply plugin: 'kotlin-android'
 android {
     compileSdkVersion 25
     buildToolsVersion '25.0.0'
-
     defaultConfig {
         applicationId 'com.musketeer.scratchpaper'
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 14
-        versionName '2.0.3'
+        versionCode 15
+        versionName '2.1.0'
     }
     buildTypes {
         release {
@@ -20,6 +19,8 @@ android {
     }
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+    }
+    productFlavors {
     }
 }
 
