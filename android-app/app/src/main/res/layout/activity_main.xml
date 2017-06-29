@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@mipmap/amsc_ic_tag_plus"
-        android:background="@mipmap/btn_skittle_large_background"
+        android:background="@mipmap/icon_add"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="30dp"

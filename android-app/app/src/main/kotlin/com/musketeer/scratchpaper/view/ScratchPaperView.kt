@@ -61,6 +61,9 @@ class ScratchPaperView : SurfaceView, SurfaceHolder.Callback {
     private val offsetXY = IntArray(2)
     private var mPaperId: Int = 0
 
+    private var mEraserImage: Bitmap? = null
+    private val mEraserMatrix = Matrix()
+
     private enum class State {
         NONE, DRAWING, DRAG_ZOOM, FLING, ANIMATE_ZOOM
     }
@@ -148,6 +151,8 @@ class ScratchPaperView : SurfaceView, SurfaceHolder.Callback {
 
         mPaint.isAntiAlias = true
         mPaint.isDither = true
+
+        mEraserImage = BitmapFactory.decodeResource(resources, R.mipmap.icon_eraser)
     }
 
     override fun surfaceCreated(holder: SurfaceHolder) {
@@ -237,12 +242,15 @@ class ScratchPaperView : SurfaceView, SurfaceHolder.Callback {
                     }
 
                     if (isErase && currFingerPoint != null) {
-                        mNoticePaint.setStrokeWidth(if (strokeWidth / maxScale >= 1)
-                            strokeWidth / maxScale
-                        else
-                            1F)
-                        mNoticePaint.color = Color.GREEN
-                        canvas.drawPoint(currFingerPoint!!.x, currFingerPoint!!.y, mNoticePaint)
+//                        mNoticePaint.setStrokeWidth(if (strokeWidth / maxScale >= 1)
+//                            strokeWidth / maxScale
+//                        else
+//                            1F)
+//                        mNoticePaint.color = Color.GREEN
+//                        canvas.drawPoint(currFingerPoint!!.x, currFingerPoint!!.y, mNoticePaint)
+                        mEraserMatrix.reset()
+                        mEraserMatrix.setTranslate(currFingerPoint!!.x - mEraserImage!!.width / 2, currFingerPoint!!.y - mEraserImage!!.height / 2)
+                        canvas.drawBitmap(mEraserImage, mEraserMatrix, null)
                     }
 
                     // point canvas
