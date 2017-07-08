@@ -8,8 +8,8 @@ android {
         applicationId 'com.musketeer.scratchpaper'
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 16
-        versionName '2.1.1'
+        versionCode 17
+        versionName '3.0.0'
     }
     buildTypes {
         release {

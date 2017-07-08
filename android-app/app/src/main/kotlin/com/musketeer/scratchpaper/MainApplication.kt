@@ -41,7 +41,7 @@ class MainApplication : BaseApplication() {
 
         // share sdk init
         PlatformConfig.setWeixin("wx27f355795896793b", "d50f410ea6ff946cef36ebe39cefb432")
-        PlatformConfig.setSinaWeibo("2709929479", "7e3d71dc4b12ebca23a7305ec82cc692", "http://sns.whalecloud.com")
+        PlatformConfig.setSinaWeibo("2709929479", "7e3d71dc4b12ebca23a7305ec82cc692", "http://sns.whalecloud.com/sina2/callback")
         PlatformConfig.setQQZone("1103577955", "4gx4VFqF6ME4dbl0")
         Config.DEBUG = true
         UMShareAPI.get(this)

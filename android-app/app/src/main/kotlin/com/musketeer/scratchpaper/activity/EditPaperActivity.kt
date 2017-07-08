@@ -159,10 +159,6 @@ class EditPaperActivity : BaseActivity(), OnItemClickListener {
                 }
                 builder = AlertDialog.Builder(this)
                 builder.setTitle(resources.getString(R.string.save_file))
-                val contentView = LayoutInflater.from(this).inflate(R.layout.include_dialog_savefile, null)
-                builder.setView(contentView)
-                val filename = contentView.findViewById(R.id.filename) as EditText
-                filename.setText(paper_name)
                 builder.setNegativeButton(resources.getString(R.string.no)) { dialog, which -> mDialog!!.dismiss() }
                 builder.setPositiveButton(resources.getString(R.string.yes)) { dialog, which ->
                     mDrawerLayout!!.closeDrawers()
@@ -282,8 +278,7 @@ class EditPaperActivity : BaseActivity(), OnItemClickListener {
         mScratchPaper!!.startDraw()
     }
 
-    override fun onItemClick(parent: AdapterView<*>, view: View, position: Int,
-                             id: Long) {
+    override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
         // TODO Auto-generated method stub
         val mListView = parent
         changePaperContent(mListView.adapter.getItem(position) as String)
@@ -293,13 +288,6 @@ class EditPaperActivity : BaseActivity(), OnItemClickListener {
      * 保存草稿纸
      */
     protected fun savePaper() {
-        // TODO Auto-generated method stub
-        val filename = mDialog!!.findViewById(R.id.filename) as EditText
-        if (filename.text == null || filename.text.isEmpty()) {
-            showCustomToast(R.string.name_no_null)
-            return
-        }
-
         showLoadingDialogNotCancel(R.string.saving)
 
         //启动纸张保存进程
@@ -308,8 +296,6 @@ class EditPaperActivity : BaseActivity(), OnItemClickListener {
             if (paper_name.isNotEmpty()) {
                 PaperFileUtils.deletePaper(paper_name)
             }
-
-            paper_name = filename.text.toString()
 
             val bitmap = Bitmap.createBitmap(mScratchPaper!!.paperWidth,
                     mScratchPaper!!.paperHeight, Bitmap.Config.ARGB_8888)
@@ -327,22 +313,12 @@ class EditPaperActivity : BaseActivity(), OnItemClickListener {
         }
         val builder = AlertDialog.Builder(this)
         builder.setTitle(resources.getString(R.string.affirm_save_current_paper))
-        val contentView = LayoutInflater.from(this).inflate(R.layout.include_change_paper, null)
-        builder.setView(contentView)
-        val editText = contentView.findViewById(R.id.filename) as EditText
-        editText.setText(paper_name)
         builder.setNegativeButton(resources.getString(R.string.no)) { dialog, which ->
             paper_name = new_paper_name
             ChangePaperHandler.sendEmptyMessage(0)
             mDialog!!.dismiss()
         }
         builder.setPositiveButton(resources.getString(R.string.yes), DialogInterface.OnClickListener { dialog, which ->
-            val filename = mDialog!!.findViewById(R.id.filename) as EditText
-            if (filename.text == null || filename.text.toString().isEmpty()) {
-                showCustomToast(R.string.name_no_null)
-                return@OnClickListener
-            }
-
             showLoadingDialogNotCancel(R.string.saving)
 
             //启动纸张保存进程
@@ -351,8 +327,6 @@ class EditPaperActivity : BaseActivity(), OnItemClickListener {
                 if (paper_name.isNotEmpty()) {
                     PaperFileUtils.deletePaper(paper_name)
                 }
-
-                paper_name = filename.text.toString()
 
                 val bitmap = Bitmap.createBitmap(mScratchPaper!!.paperWidth,
                         mScratchPaper!!.paperHeight, Bitmap.Config.ARGB_8888)

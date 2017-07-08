@@ -2,29 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@mipmap/paper_bg">
-    
-    <TextView 
-        android:id="@+id/paper_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-    	android:gravity="left"
-        android:textSize="@dimen/subsubtitle_size"
-        android:padding="5dp"
-        android:lines="2"
-        android:ellipsize="end"/>
-    
-    <View 
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/gray"/>
-    
+    android:orientation="vertical">
     <ImageView 
         android:id="@+id/paper_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:scaleType="centerInside"/>
-
 </LinearLayout>

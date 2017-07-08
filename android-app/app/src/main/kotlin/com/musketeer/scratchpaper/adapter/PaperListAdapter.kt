@@ -52,7 +52,6 @@ class PaperListAdapter(private val mContext: Context, private val mFileList: Mut
             mHolder = Holder()
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_paper_gridlist, null)
             mHolder.mPaperImage = convertView!!.findViewById(R.id.paper_content) as ImageView
-            mHolder.mPaperName = convertView.findViewById(R.id.paper_name) as TextView
 
             convertView.tag = mHolder
         } else {
@@ -70,14 +69,12 @@ class PaperListAdapter(private val mContext: Context, private val mFileList: Mut
         }
 
         mHolder.mPaperImage!!.setImageBitmap(bitmap)
-        mHolder.mPaperName!!.text = getItem(position)
 
         return convertView
     }
 
     internal inner class Holder {
         var mPaperImage: ImageView? = null
-        var mPaperName: TextView? = null
     }
 
 }

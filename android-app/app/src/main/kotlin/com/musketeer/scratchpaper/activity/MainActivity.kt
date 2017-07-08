@@ -16,6 +16,7 @@ import com.musketeer.scratchpaper.common.Contants
 import com.musketeer.scratchpaper.utils.LogUtils
 import com.muskeeter.base.acitivity.BaseFragmentActivity
 import com.musketeer.scratchpaper.adapter.FragmentAdapter
+import com.musketeer.scratchpaper.config.Config
 import com.musketeer.scratchpaper.fragment.MainFragment
 import com.musketeer.scratchpaper.fragment.MyFragment
 import com.qq.e.ads.interstitial.InterstitialAD
@@ -139,6 +140,10 @@ class MainActivity : BaseFragmentActivity(){
         super.onActivityResult(requestCode, resultCode, data)
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data)
         mainFragment.onActivityResult(requestCode, resultCode, data)
+    }
+
+    fun refreshMainFragment() {
+        mainFragment.onActivityResult(Config.ACTION_CHANGE_SETTINGS, 0, null)
     }
 
     public override fun onResume() {
