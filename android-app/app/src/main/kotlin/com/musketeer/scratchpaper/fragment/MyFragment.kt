@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.*
 import com.muskeeter.base.fragment.BaseSupportFragment
 import com.musketeer.scratchpaper.R
+import com.musketeer.scratchpaper.activity.HelpActivity
 import com.musketeer.scratchpaper.activity.MainActivity
 import com.musketeer.scratchpaper.activity.settings.SettingsActivity
 import com.musketeer.scratchpaper.common.SharePreferenceConfig
@@ -46,15 +47,9 @@ class MyFragment: BaseSupportFragment() {
     }
 
     override fun initEvent() {
-//        findViewById(R.id.goto_settings)?.setOnClickListener(object: View.OnClickListener{
-//            override fun onClick(v: View?) {
-//                val intent = Intent()
-//                intent.setClass(activity, SettingsActivity::class.java)
-//                activity.startActivityForResult(intent, Config.ACTION_CHANGE_SETTINGS)
-//            }
-//        })
         findViewById(R.id.paper_row_number)?.setOnClickListener(this)
         findViewById(R.id.set_max_undo)?.setOnClickListener(this)
+        findViewById(R.id.action_help)?.setOnClickListener(this)
     }
 
     override fun initData() {
@@ -127,6 +122,9 @@ class MyFragment: BaseSupportFragment() {
                 mNumberPicker?.maxValue = 200
                 mNumberPicker?.value = AppPreferenceUtils.getMaxUndo(activity)
                 mDialog?.show()
+            }
+            R.id.action_help -> {
+                startActivity(HelpActivity::class.java)
             }
         }
     }
