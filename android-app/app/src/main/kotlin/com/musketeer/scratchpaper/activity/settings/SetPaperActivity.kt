@@ -1,6 +1,5 @@
 package com.musketeer.scratchpaper.activity.settings
 
-import android.content.res.TypedArray
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -10,7 +9,7 @@ import android.widget.AdapterView.OnItemClickListener
 import android.widget.GridView
 
 import com.musketeer.scratchpaper.R
-import com.musketeer.scratchpaper.activity.BaseActivity
+import com.muskeeter.base.acitivity.BaseActivity
 import com.musketeer.scratchpaper.adapter.SelectListAdapter
 import com.musketeer.scratchpaper.common.SharePreferenceConfig
 import com.musketeer.scratchpaper.utils.AppPreferenceUtils

@@ -5,6 +5,7 @@ import android.view.Menu
 import android.view.MenuItem
 
 import com.musketeer.scratchpaper.R
+import com.muskeeter.base.acitivity.BaseActivity
 import com.umeng.analytics.MobclickAgent
 
 class HelpActivity : BaseActivity() {

@@ -11,6 +11,7 @@ import com.musketeer.scratchpaper.paperfile.PaperFileUtils
 import com.musketeer.scratchpaper.utils.FileUtils
 import com.musketeer.scratchpaper.utils.SharePreferenceUtils
 import com.musketeer.scratchpaper.view.TouchImageView
+import com.muskeeter.base.acitivity.BaseActivity
 import com.umeng.analytics.MobclickAgent
 
 class BrowsePaperActivity : BaseActivity() {

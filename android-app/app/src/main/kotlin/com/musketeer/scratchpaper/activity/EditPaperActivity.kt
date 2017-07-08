@@ -31,6 +31,7 @@ import com.musketeer.scratchpaper.utils.FileUtils
 import com.musketeer.scratchpaper.utils.TimeUtils
 import com.musketeer.scratchpaper.view.ScratchPaperView
 import com.musketeer.scratchpaper.view.ScratchPaperView.DrawStroke
+import com.muskeeter.base.acitivity.BaseActivity
 import com.umeng.analytics.MobclickAgent
 import java.util.ArrayList
 

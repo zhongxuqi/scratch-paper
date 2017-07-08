@@ -10,5 +10,7 @@ class Contants {
         val AD_LARGE = "8040328324309898"
         val AD_SMALL = "7030323384378109"
         val AD_BANNER = "8090923323097957"
+
+        val Action_ADD_NEW_PAPER = 1
     }
 }

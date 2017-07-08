@@ -15,7 +15,7 @@ import android.widget.TextView
 
 import com.musketeer.scratchpaper.MainApplication
 import com.musketeer.scratchpaper.R
-import com.musketeer.scratchpaper.activity.BaseActivity
+import com.muskeeter.base.acitivity.BaseActivity
 import com.musketeer.scratchpaper.common.SharePreferenceConfig
 import com.musketeer.scratchpaper.utils.AppPreferenceUtils
 import com.musketeer.scratchpaper.utils.SharePreferenceUtils

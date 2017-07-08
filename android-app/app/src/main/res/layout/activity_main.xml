@@ -1,25 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/bg_desk_default" >
+    android:orientation="vertical"
+    android:background="@color/background">
 
-    <GridView
-        android:id="@+id/paper_gridlist"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_paper"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:numColumns="3"
-        android:stretchMode="columnWidth" />
+        android:layout_height="0dp"
+        android:layout_weight="1">
+    </android.support.v4.view.ViewPager>
 
-    <ImageView
-        android:id="@+id/add_new_scratch_paper"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/icon_add"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="30dp"
-        android:clickable="true"/>
-
-</RelativeLayout>
+</LinearLayout>

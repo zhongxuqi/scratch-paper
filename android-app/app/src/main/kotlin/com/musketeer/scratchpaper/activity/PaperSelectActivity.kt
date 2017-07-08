@@ -17,6 +17,7 @@ import com.musketeer.scratchpaper.paperfile.PaperFileUtils
 import com.musketeer.scratchpaper.utils.AppPreferenceUtils
 import com.musketeer.scratchpaper.utils.LogUtils
 import com.musketeer.scratchpaper.utils.SharePreferenceUtils
+import com.muskeeter.base.acitivity.BaseActivity
 import com.umeng.analytics.MobclickAgent
 
 class PaperSelectActivity : BaseActivity(), OnItemClickListener {
