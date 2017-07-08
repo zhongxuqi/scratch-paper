@@ -20,14 +20,17 @@ import com.musketeer.scratchpaper.bean.PaperGroup
 import com.musketeer.scratchpaper.common.Contants
 import com.musketeer.scratchpaper.utils.FileUtils
 import com.musketeer.scratchpaper.utils.ImageUtils
+import com.musketeer.scratchpaper.utils.LogUtils
 
 import java.io.File
-import java.util.ArrayList
+import java.util.*
 
 /**
  * @author zhongxuqi
  */
 object PaperFileUtils {
+    val TAG = "PaperFileUtils"
+
     /**
      * 从草稿纸路径获取草稿纸名
      * @param paper_path
@@ -149,7 +152,14 @@ object PaperFileUtils {
         if (files != null) {
             for (inFile in files) {
                 if (!inFile.isDirectory()) {
-                    val timeOfDay = (inFile.lastModified() / Contants.DAY_SPAN) * Contants.DAY_SPAN
+                    val calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"))
+                    calendar.timeInMillis = inFile.lastModified()
+                    calendar.set(Calendar.HOUR_OF_DAY, 0)
+                    calendar.set(Calendar.MINUTE, 0)
+                    calendar.set(Calendar.SECOND, 0)
+                    calendar.set(Calendar.MILLISECOND, 0)
+
+                    val timeOfDay = calendar.timeInMillis
                     if (mPaperGroupMap.containsKey(timeOfDay)) {
                         mPaperGroupMap.get(timeOfDay)?.paperList?.add(PaperFileUtils.getPaperName(inFile.getPath()))
                     } else {
@@ -164,9 +174,18 @@ object PaperFileUtils {
         for (value in mPaperGroupMap.values) {
             mPaperGroupList.add(value)
         }
-        mPaperGroupList.sortedByDescending {
-            it.timeOfData
-        }
+        mPaperGroupList.sortWith(object: kotlin.Comparator<PaperGroup>{
+            override fun compare(o1: PaperGroup, o2: PaperGroup): Int {
+                val diff = o2.timeOfData - o1.timeOfData
+                if (diff == 0L) {
+                    return 0
+                } else if (diff > 0L) {
+                    return 1
+                } else {
+                    return -1
+                }
+            }
+        })
         return mPaperGroupList
     }
 }
