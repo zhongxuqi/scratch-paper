@@ -121,7 +121,6 @@ class MainFragment: BaseSupportFragment() {
                 //分享
                 val shareButton = contentView.findViewById(R.id.share) as TextView
                 shareButton.setOnClickListener {
-                    LogUtils.d(TAG, "file: ${fileName}")
                     val filePath = PaperFileUtils.getPaperPath(fileName)
                     val image = UMImage(activity, File(filePath))
                     image.setThumb(UMImage(activity, File(filePath)))

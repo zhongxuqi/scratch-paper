@@ -32,4 +32,9 @@ object SharePreferenceConfig {
     //widget
     val WIDGET_PAPER_NAME = "widget_paper_name"
 
+    // user info
+    val UID = "uid"
+    val USER_NAME = "user_name"
+    val IMAGE_URL = "image_url"
+
 }
