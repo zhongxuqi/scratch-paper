@@ -16,6 +16,8 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 
 import com.musketeer.scratchpaper.MainApplication
+import com.musketeer.scratchpaper.bean.PaperGroup
+import com.musketeer.scratchpaper.common.Contants
 import com.musketeer.scratchpaper.utils.FileUtils
 import com.musketeer.scratchpaper.utils.ImageUtils
 
@@ -127,7 +129,7 @@ object PaperFileUtils {
         val f = File(MainApplication.mCachePathComp)
         val files = f.listFiles()
         if (files != null) {
-            for (inFile in files!!) {
+            for (inFile in files) {
                 if (!inFile.isDirectory()) {
                     mPaperList.add(PaperFileUtils.getPaperName(inFile.getPath()))
                 }
@@ -136,4 +138,35 @@ object PaperFileUtils {
         return mPaperList
     }
 
+    /**
+     * 读取文件列表，并按照天归类
+     */
+    fun readPaperListGroup(): MutableList<PaperGroup> {
+        val mPaperList = ArrayList<String>()
+        val f = File(MainApplication.mCachePathComp)
+        val files = f.listFiles()
+        val mPaperGroupMap = mutableMapOf<Long, PaperGroup>()
+        if (files != null) {
+            for (inFile in files) {
+                if (!inFile.isDirectory()) {
+                    val timeOfDay = (inFile.lastModified() / Contants.DAY_SPAN) * Contants.DAY_SPAN
+                    if (mPaperGroupMap.containsKey(timeOfDay)) {
+                        mPaperGroupMap.get(timeOfDay)?.paperList?.add(PaperFileUtils.getPaperName(inFile.getPath()))
+                    } else {
+                        val paperGroup = PaperGroup(timeOfDay)
+                        paperGroup.paperList.add(PaperFileUtils.getPaperName(inFile.getPath()))
+                        mPaperGroupMap.put(timeOfDay, paperGroup)
+                    }
+                }
+            }
+        }
+        val mPaperGroupList = mutableListOf<PaperGroup>()
+        for (value in mPaperGroupMap.values) {
+            mPaperGroupList.add(value)
+        }
+        mPaperGroupList.sortedByDescending {
+            it.timeOfData
+        }
+        return mPaperGroupList
+    }
 }

@@ -35,22 +35,6 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="@android:color/darker_gray"/>
-    
-    <TextView 
-        android:id="@+id/rename"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/rename"
-        android:textSize="@dimen/subtitle_size"
-        android:padding="10dp"
-        android:gravity="center"
-        android:clickable="true"
-        android:background="@drawable/background_recyclerview_item"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@android:color/darker_gray"/>
 
     <TextView
         android:id="@+id/share"

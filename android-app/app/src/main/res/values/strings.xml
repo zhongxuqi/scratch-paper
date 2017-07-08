@@ -32,6 +32,10 @@
     <string name="app_help">帮助</string>
     <string name="quit">退出</string>
 
+    <!-- tab -->
+    <string name="tab_bar_paper">草稿</string>
+    <string name="tab_bar_my">我的</string>
+
     <!-- edit paper acitivity -->
     <string name="undo_title">撤消</string>
     <string name="save_title">保存</string>
@@ -94,4 +98,7 @@
     <string name="title_activity_paper_select">草稿纸选择</string>
 
     <string name="close_hint">关闭APP请再次点击返回键</string>
+
+    <!-- login -->
+    <string name="login_hint">点击登入</string>
 </resources>

@@ -12,5 +12,7 @@ class Contants {
         val AD_BANNER = "8090923323097957"
 
         val Action_ADD_NEW_PAPER = 1
+
+        val DAY_SPAN = 24 * 3600 * 1000
     }
 }

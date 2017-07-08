@@ -129,7 +129,7 @@ class TouchImageView : ImageView {
         maxScale = 3f
         superMinScale = SUPER_MIN_MULTIPLIER * minScale
         superMaxScale = SUPER_MAX_MULTIPLIER * maxScale
-        imageMatrix = matrix
+        imageMatrix = currMatrix
         scaleType = ImageView.ScaleType.MATRIX
         setState(State.NONE)
         onDrawReady = false
@@ -224,8 +224,8 @@ class TouchImageView : ImageView {
      * in the prevMatrix and prevView variables.
      */
     private fun savePreviousImageValues() {
-        if (matrix != null && viewHeight != 0 && viewWidth != 0) {
-            matrix!!.getValues(m)
+        if (currMatrix != null && viewHeight != 0 && viewWidth != 0) {
+            currMatrix!!.getValues(m)
             prevMatrix!!.setValues(m)
             prevMatchViewHeight = matchViewHeight
             prevMatchViewWidth = matchViewWidth
@@ -242,7 +242,7 @@ class TouchImageView : ImageView {
         bundle.putFloat("matchViewWidth", matchViewWidth)
         bundle.putInt("viewWidth", viewWidth)
         bundle.putInt("viewHeight", viewHeight)
-        matrix!!.getValues(m)
+        currMatrix!!.getValues(m)
         bundle.putFloatArray("matrix", m)
         bundle.putBoolean("imageRendered", imageRenderedAtLeastOnce)
         return bundle
@@ -348,12 +348,12 @@ class TouchImageView : ImageView {
         }
         resetZoom()
         scaleImage(scale.toDouble(), (viewWidth / 2).toFloat(), (viewHeight / 2).toFloat(), true)
-        matrix!!.getValues(m)
+        currMatrix!!.getValues(m)
         m[Matrix.MTRANS_X] = -(focusX * imageWidth - viewWidth * 0.5f)
         m[Matrix.MTRANS_Y] = -(focusY * imageHeight - viewHeight * 0.5f)
-        matrix!!.setValues(m)
+        currMatrix!!.setValues(m)
         fixTrans()
-        imageMatrix = matrix
+        imageMatrix = currMatrix
     }
 
     /**
@@ -401,7 +401,7 @@ class TouchImageView : ImageView {
      * is out of bounds.
      */
     private fun fixTrans() {
-        matrix!!.getValues(m)
+        currMatrix!!.getValues(m)
         val transX = m!![Matrix.MTRANS_X]
         val transY = m!![Matrix.MTRANS_Y]
 
@@ -409,7 +409,7 @@ class TouchImageView : ImageView {
         val fixTransY = getFixTrans(transY, viewHeight.toFloat(), imageHeight)
 
         if (fixTransX != 0f || fixTransY != 0f) {
-            matrix!!.postTranslate(fixTransX, fixTransY)
+            currMatrix!!.postTranslate(fixTransX, fixTransY)
         }
     }
 
@@ -422,7 +422,7 @@ class TouchImageView : ImageView {
      */
     private fun fixScaleTrans() {
         fixTrans()
-        matrix!!.getValues(m)
+        currMatrix!!.getValues(m)
         if (imageWidth < viewWidth) {
             m[Matrix.MTRANS_X] = (viewWidth - imageWidth) / 2
         }
@@ -430,7 +430,7 @@ class TouchImageView : ImageView {
         if (imageHeight < viewHeight) {
             m[Matrix.MTRANS_Y] = (viewHeight - imageHeight) / 2
         }
-        matrix!!.setValues(m)
+        currMatrix!!.setValues(m)
     }
 
     private fun getFixTrans(trans: Float, viewSize: Float, contentSize: Float): Float {
@@ -503,7 +503,7 @@ class TouchImageView : ImageView {
         if (drawable == null || drawable.intrinsicWidth == 0 || drawable.intrinsicHeight == 0) {
             return
         }
-        if (matrix == null || prevMatrix == null) {
+        if (currMatrix == null || prevMatrix == null) {
             return
         }
 
@@ -555,8 +555,8 @@ class TouchImageView : ImageView {
             //
             // Stretch and center image to fit view
             //
-            matrix!!.setScale(scaleX, scaleY)
-            matrix!!.postTranslate(redundantXSpace / 2, redundantYSpace / 2)
+            currMatrix!!.setScale(scaleX, scaleY)
+            currMatrix!!.postTranslate(redundantXSpace / 2, redundantYSpace / 2)
             currentZoom = 1f
 
         } else {
@@ -600,10 +600,10 @@ class TouchImageView : ImageView {
             //
             // Set the matrix to the adjusted scale and translate values.
             //
-            matrix!!.setValues(m)
+            currMatrix!!.setValues(m)
         }
         fixTrans()
-        imageMatrix = matrix
+        imageMatrix = currMatrix
     }
 
     /**
@@ -682,7 +682,7 @@ class TouchImageView : ImageView {
     }
 
     override fun canScrollHorizontally(direction: Int): Boolean {
-        matrix!!.getValues(m)
+        currMatrix!!.getValues(m)
         val x = m!![Matrix.MTRANS_X]
 
         if (imageWidth < viewWidth) {
@@ -786,7 +786,7 @@ class TouchImageView : ImageView {
                         val deltaY = curr.y - last.y
                         val fixTransX = getFixDragTrans(deltaX, viewWidth.toFloat(), imageWidth)
                         val fixTransY = getFixDragTrans(deltaY, viewHeight.toFloat(), imageHeight)
-                        matrix!!.postTranslate(fixTransX, fixTransY)
+                        currMatrix!!.postTranslate(fixTransX, fixTransY)
                         fixTrans()
                         last.set(curr.x, curr.y)
                     }
@@ -795,7 +795,7 @@ class TouchImageView : ImageView {
                 }
             }
 
-            imageMatrix = matrix
+            imageMatrix = currMatrix
 
             //
             // User-defined OnTouchListener
@@ -885,7 +885,7 @@ class TouchImageView : ImageView {
             deltaScale = (lowerScale / origScale).toDouble()
         }
 
-        matrix!!.postScale(deltaScale.toFloat(), deltaScale.toFloat(), focusX, focusY)
+        currMatrix!!.postScale(deltaScale.toFloat(), deltaScale.toFloat(), focusX, focusY)
         fixScaleTrans()
     }
 
@@ -925,7 +925,7 @@ class TouchImageView : ImageView {
             scaleImage(deltaScale, bitmapX, bitmapY, stretchImageToSuper)
             translateImageToCenterTouchPosition(t)
             fixScaleTrans()
-            imageMatrix = matrix
+            imageMatrix = currMatrix
 
             //
             // OnTouchImageViewListener is set: double tap runnable updates listener
@@ -959,7 +959,7 @@ class TouchImageView : ImageView {
             val targetX = startTouch.x + t * (endTouch.x - startTouch.x)
             val targetY = startTouch.y + t * (endTouch.y - startTouch.y)
             val curr = transformCoordBitmapToTouch(bitmapX, bitmapY)
-            matrix!!.postTranslate(targetX - curr.x, targetY - curr.y)
+            currMatrix!!.postTranslate(targetX - curr.x, targetY - curr.y)
         }
 
         /**
@@ -999,7 +999,7 @@ class TouchImageView : ImageView {
      * @return Coordinates of the point touched, in the coordinate system of the original drawable.
      */
     private fun transformCoordTouchToBitmap(x: Float, y: Float, clipToBitmap: Boolean): PointF {
-        matrix!!.getValues(m)
+        currMatrix!!.getValues(m)
         val origW = drawable.intrinsicWidth.toFloat()
         val origH = drawable.intrinsicHeight.toFloat()
         val transX = m[Matrix.MTRANS_X]
@@ -1025,7 +1025,7 @@ class TouchImageView : ImageView {
      * @return Coordinates of the point in the view's coordinate system.
      */
     private fun transformCoordBitmapToTouch(bx: Float, by: Float): PointF {
-        matrix!!.getValues(m)
+        currMatrix!!.getValues(m)
         val origW = drawable.intrinsicWidth.toFloat()
         val origH = drawable.intrinsicHeight.toFloat()
         val px = bx / origW
@@ -1050,7 +1050,7 @@ class TouchImageView : ImageView {
         init {
             setState(State.FLING)
             scroller = CompatScroller(context)
-            matrix!!.getValues(m)
+            currMatrix!!.getValues(m)
 
             val startX = m!![Matrix.MTRANS_X].toInt()
             val startY = m!![Matrix.MTRANS_Y].toInt()
@@ -1112,9 +1112,9 @@ class TouchImageView : ImageView {
                 val transY = newY - currY
                 currX = newX
                 currY = newY
-                matrix!!.postTranslate(transX.toFloat(), transY.toFloat())
+                currMatrix!!.postTranslate(transX.toFloat(), transY.toFloat())
                 fixTrans()
-                imageMatrix = matrix
+                imageMatrix = currMatrix
                 compatPostOnAnimation(this)
             }
         }
@@ -1201,7 +1201,7 @@ class TouchImageView : ImageView {
 
     private fun printMatrixInfo() {
         val n = FloatArray(9)
-        matrix!!.getValues(n)
+        currMatrix!!.getValues(n)
         Log.d(DEBUG, "Scale: " + n[Matrix.MSCALE_X] + " TransX: " + n[Matrix.MTRANS_X] + " TransY: " + n[Matrix.MTRANS_Y])
     }
 
