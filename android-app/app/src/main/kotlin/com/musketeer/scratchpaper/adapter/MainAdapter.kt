@@ -29,28 +29,32 @@ class MainAdapter: RecyclerView.Adapter<MainViewHolder> {
         this.context = context
     }
 
-    fun replaceItem(old_paper_name: String, new_paper_name: String) {
-        paperGroupList.forEachIndexed { _, paperGroup ->
-            paperGroup.paperList.forEachIndexed { index, s ->
-                if (s == old_paper_name) {
-                    paperGroup.paperList.removeAt(index)
-                    paperGroup.paperList.add(index, new_paper_name)
-                }
-            }
-        }
-    }
-
     fun removeItem(paper_name: String) {
+        var hasMatch = false
+        var isInner = false
+        var indexOut = 0
+        var indexInner = 0
         paperGroupList.forEachIndexed { indexOfList, paperGroup ->
             paperGroup.paperList.forEachIndexed { indexOfGroup, s ->
                 if (s == paper_name) {
-                    paperGroup.paperList.removeAt(indexOfGroup)
-                    if (paperGroup.paperList.size == 0) {
-                        paperGroupList.removeAt(indexOfList)
+                    hasMatch = true
+                    if (paperGroup.paperList.size == 1) {
+                        indexOut = indexOfList
+                    } else {
+                        isInner = true
+                        indexOut = indexOfList
+                        indexInner = indexOfGroup
                     }
-                    notifyDataSetChanged()
                 }
             }
+        }
+        if (hasMatch) {
+            if (isInner) {
+                paperGroupList[indexOut].paperList.removeAt(indexInner)
+            } else {
+                paperGroupList.removeAt(indexOut)
+            }
+            notifyDataSetChanged()
         }
     }
 

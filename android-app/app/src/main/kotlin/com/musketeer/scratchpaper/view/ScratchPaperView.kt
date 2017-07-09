@@ -480,6 +480,7 @@ class ScratchPaperView : SurfaceView, SurfaceHolder.Callback {
         mStrokeList.clear()
         mPaperBackGround = BitmapFactory.decodeResource(resources,
                 mPaperId).copy(Bitmap.Config.ARGB_8888, true)
+        mPaperBackGround = ImageUtils.drawImageDropShadow(mPaperBackGround!!, offsetXY)
     }
 
     /**

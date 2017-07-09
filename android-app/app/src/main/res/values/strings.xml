@@ -4,7 +4,7 @@
     <string name="app_id">ScratchPaper</string>
     <string name="app_name">草稿本</string>
     <string name="app_chinese_name">草稿本</string>
-    <string name="app_version">草稿本 2.0版</string>
+    <string name="app_version">草稿本 3.0版</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">设置</string>
     <string name="title_activity_edit_paper">手写</string>
@@ -69,11 +69,11 @@
     <string name="my_title">作者留言</string>
     <string name="use_content">一、单指操作为绘图。\n\n二、双指操作为移动与缩放。\n\n三、手写页面左边侧滑可以拉出翻页菜单。</string>
     <string name="help_content">一、最大撤消数指最大返回操作数，最好设为默认值。\n\n二、绘图进程数不宜设太多，最好设为默认值。\n\n三、APP中，纸张的所有编辑操作都不需要键盘，这才是作为草稿纸的本质意义，同时也是本APP与印象笔记和有道笔记的最本质区别。</string>
-    <string name="my_content">经过一年多的维护，草稿本已经完成1.0到2.0的升级，功能和界面都有了质的提升。大家宝贵的意见我都一条条看过了，非常感谢大家，以后我会抽空去完善它，不久将它放到GITHUB上去，欢迎新手来学习和Android大神来共同开发。\n\n感谢大家的使用!\n\nMusketeer.</string>
+    <string name="my_content">经过一年多的维护，草稿本已经完成2.0到3.0的升级，功能和界面都有了质的提升。大家宝贵的意见我都一条条看过了，非常感谢大家，以后我会抽空去完善它，不久将它放到GITHUB上去，欢迎新手来学习和Android大神来共同开发。\n\n感谢大家的使用!\n\nMusketeer.</string>
 
     <!-- saved scratch paper -->
-    <string name="look_content">查看内容</string>
-    <string name="edit_content">编辑内容</string>
+    <string name="look_content">查看</string>
+    <string name="edit_content">编辑</string>
     <string name="rename">重命名</string>
     <string name="share">分享</string>
     <string name="delete">删除</string>

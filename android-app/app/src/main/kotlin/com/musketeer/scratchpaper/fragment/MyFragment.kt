@@ -1,7 +1,6 @@
 package com.musketeer.scratchpaper.fragment
 
 import android.app.AlertDialog
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,9 +10,7 @@ import com.muskeeter.base.fragment.BaseSupportFragment
 import com.musketeer.scratchpaper.R
 import com.musketeer.scratchpaper.activity.HelpActivity
 import com.musketeer.scratchpaper.activity.MainActivity
-import com.musketeer.scratchpaper.activity.settings.SettingsActivity
 import com.musketeer.scratchpaper.common.SharePreferenceConfig
-import com.musketeer.scratchpaper.config.Config
 import com.musketeer.scratchpaper.utils.AppPreferenceUtils
 import com.musketeer.scratchpaper.utils.SharePreferenceUtils
 

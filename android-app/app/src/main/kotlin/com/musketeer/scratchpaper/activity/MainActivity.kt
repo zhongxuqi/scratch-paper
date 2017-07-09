@@ -100,18 +100,18 @@ class MainActivity : BaseFragmentActivity(){
 
     fun selectTab(position: Int) {
         mTabIconPaper.setColorFilter(resources.getColor(R.color.tab_default))
-        mTabTitlePaper.setTextColor(R.color.tab_default)
+        mTabTitlePaper.setTextColor(resources.getColor(R.color.tab_default))
 
         mTabIconMy.setColorFilter(resources.getColor(R.color.tab_default))
-        mTabTitleMy.setTextColor(R.color.tab_default)
+        mTabTitleMy.setTextColor(resources.getColor(R.color.tab_default))
         when(position) {
             0 -> {
                 mTabIconPaper.setColorFilter(resources.getColor(R.color.tab_active))
-                mTabTitlePaper.setTextColor(R.color.tab_active)
+                mTabTitlePaper.setTextColor(resources.getColor(R.color.tab_active))
             }
             1 -> {
                 mTabIconMy.setColorFilter(resources.getColor(R.color.tab_active))
-                mTabTitleMy.setTextColor(R.color.tab_active)
+                mTabTitleMy.setTextColor(resources.getColor(R.color.tab_active))
             }
         }
     }
