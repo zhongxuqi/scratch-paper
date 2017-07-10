@@ -92,9 +92,9 @@ class MainFragment: BaseSupportFragment() {
         addNewScratchPaper.setOnClickListener(this)
         mAdapter.onItemClickListener = object: View.OnClickListener{
             override fun onClick(v: View?) {
-                val fileName = v?.getTag() as String
+                val paperFile = v?.getTag() as File
                 val bundle = Bundle()
-                bundle.putString("paper_name", fileName)
+                bundle.putString("paper_name", paperFile.name)
                 startActivityForResult(BrowsePaperActivity::class.java, bundle, Config.ACTION_EDIT_PAPER)
 
 
@@ -106,7 +106,8 @@ class MainFragment: BaseSupportFragment() {
         }
         mAdapter.onItemLongClickListener = object : View.OnLongClickListener{
             override fun onLongClick(v: View?): Boolean {
-                val fileName = v?.getTag() as String
+                val paperFile = v?.getTag() as File
+                val fileName = paperFile.name
                 mDialog?.dismiss()
                 val builder = AlertDialog.Builder(activity)
                 val contentView = LayoutInflater.from(activity).inflate(R.layout.include_saved_paper_action, null)

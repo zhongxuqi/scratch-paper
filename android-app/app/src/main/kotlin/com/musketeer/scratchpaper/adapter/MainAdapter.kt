@@ -36,7 +36,7 @@ class MainAdapter: RecyclerView.Adapter<MainViewHolder> {
         var indexInner = 0
         paperGroupList.forEachIndexed { indexOfList, paperGroup ->
             paperGroup.paperList.forEachIndexed { indexOfGroup, s ->
-                if (s == paper_name) {
+                if (s.name.contains(paper_name)) {
                     hasMatch = true
                     if (paperGroup.paperList.size == 1) {
                         indexOut = indexOfList

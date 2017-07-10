@@ -1,13 +1,18 @@
 package com.musketeer.scratchpaper.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.Bundle
 import android.support.v4.view.PagerAdapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.muskeeter.base.acitivity.BaseActivity
 import com.musketeer.scratchpaper.R
+import com.musketeer.scratchpaper.activity.EditPaperActivity
+import com.musketeer.scratchpaper.config.Config
 import com.musketeer.scratchpaper.paperfile.PaperFileUtils
 import com.musketeer.scratchpaper.utils.LogUtils
 import com.musketeer.scratchpaper.view.TouchImageView
@@ -33,6 +38,20 @@ class PaperBrowserAdapter: PagerAdapter {
             val content = view.findViewById(R.id.paper_content) as TouchImageView
             content.setImageBitmap(BitmapFactory.decodeFile(paper.absolutePath)
                     .copy(Bitmap.Config.ARGB_8888, true))
+            content.tag = paper
+            content.setOnClickListener(object : View.OnClickListener{
+                override fun onClick(v: View) {
+                    val paperFile = v.tag as File
+                    if (context is BaseActivity) {
+                        val bundle = Bundle()
+                        bundle.putString("paper_name", paperFile.name)
+                        val intent = Intent()
+                        intent.putExtras(bundle)
+                        intent.setClass(context, EditPaperActivity::class.java)
+                        context.startActivityForResult(intent, Config.ACTION_EDIT_PAPER)
+                    }
+                }
+            })
             this.paperList.add(view)
         }
     }

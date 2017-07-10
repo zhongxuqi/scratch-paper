@@ -14,6 +14,7 @@ import com.musketeer.scratchpaper.R
 import com.musketeer.scratchpaper.common.SharePreferenceConfig
 import com.musketeer.scratchpaper.paperfile.PaperFileUtils
 import com.musketeer.scratchpaper.utils.SharePreferenceUtils
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -59,7 +60,7 @@ class MainViewHolder constructor(itemView: View?, adapter: MainAdapter): Recycle
         return lp
     }
 
-    fun bindData(timeOfDay: Long, fileList: List<String>, isTop: Boolean, isBottom: Boolean) {
+    fun bindData(timeOfDay: Long, fileList: List<File>, isTop: Boolean, isBottom: Boolean) {
         val calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"))
         calendar.timeInMillis = timeOfDay
         mTimeLineText.setText("${calendar.get(Calendar.YEAR)}年${calendar.get(Calendar.MONTH)+1}月${calendar.get(Calendar.DAY_OF_MONTH)}日")
@@ -74,7 +75,7 @@ class MainViewHolder constructor(itemView: View?, adapter: MainAdapter): Recycle
                 cardView.layoutParams = initCardLayoutParams()
                 if (i + j < fileList.size) {
                     val imageView = cardView.findViewById(R.id.paper_content) as ImageView
-                    val bitmap = PaperFileUtils.getPaperThumbNail(fileList[i + j])
+                    val bitmap = PaperFileUtils.getPaperBitmap(fileList[i + j])
                     imageView.setImageBitmap(bitmap)
                     imageView.setTag(fileList[i + j])
                     imageView.setOnClickListener(object: View.OnClickListener{

@@ -76,6 +76,17 @@ object PaperFileUtils {
      * *
      * @return
      */
+    fun getPaperBitmap(paper: File): Bitmap {
+        return BitmapFactory.decodeFile(paper.absolutePath)
+                .copy(Bitmap.Config.ARGB_8888, true)
+    }
+
+    /**
+     * 从草稿纸名获取草稿纸位图
+     * @param paper_name
+     * *
+     * @return
+     */
     fun getPaper(paper_name: String): Bitmap {
         return BitmapFactory.decodeFile(getPaperPath(paper_name))
                 .copy(Bitmap.Config.ARGB_8888, true)
@@ -145,7 +156,7 @@ object PaperFileUtils {
      * 读取文件列表，并按照天归类
      */
     fun readPaperListGroup(): MutableList<PaperGroup> {
-        val mPaperList = ArrayList<String>()
+        val mPaperList = ArrayList<File>()
         val f = File(MainApplication.mCachePathComp)
         val files = f.listFiles()
         val mPaperGroupMap = mutableMapOf<Long, PaperGroup>()
@@ -161,10 +172,10 @@ object PaperFileUtils {
 
                     val timeOfDay = calendar.timeInMillis
                     if (mPaperGroupMap.containsKey(timeOfDay)) {
-                        mPaperGroupMap.get(timeOfDay)?.paperList?.add(PaperFileUtils.getPaperName(inFile.getPath()))
+                        mPaperGroupMap.get(timeOfDay)?.paperList?.add(inFile)
                     } else {
                         val paperGroup = PaperGroup(timeOfDay)
-                        paperGroup.paperList.add(PaperFileUtils.getPaperName(inFile.getPath()))
+                        paperGroup.paperList.add(inFile)
                         mPaperGroupMap.put(timeOfDay, paperGroup)
                     }
                 }
@@ -186,6 +197,20 @@ object PaperFileUtils {
                 }
             }
         })
+        for (paperGroup in mPaperGroupList) {
+            paperGroup.paperList.sortWith(object : kotlin.Comparator<File> {
+                override fun compare(o1: File, o2: File): Int {
+                    val diff = o2.lastModified() - o1.lastModified()
+                    if (diff == 0L) {
+                        return 0
+                    } else if (diff > 0L) {
+                        return 1
+                    } else {
+                        return -1
+                    }
+                }
+            })
+        }
         return mPaperGroupList
     }
 

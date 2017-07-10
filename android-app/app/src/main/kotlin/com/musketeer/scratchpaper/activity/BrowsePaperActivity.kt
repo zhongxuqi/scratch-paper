@@ -70,6 +70,7 @@ class BrowsePaperActivity : BaseActivity() {
         } else {
             finish()
         }
+        listInfoText.text = "${paperBrowser.currentItem+1}/${adapter.count}"
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
