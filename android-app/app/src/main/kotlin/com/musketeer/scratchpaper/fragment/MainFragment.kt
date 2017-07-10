@@ -93,24 +93,27 @@ class MainFragment: BaseSupportFragment() {
         mAdapter.onItemClickListener = object: View.OnClickListener{
             override fun onClick(v: View?) {
                 val fileName = v?.getTag() as String
+                val bundle = Bundle()
+                bundle.putString("paper_name", fileName)
+                startActivityForResult(BrowsePaperActivity::class.java, bundle, Config.ACTION_EDIT_PAPER)
+
+
                 if (mDialog != null) {
                     mDialog!!.dismiss()
                 }
+
+            }
+        }
+        mAdapter.onItemLongClickListener = object : View.OnLongClickListener{
+            override fun onLongClick(v: View?): Boolean {
+                val fileName = v?.getTag() as String
+                mDialog?.dismiss()
                 val builder = AlertDialog.Builder(activity)
                 val contentView = LayoutInflater.from(activity).inflate(R.layout.include_saved_paper_action, null)
                 builder.setView(contentView)
                 mDialog = builder.create()
-                //查看内容
-                val lookButton = contentView.findViewById(R.id.look) as TextView
-                lookButton.setOnClickListener {
-                    // TODO Auto-generated method stub
-                    val bundle = Bundle()
-                    bundle.putString("paper_name", fileName)
-                    startActivityForResult(BrowsePaperActivity::class.java, bundle, Config.ACTION_EDIT_PAPER)
-                    mDialog!!.dismiss()
-                }
                 //编辑内容
-                val editButton = contentView.findViewById(R.id.edit) as TextView
+                val editButton = contentView.findViewById(R.id.edit)
                 editButton.setOnClickListener {
                     // TODO Auto-generated method stub
                     val bundle = Bundle()
@@ -118,8 +121,24 @@ class MainFragment: BaseSupportFragment() {
                     startActivityForResult(EditPaperActivity::class.java, bundle, Config.ACTION_EDIT_PAPER)
                     mDialog!!.dismiss()
                 }
+                //删除内容
+                val deleteButton = contentView.findViewById(R.id.delete)
+                deleteButton.setOnClickListener {
+                    // TODO Auto-generated method stub
+                    mDialog?.dismiss()
+                    val deleteDialogBuilder = AlertDialog.Builder(activity)
+                    deleteDialogBuilder.setMessage(resources.getString(R.string.affirm_delete))
+                    deleteDialogBuilder.setNegativeButton(resources.getString(R.string.no)) { dialog, which -> mDialog!!.dismiss() }
+                    deleteDialogBuilder.setPositiveButton(resources.getString(R.string.yes)) { dialog, which ->
+                        PaperFileUtils.deletePaper(fileName)
+                        mAdapter.removeItem(fileName)
+                        mDialog?.dismiss()
+                    }
+                    mDialog = deleteDialogBuilder.create()
+                    mDialog?.show()
+                }
                 //分享
-                val shareButton = contentView.findViewById(R.id.share) as TextView
+                val shareButton = contentView.findViewById(R.id.share)
                 shareButton.setOnClickListener {
                     val filePath = PaperFileUtils.getPaperPath(fileName)
                     val image = UMImage(activity, File(filePath))
@@ -152,24 +171,6 @@ class MainFragment: BaseSupportFragment() {
                             }).open()
                     mDialog?.dismiss()
                 }
-                mDialog!!.show()
-            }
-        }
-        mAdapter.onItemLongClickListener = object : View.OnLongClickListener{
-            override fun onLongClick(v: View?): Boolean {
-                val fileName = v?.getTag() as String
-                if (mDialog != null) {
-                    mDialog!!.dismiss()
-                }
-                val builder = AlertDialog.Builder(activity)
-                builder.setMessage(resources.getString(R.string.affirm_delete))
-                builder.setNegativeButton(resources.getString(R.string.no)) { dialog, which -> mDialog!!.dismiss() }
-                builder.setPositiveButton(resources.getString(R.string.yes)) { dialog, which ->
-                    PaperFileUtils.deletePaper(fileName)
-                    mAdapter.removeItem(fileName)
-                    mDialog?.dismiss()
-                }
-                mDialog = builder.create()
                 mDialog?.show()
                 return true
             }

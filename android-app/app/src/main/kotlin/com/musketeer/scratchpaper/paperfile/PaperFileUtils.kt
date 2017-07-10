@@ -188,4 +188,25 @@ object PaperFileUtils {
         })
         return mPaperGroupList
     }
+
+    fun readSortedPaperList(): MutableList<File> {
+        val f = File(MainApplication.mCachePath)
+        val files  = mutableListOf<File>()
+        for (file in f.listFiles()) {
+            files.add(file)
+        }
+        files.sortWith(object : kotlin.Comparator<File>{
+            override fun compare(o1: File, o2: File): Int {
+                val diff = o2.lastModified() - o1.lastModified()
+                if (diff == 0L) {
+                    return 0
+                } else if (diff > 0L) {
+                    return 1
+                } else {
+                    return -1
+                }
+            }
+        })
+        return files
+    }
 }

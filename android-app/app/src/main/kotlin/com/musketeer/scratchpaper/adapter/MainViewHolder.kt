@@ -62,7 +62,7 @@ class MainViewHolder constructor(itemView: View?, adapter: MainAdapter): Recycle
     fun bindData(timeOfDay: Long, fileList: List<String>, isTop: Boolean, isBottom: Boolean) {
         val calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"))
         calendar.timeInMillis = timeOfDay
-        mTimeLineText.setText("${calendar.get(Calendar.YEAR)}年${calendar.get(Calendar.MONTH)}月${calendar.get(Calendar.DAY_OF_MONTH)}日")
+        mTimeLineText.setText("${calendar.get(Calendar.YEAR)}年${calendar.get(Calendar.MONTH)+1}月${calendar.get(Calendar.DAY_OF_MONTH)}日")
         mPaperContainer.removeAllViews()
         timeLineTop.visibility = if (isTop) View.INVISIBLE else View.VISIBLE
         timeLineBottom.visibility = if (isBottom) View.INVISIBLE else View.VISIBLE

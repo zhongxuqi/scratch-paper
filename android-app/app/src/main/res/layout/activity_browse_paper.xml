@@ -2,12 +2,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/bg_desk_default" >
-
-    <com.musketeer.scratchpaper.view.TouchImageView
+    android:background="@color/black">
+    <android.support.v4.view.ViewPager
         android:id="@+id/paper_browser"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/transparent" />
+        android:background="@color/black">
+    </android.support.v4.view.ViewPager>
 
+    <TextView
+        android:id="@+id/list_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="@dimen/subsubtitle_size"
+        android:padding="5dp"
+        android:background="@color/black"
+        android:layout_alignParentBottom="true"/>
 </RelativeLayout>
