@@ -117,7 +117,7 @@ object PaperFileUtils {
         ImageUtils.saveImageToSD(bitmap,
                 MainApplication.mCachePath +
                         paper_name + ".png")
-        ImageUtils.saveImageToSD(ImageUtils.resizeImage(bitmap, 200, 400),
+        ImageUtils.saveImageToSD(ImageUtils.resizeImage(bitmap, 800, 1600),
                 MainApplication.mCachePathComp +
                         paper_name + ".png")
     }

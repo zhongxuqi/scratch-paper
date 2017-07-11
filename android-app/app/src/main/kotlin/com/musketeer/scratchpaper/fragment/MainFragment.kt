@@ -97,7 +97,6 @@ class MainFragment: BaseSupportFragment() {
                 bundle.putString("paper_name", paperFile.name)
                 startActivityForResult(BrowsePaperActivity::class.java, bundle, Config.ACTION_EDIT_PAPER)
 
-
                 if (mDialog != null) {
                     mDialog!!.dismiss()
                 }
