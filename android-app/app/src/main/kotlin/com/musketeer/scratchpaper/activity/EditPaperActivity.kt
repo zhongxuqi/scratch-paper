@@ -100,6 +100,7 @@ class EditPaperActivity : BaseActivity(), OnItemClickListener, OnBMClickListener
         loadingText = view.findViewById(R.id.loading_text) as TextView
         builder.setView(view)
         mLoadingDialog = builder.create()
+        supportActionBar?.hide()
         setContentView(R.layout.activity_edit_paper)
     }
 
@@ -204,7 +205,7 @@ class EditPaperActivity : BaseActivity(), OnItemClickListener, OnBMClickListener
 
     fun initBmbBuilder(): SimpleCircleButton.Builder {
         return SimpleCircleButton.Builder().isRound(false).shadowCornerRadius(ScreenUtils.dpToPx(this, 20F).toInt())
-                .buttonCornerRadius(ScreenUtils.dpToPx(this, 20F).toInt()).listener(this)
+                .buttonCornerRadius(ScreenUtils.dpToPx(this, 20F).toInt()).normalColor(Color.WHITE).listener(this)
     }
 
     override fun initData() {
@@ -243,12 +244,15 @@ class EditPaperActivity : BaseActivity(), OnItemClickListener, OnBMClickListener
                     mBoomMenuButton.addBuilder(initBmbBuilder().normalImageDrawable(resources.getDrawable(R.drawable.ic_edit_black_24dp)))
                 }
                 4 -> {
-                    mBoomMenuButton.addBuilder(initBmbBuilder().normalImageDrawable(resources.getDrawable(R.drawable.ic_edit_black_24dp)))
+                    mBoomMenuButton.addBuilder(initBmbBuilder().normalImageDrawable(resources.getDrawable(R.drawable.ic_edit_red_24dp)))
                 }
                 5 -> {
-                    mBoomMenuButton.addBuilder(initBmbBuilder().normalImageDrawable(resources.getDrawable(R.drawable.ic_edit_black_24dp)))
+                    mBoomMenuButton.addBuilder(initBmbBuilder().normalImageDrawable(resources.getDrawable(R.drawable.ic_edit_blue_24dp)))
                 }
                 6 -> {
+                    mBoomMenuButton.addBuilder(initBmbBuilder().normalImageDrawable(resources.getDrawable(R.mipmap.icon_eraser)))
+                }
+                7 -> {
                     mBoomMenuButton.addBuilder(initBmbBuilder().normalImageDrawable(resources.getDrawable(R.drawable.ic_clear_black_24dp)))
                 }
             }

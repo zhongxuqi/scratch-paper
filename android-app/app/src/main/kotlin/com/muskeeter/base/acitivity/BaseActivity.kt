@@ -19,11 +19,11 @@ abstract class BaseActivity : AppCompatActivity(), View.OnClickListener, BaseUIT
     }
 
     /**屏幕的宽度 */
-    protected var mScreenWidth: Int = 0
+    var mScreenWidth: Int = 0
     /**屏幕高度 */
-    protected var mScreenHeight: Int = 0
+    var mScreenHeight: Int = 0
     /**屏幕密度 */
-    protected var mDensity: Float = 0.toFloat()
+    var mDensity: Float = 0.toFloat()
 
     private var mToast: Toast? = null
 

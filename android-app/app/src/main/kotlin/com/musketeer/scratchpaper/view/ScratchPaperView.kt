@@ -13,24 +13,26 @@
 package com.musketeer.scratchpaper.view
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Matrix
-import android.graphics.Paint
-import android.graphics.PointF
+import android.graphics.*
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import android.view.View
+import com.muskeeter.base.acitivity.BaseActivity
+import com.muskeeter.base.utils.ScreenUtils
+import com.musketeer.scratchpaper.MainApplication
 
 import com.musketeer.scratchpaper.R
 import com.musketeer.scratchpaper.utils.ImageUtils
 import com.musketeer.scratchpaper.utils.LogUtils
 
 import java.util.LinkedList
+import android.view.Display
+import com.umeng.socialize.utils.DeviceConfig.context
+import android.view.WindowManager
+
+
 
 /**
  * @author zhongxuqi

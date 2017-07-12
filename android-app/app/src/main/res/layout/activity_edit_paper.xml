@@ -28,8 +28,8 @@
 			android:layout_margin="10dp"
 			app:bmb_normalColor="@color/app_theme_color"
 			app:bmb_buttonEnum="simpleCircle"
-			app:bmb_piecePlaceEnum="piecePlace_dot_7_1"
-			app:bmb_buttonPlaceEnum="buttonPlace_sc_7_1"
+			app:bmb_piecePlaceEnum="piecePlace_dot_8_1"
+			app:bmb_buttonPlaceEnum="buttonPlace_sc_8_1"
 			app:bmb_shadowEffect="false"/>
 	</RelativeLayout>
 
