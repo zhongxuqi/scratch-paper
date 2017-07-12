@@ -32,17 +32,24 @@ import com.musketeer.scratchpaper.utils.TimeUtils
 import com.musketeer.scratchpaper.view.ScratchPaperView
 import com.musketeer.scratchpaper.view.ScratchPaperView.DrawStroke
 import com.muskeeter.base.acitivity.BaseActivity
+import com.muskeeter.base.utils.ScreenUtils
+import com.nightonke.boommenu.BoomButtons.OnBMClickListener
+import com.nightonke.boommenu.BoomButtons.SimpleCircleButton
+import com.nightonke.boommenu.BoomMenuButton
 import com.umeng.analytics.MobclickAgent
 import java.util.ArrayList
 
 import java.util.Calendar
 
-class EditPaperActivity : BaseActivity(), OnItemClickListener {
+class EditPaperActivity : BaseActivity(), OnItemClickListener, OnBMClickListener {
 
     private var mPaint: MenuItem? = null
 
     private var mScratchPaper: ScratchPaperView? = null
     private var mDrawerLayout: DrawerLayout? = null
+    private val mBoomMenuButton: BoomMenuButton by lazy {
+        findViewById(R.id.bmb) as BoomMenuButton
+    }
 
     private var mDialog: AlertDialog? = null
     private var mLoadingDialog: AlertDialog? = null
@@ -195,6 +202,11 @@ class EditPaperActivity : BaseActivity(), OnItemClickListener {
         mSavedPaperList!!.onItemClickListener = this
     }
 
+    fun initBmbBuilder(): SimpleCircleButton.Builder {
+        return SimpleCircleButton.Builder().isRound(false).shadowCornerRadius(ScreenUtils.dpToPx(this, 20F).toInt())
+                .buttonCornerRadius(ScreenUtils.dpToPx(this, 20F).toInt()).listener(this)
+    }
+
     override fun initData() {
         // TODO Auto-generated method stub
         mScratchPaper!!.setPaperAndDesk(AppPreferenceUtils.getPaperChoose(this),
@@ -213,6 +225,41 @@ class EditPaperActivity : BaseActivity(), OnItemClickListener {
             initPaperContent(paper_name)
         } else {
             paper_name = TimeUtils.getDateByFileName(Calendar.getInstance().timeInMillis)
+        }
+
+        // init boom menu
+        for (i in 0..(mBoomMenuButton.buttonPlaceEnum.buttonNumber() - 1)) {
+            when(i) {
+                0 -> {
+                    mBoomMenuButton.addBuilder(initBmbBuilder().normalImageDrawable(resources.getDrawable(R.drawable.ic_note_add_black_24dp)))
+                }
+                1 -> {
+                    mBoomMenuButton.addBuilder(initBmbBuilder().normalImageDrawable(resources.getDrawable(R.drawable.ic_save_black_24dp)))
+                }
+                2 -> {
+                    mBoomMenuButton.addBuilder(initBmbBuilder().normalImageDrawable(resources.getDrawable(R.drawable.ic_undo_black_24dp)))
+                }
+                3 -> {
+                    mBoomMenuButton.addBuilder(initBmbBuilder().normalImageDrawable(resources.getDrawable(R.drawable.ic_edit_black_24dp)))
+                }
+                4 -> {
+                    mBoomMenuButton.addBuilder(initBmbBuilder().normalImageDrawable(resources.getDrawable(R.drawable.ic_edit_black_24dp)))
+                }
+                5 -> {
+                    mBoomMenuButton.addBuilder(initBmbBuilder().normalImageDrawable(resources.getDrawable(R.drawable.ic_edit_black_24dp)))
+                }
+                6 -> {
+                    mBoomMenuButton.addBuilder(initBmbBuilder().normalImageDrawable(resources.getDrawable(R.drawable.ic_clear_black_24dp)))
+                }
+            }
+        }
+    }
+
+    override fun onBoomButtonClick(index: Int) {
+        when(index) {
+            0 -> {
+                changePaperContent("")
+            }
         }
     }
 
