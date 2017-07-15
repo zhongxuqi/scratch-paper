@@ -78,7 +78,7 @@ class BrowsePaperActivity : BaseActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             Config.ACTION_EDIT_PAPER -> {
-//                initData()
+                adapter.reloadViewAt(paperBrowser.currentItem)
 
                 val intent = Intent()
                 intent.action = "android.appwidget.action.APPWIDGET_UPDATE"

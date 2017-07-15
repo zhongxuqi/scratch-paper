@@ -56,6 +56,8 @@ class ScratchPaperView : SurfaceView, SurfaceHolder.Callback {
     private var minScale = 0.5f
     private val maxScale = 5f
 
+    var isEdited : Boolean = false
+
     private var mHolder: SurfaceHolder? = null
     private val mDeskMatrix = Matrix()
     private var mDeskBackGround: Bitmap? = null
@@ -395,6 +397,7 @@ class ScratchPaperView : SurfaceView, SurfaceHolder.Callback {
             }
             mStrokeList.add(stroke)
         }
+        isEdited = true
     }
 
     private fun setState(state: State) {

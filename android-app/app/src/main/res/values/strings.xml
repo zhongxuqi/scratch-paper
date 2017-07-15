@@ -19,10 +19,12 @@
     <string name="cancel">取消</string>
 
     <!-- common -->
+    <string name="exit_with_save_file">文件被修改，是否保存文件？</string>
     <string name="save_file">保存文件</string>
     <string name="action">操作</string>
     <string name="drawer_open">open menu</string>
     <string name="drawer_close">close menu</string>
+    <string name="affirm">确定</string>
 
     <!-- main activity -->
     <string name="new_scratch_paper">新建草稿纸</string>
@@ -56,6 +58,7 @@
     <string name="affirm_save_current_paper">是否保存当前草稿纸</string>
     <string name="change_success">切换成功</string>
     <string name="full_screen">全屏切换</string>
+    <string name="choose_color">选择画笔颜色</string>
 
     <!-- dialog -->
     <string name="alert">提醒</string>

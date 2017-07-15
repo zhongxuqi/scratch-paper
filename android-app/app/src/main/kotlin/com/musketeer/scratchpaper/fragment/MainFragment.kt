@@ -238,7 +238,6 @@ class MainFragment: BaseSupportFragment() {
                     MainApplication.PAPER_MAX_UNDO)
             SharePreferenceUtils.putInt(activity, SharePreferenceConfig.ROW_NUM, 3)
         }
-
     }
 
     /**

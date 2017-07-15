@@ -114,12 +114,14 @@ object PaperFileUtils {
      * @param paper_name
      */
     fun savePaper(bitmap: Bitmap, paper_name: String) {
+        var formatPaperName = paper_name
+        if (!formatPaperName.contains(".png")) {
+            formatPaperName += ".png"
+        }
         ImageUtils.saveImageToSD(bitmap,
-                MainApplication.mCachePath +
-                        paper_name + ".png")
+                MainApplication.mCachePath + formatPaperName)
         ImageUtils.saveImageToSD(ImageUtils.resizeImage(bitmap, 800, 1600),
-                MainApplication.mCachePathComp +
-                        paper_name + ".png")
+                MainApplication.mCachePathComp + formatPaperName)
     }
 
     /**
