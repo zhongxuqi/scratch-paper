@@ -41,12 +41,12 @@ object AppPreferenceUtils {
      * @return
      */
     fun getPaperChoose(context: Context): Int {
-        when (SharePreferenceUtils.getInt(context, SharePreferenceConfig.PAPER_SIZE, 0)) {
-            0 -> return R.mipmap.bg_paper
-            1 -> return R.mipmap.paper_medium
-            2 -> return R.mipmap.paper_big
-        }
-        return MainApplication.DEFAULT_PAPER
+//        when (SharePreferenceUtils.getInt(context, SharePreferenceConfig.PAPER_SIZE, 0)) {
+//            0 -> return R.mipmap.bg_paper
+//            1 -> return R.mipmap.paper_medium
+//            2 -> return R.mipmap.paper_big
+//        }
+        return R.mipmap.paper_medium
 
         //		return SharePreferenceUtils.getInt(context, SharePreferenceConfig.PAPER,
         //				MainApplication.DEFAULT_PAPER);

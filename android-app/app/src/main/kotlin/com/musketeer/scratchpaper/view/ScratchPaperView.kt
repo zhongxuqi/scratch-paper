@@ -474,7 +474,13 @@ class ScratchPaperView : SurfaceView, SurfaceHolder.Callback {
      */
     fun undoLastAction() {
         if (mStrokeList.size > 0) {
+            var lastStroke = mStrokeList.get(mStrokeList.size - 1)
             mStrokeList.removeAt(mStrokeList.size - 1)
+            while (mStrokeList.size > 0 && mStrokeList.get(mStrokeList.size - 1).endX == lastStroke.startX &&
+                    mStrokeList.get(mStrokeList.size - 1).endY == lastStroke.startY) {
+                lastStroke = mStrokeList.get(mStrokeList.size - 1)
+                mStrokeList.removeAt(mStrokeList.size - 1)
+            }
         }
     }
 

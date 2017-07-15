@@ -3,47 +3,43 @@ package com.musketeer.scratchpaper.activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.ViewPager
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import com.muskeeter.base.acitivity.BaseActivity
 
 import com.musketeer.scratchpaper.R
+import com.musketeer.scratchpaper.adapter.PaperBrowserAdapter
 import com.musketeer.scratchpaper.common.SharePreferenceConfig
-import com.musketeer.scratchpaper.paperfile.PaperFileUtils
+import com.musketeer.scratchpaper.config.Config
+import com.musketeer.scratchpaper.paperfile.NoteFileUtils
 import com.musketeer.scratchpaper.utils.FileUtils
 import com.musketeer.scratchpaper.utils.SharePreferenceUtils
-import com.musketeer.scratchpaper.view.TouchImageView
-import com.muskeeter.base.acitivity.BaseActivity
-import com.musketeer.scratchpaper.adapter.PaperBrowserAdapter
-import com.musketeer.scratchpaper.config.Config
 import com.umeng.analytics.MobclickAgent
 import java.io.File
 
-class BrowsePaperActivity : BaseActivity() {
-
-    private var mPaperName: String = ""
-    val paperBrowser : ViewPager by lazy {
-        findViewById(R.id.paper_browser) as ViewPager
+class BrowseNoteActivity : BaseActivity() {
+    private var mNoteName: String = ""
+    val noteBrowser: ViewPager by lazy {
+        findViewById(R.id.note_browser) as ViewPager
     }
     val listInfoText : TextView by lazy {
         findViewById(R.id.list_info) as TextView
     }
     val adapter : PaperBrowserAdapter by lazy {
-        PaperBrowserAdapter(this, PaperFileUtils.readSortedPaperList())
+        PaperBrowserAdapter(this, NoteFileUtils.readSortedNoteList())
     }
 
     override fun setContentView(savedInstanceState: Bundle?) {
-        setContentView(R.layout.activity_browse_paper)
+        setContentView(R.layout.activity_browse_note)
     }
 
     override fun initView() {
         supportActionBar?.hide()
-        paperBrowser.adapter = adapter
+        noteBrowser.adapter = adapter
     }
 
     override fun initEvent() {
-        paperBrowser.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
+        noteBrowser.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
             override fun onPageScrollStateChanged(state: Int) {
 
             }
@@ -58,12 +54,12 @@ class BrowsePaperActivity : BaseActivity() {
         })
         adapter.listener = object: View.OnClickListener{
             override fun onClick(v: View) {
-                val paperFile = v.tag as File
+                val noteFile = v.tag as File
                 val bundle = Bundle()
-                bundle.putString("paper_name", paperFile.name)
+                bundle.putString("note_name", noteFile.name)
                 val intent = Intent()
                 intent.putExtras(bundle)
-                intent.setClass(this@BrowsePaperActivity, EditPaperActivity::class.java)
+                intent.setClass(this@BrowseNoteActivity, EditNoteActivity::class.java)
                 startActivityForResult(intent, Config.ACTION_EDIT_PAPER)
             }
         }
@@ -72,18 +68,18 @@ class BrowsePaperActivity : BaseActivity() {
     override fun initData() {
         //init paper content
         val bunle = intent.extras
-        if (bunle != null && bunle.getString("paper_name") != null) {
-            mPaperName = bunle.getString("paper_name")
-            if (FileUtils.isFileExist(PaperFileUtils.getPaperPath(mPaperName))) {
-                paperBrowser.currentItem = adapter.getPaperPosition(mPaperName)
+        if (bunle != null && bunle.getString("note_name") != null) {
+            mNoteName = bunle.getString("note_name")
+            if (FileUtils.isFileExist(NoteFileUtils.getNotePath(mNoteName))) {
+                noteBrowser.currentItem = adapter.getPaperPosition(mNoteName)
             } else {
-                PaperFileUtils.deletePaper(mPaperName)
+                NoteFileUtils.deleteNote(mNoteName)
                 finish()
             }
         } else {
             finish()
         }
-        listInfoText.text = "${paperBrowser.currentItem+1}/${adapter.count}"
+        listInfoText.text = "${noteBrowser.currentItem+1}/${adapter.count}"
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -91,13 +87,7 @@ class BrowsePaperActivity : BaseActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             Config.ACTION_EDIT_PAPER -> {
-                adapter.reloadViewAt(paperBrowser.currentItem)
-
-                val intent = Intent()
-                intent.action = "android.appwidget.action.APPWIDGET_UPDATE"
-                intent.putExtra("widget_name", PaperWidgetProvider.TAG)
-                intent.putExtra("paper_name", SharePreferenceUtils.getString(this, SharePreferenceConfig.WIDGET_PAPER_NAME, ""))
-                sendBroadcast(intent)
+                adapter.reloadViewAt(noteBrowser.currentItem)
             }
         }
     }

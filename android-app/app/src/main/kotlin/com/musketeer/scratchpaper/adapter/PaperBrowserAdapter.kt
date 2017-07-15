@@ -27,6 +27,7 @@ class PaperBrowserAdapter: PagerAdapter {
     val context : Context
     val paperList : List<File>
     val paperViewList: MutableList<View>
+    var listener : View.OnClickListener? = null
 
     constructor(context: Context, paperList: List<File>) {
         this.context = context
@@ -41,15 +42,7 @@ class PaperBrowserAdapter: PagerAdapter {
             content.tag = paper
             content.setOnClickListener(object : View.OnClickListener{
                 override fun onClick(v: View) {
-                    val paperFile = v.tag as File
-                    if (context is BaseActivity) {
-                        val bundle = Bundle()
-                        bundle.putString("paper_name", paperFile.name)
-                        val intent = Intent()
-                        intent.putExtras(bundle)
-                        intent.setClass(context, EditPaperActivity::class.java)
-                        context.startActivityForResult(intent, Config.ACTION_EDIT_PAPER)
-                    }
+                    listener?.onClick(v)
                 }
             })
             this.paperViewList.add(view)
@@ -67,6 +60,7 @@ class PaperBrowserAdapter: PagerAdapter {
         content.tag = paper
         content.setOnClickListener(object : View.OnClickListener{
             override fun onClick(v: View) {
+                listener?.onClick(v)
                 val paperFile = v.tag as File
                 if (context is BaseActivity) {
                     val bundle = Bundle()

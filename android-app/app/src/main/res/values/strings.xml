@@ -36,6 +36,7 @@
 
     <!-- tab -->
     <string name="tab_bar_paper">草稿</string>
+    <string name="tab_bar_note">便签</string>
     <string name="tab_bar_my">我的</string>
 
     <!-- edit paper acitivity -->
@@ -47,7 +48,7 @@
     <string name="red">红色</string>
     <string name="blue">蓝色</string>
     <string name="eraser">橡皮擦</string>
-    <string name="affirm_clear_all">是否清除所有内容?</string>
+    <string name="affirm_clear_all">是否清除纸张内容?</string>
     <string name="save_paper">保存草稿</string>
     <string name="affirm_save_paper">是否保存草稿?</string>
     <string name="affirm_back">是否复位设置?</string>

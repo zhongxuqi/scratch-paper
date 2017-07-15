@@ -27,6 +27,25 @@ import java.util.HashMap
  * @author zhongxuqi
  */
 class MainApplication : BaseApplication() {
+    companion object {
+        private val TAG = "MainApplication"
+        val DEFAULT_PAPER = R.mipmap.paper_medium
+        val DEFAULT_PAPER_SMALL = R.mipmap.bg_paper_small
+        val DEFAULT_DESK = R.mipmap.bg_desk_default
+        val PAPER_MAX_UNDO = 100
+
+        var instance: MainApplication? = null
+            private set
+
+        var mCachePath: String? = null
+        var mCachePathComp: String? = null
+
+        var mCacheNotePath: String? = null
+        var mCacheNotePathComp: String? = null
+
+        var errorLogPath: String? = null
+        var store: MutableMap<String, Any> = HashMap()
+    }
 
     override fun onCreate() {
         // TODO Auto-generated method stub
@@ -53,28 +72,14 @@ class MainApplication : BaseApplication() {
     private fun iniEnv() {
         // TODO Auto-generated method stub
         val sdcard = getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!.absolutePath
-        mCachePath = sdcard + "/cache/image/"
-        mCachePathComp = sdcard + "/cache/image_comp/"
         FileUtils.createExternalStoragePublicPicture()
+        mCachePath = sdcard + "/cache/image/"
         FileUtils.createDir(File(mCachePath))
+        mCachePathComp = sdcard + "/cache/image_comp/"
         FileUtils.createDir(File(mCachePathComp))
+        mCacheNotePath = sdcard + "/cache/note/"
+        FileUtils.createDir(File(mCacheNotePath))
+        mCacheNotePathComp = sdcard + "/cache/note_comp/"
+        FileUtils.createDir(File(mCacheNotePathComp))
     }
-
-    companion object {
-        private val TAG = "MainApplication"
-        val DEFAULT_PAPER = R.mipmap.bg_paper
-        val DEFAULT_PAPER_SMALL = R.mipmap.bg_paper_small
-        val DEFAULT_DESK = R.mipmap.bg_desk_default
-        val PAPER_MAX_UNDO = 100
-
-        var instance: MainApplication? = null
-            private set
-
-        var mCachePath: String? = null
-        var mCachePathComp: String? = null
-
-        var errorLogPath: String? = null
-        var store: MutableMap<String, Any> = HashMap()
-    }
-
 }

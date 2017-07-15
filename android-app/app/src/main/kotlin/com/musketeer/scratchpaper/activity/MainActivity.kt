@@ -19,6 +19,7 @@ import com.musketeer.scratchpaper.adapter.FragmentAdapter
 import com.musketeer.scratchpaper.config.Config
 import com.musketeer.scratchpaper.fragment.MainFragment
 import com.musketeer.scratchpaper.fragment.MyFragment
+import com.musketeer.scratchpaper.fragment.NoteFragment
 import com.qq.e.ads.interstitial.InterstitialAD
 import com.qq.e.ads.interstitial.InterstitialADListener
 import com.umeng.analytics.MobclickAgent
@@ -27,13 +28,13 @@ import com.umeng.socialize.UMShareAPI
 class MainActivity : BaseFragmentActivity(){
     companion object {
         private val TAG = "MainActivity"
-        private val CHANGE_SETTINGS = 3
     }
 
     private val viewPager: ViewPager by lazy {
         findViewById(R.id.view_paper) as ViewPager
     }
     private val mainFragment = MainFragment()
+    private val noteFragment = NoteFragment()
     private val myFragment = MyFragment()
     private val fragmentList = mutableListOf<Fragment>()
 
@@ -46,6 +47,14 @@ class MainActivity : BaseFragmentActivity(){
 
     private val mTabTitlePaper: TextView by lazy {
         findViewById(R.id.tab_title_paper) as TextView
+    }
+
+    private val mTabIconNote: ImageView by lazy {
+        findViewById(R.id.tab_icon_note) as ImageView
+    }
+
+    private val mTabTitleNote: TextView by lazy {
+        findViewById(R.id.tab_title_note) as TextView
     }
 
     private val mTabIconMy: ImageView by lazy {
@@ -70,15 +79,21 @@ class MainActivity : BaseFragmentActivity(){
                 viewPager.setCurrentItem(0)
             }
         })
-        findViewById(R.id.tab_my).setOnClickListener(object: View.OnClickListener{
+        findViewById(R.id.tab_note).setOnClickListener(object: View.OnClickListener{
             override fun onClick(v: View?) {
                 viewPager.setCurrentItem(1)
+            }
+        })
+        findViewById(R.id.tab_my).setOnClickListener(object: View.OnClickListener{
+            override fun onClick(v: View?) {
+                viewPager.setCurrentItem(2)
             }
         })
     }
 
     override fun initData() {
         fragmentList.add(mainFragment)
+        fragmentList.add(noteFragment)
         fragmentList.add(myFragment)
         viewPager.adapter = FragmentAdapter(fragmentManager, fragmentList)
         viewPager.setCurrentItem(0)
@@ -102,6 +117,9 @@ class MainActivity : BaseFragmentActivity(){
         mTabIconPaper.setColorFilter(resources.getColor(R.color.tab_default))
         mTabTitlePaper.setTextColor(resources.getColor(R.color.tab_default))
 
+        mTabIconNote.setColorFilter(resources.getColor(R.color.tab_default))
+        mTabTitleNote.setTextColor(resources.getColor(R.color.tab_default))
+
         mTabIconMy.setColorFilter(resources.getColor(R.color.tab_default))
         mTabTitleMy.setTextColor(resources.getColor(R.color.tab_default))
         when(position) {
@@ -110,29 +128,14 @@ class MainActivity : BaseFragmentActivity(){
                 mTabTitlePaper.setTextColor(resources.getColor(R.color.tab_active))
             }
             1 -> {
+                mTabIconNote.setColorFilter(resources.getColor(R.color.tab_active))
+                mTabTitleNote.setTextColor(resources.getColor(R.color.tab_active))
+            }
+            2 -> {
                 mTabIconMy.setColorFilter(resources.getColor(R.color.tab_active))
                 mTabTitleMy.setTextColor(resources.getColor(R.color.tab_active))
             }
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        when (item.itemId) {
-            R.id.setting -> startActivityForResult(SettingsActivity::class.java, CHANGE_SETTINGS)
-            R.id.help -> startActivity(HelpActivity::class.java)
-            android.R.id.home -> {
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -140,10 +143,6 @@ class MainActivity : BaseFragmentActivity(){
         super.onActivityResult(requestCode, resultCode, data)
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data)
         mainFragment.onActivityResult(requestCode, resultCode, data)
-    }
-
-    fun refreshMainFragment() {
-        mainFragment.onActivityResult(Config.ACTION_CHANGE_SETTINGS, 0, null)
     }
 
     public override fun onResume() {

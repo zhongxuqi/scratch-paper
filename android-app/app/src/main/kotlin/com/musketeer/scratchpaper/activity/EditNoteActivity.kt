@@ -9,37 +9,39 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.support.v4.widget.DrawerLayout
-import android.view.*
-import android.widget.*
-import android.widget.AdapterView.OnItemClickListener
+import android.view.Gravity
+import android.view.KeyEvent
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ImageView
+import android.widget.ListView
+import android.widget.TextView
 import com.flask.colorpicker.ColorPickerView
 import com.flask.colorpicker.OnColorSelectedListener
 import com.flask.colorpicker.builder.ColorPickerClickListener
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder
-
-import com.musketeer.scratchpaper.MainApplication
-import com.musketeer.scratchpaper.R
-import com.musketeer.scratchpaper.adapter.PaperListAdapter
-import com.musketeer.scratchpaper.paperfile.PaperFileUtils
-import com.musketeer.scratchpaper.utils.AppPreferenceUtils
-import com.musketeer.scratchpaper.utils.FileUtils
-import com.musketeer.scratchpaper.utils.TimeUtils
-import com.musketeer.scratchpaper.view.ScratchPaperView
-import com.musketeer.scratchpaper.view.ScratchPaperView.DrawStroke
 import com.muskeeter.base.acitivity.BaseActivity
 import com.muskeeter.base.utils.ScreenUtils
+import com.musketeer.scratchpaper.MainApplication
+
+import com.musketeer.scratchpaper.R
+import com.musketeer.scratchpaper.adapter.PaperListAdapter
+import com.musketeer.scratchpaper.paperfile.NoteFileUtils
+import com.musketeer.scratchpaper.utils.AppPreferenceUtils
+import com.musketeer.scratchpaper.utils.FileUtils
+import com.musketeer.scratchpaper.utils.LogUtils
+import com.musketeer.scratchpaper.utils.TimeUtils
+import com.musketeer.scratchpaper.view.ScratchPaperView
 import com.nightonke.boommenu.BoomButtons.OnBMClickListener
 import com.nightonke.boommenu.BoomButtons.SimpleCircleButton
 import com.nightonke.boommenu.BoomMenuButton
 import com.umeng.analytics.MobclickAgent
-import java.util.ArrayList
+import java.util.*
 
-import java.util.Calendar
-
-class EditPaperActivity : BaseActivity(), OnItemClickListener, OnBMClickListener {
-
+class EditNoteActivity : BaseActivity(), AdapterView.OnItemClickListener, OnBMClickListener {
     companion object {
-        val TAG = "EditPaperActivity"
+        val TAG = "EditNoteActivity"
         val ACTION_SAVE = 0
         val ACTION_SAVE_WITH_EXIT = 1
         private val KEY_STORE_BITMAP = "store_bitmap"
@@ -62,30 +64,30 @@ class EditPaperActivity : BaseActivity(), OnItemClickListener, OnBMClickListener
     private var loadingText: TextView? = null
 
     //save attribute
-    private var paper_name: String = ""
+    private var note_name: String = ""
 
     private var mSavedPaperList: ListView? = null
     private var mAdapter: PaperListAdapter? = null
-    private var mPaperList: MutableList<String> = ArrayList()
+    private var mNoteList: MutableList<String> = ArrayList()
 
     private val ChangePaperHandler = object : Handler() {
         override //当有消息发送出来的时候就执行Handler的这个方法
         fun handleMessage(msg: Message) {
             super.handleMessage(msg)
-            if (msg.what == ACTION_SAVE_WITH_EXIT) {
+            if (msg.what == EditNoteActivity.ACTION_SAVE_WITH_EXIT) {
                 finish()
                 return
             }
             //只要执行到这里就关闭对话框
             refreshViews()
-            if (paper_name.isNotEmpty()) {
-                initPaperContent(paper_name)
+            if (note_name.isNotEmpty()) {
+                initPaperContent(note_name)
             } else {
-                mScratchPaper.setPaperAndDesk(AppPreferenceUtils.getPaperChoose(this@EditPaperActivity),
-                        AppPreferenceUtils.getDeskChoose(this@EditPaperActivity))
-                mScratchPaper.max_undo = AppPreferenceUtils.getMaxUndo(this@EditPaperActivity)
+                mScratchPaper.setPaperAndDesk(AppPreferenceUtils.getPaperChoose(this@EditNoteActivity),
+                        AppPreferenceUtils.getDeskChoose(this@EditNoteActivity))
+                mScratchPaper.max_undo = AppPreferenceUtils.getMaxUndo(this@EditNoteActivity)
                 mScratchPaper.clearStrokeList()
-                paper_name = TimeUtils.getDateByFileName(Calendar.getInstance().timeInMillis)
+                note_name = TimeUtils.getDateByFileName(Calendar.getInstance().timeInMillis)
             }
             dismissLoadingDialog()
             mDrawerLayout!!.closeDrawer(Gravity.LEFT)
@@ -129,17 +131,17 @@ class EditPaperActivity : BaseActivity(), OnItemClickListener, OnBMClickListener
         mScratchPaper.max_undo = 5000
 
         //read paper files
-        mPaperList = PaperFileUtils.readPaperList()
-        mAdapter = PaperListAdapter(this, mPaperList)
+        mNoteList = NoteFileUtils.readNoteList()
+        mAdapter = PaperListAdapter(this, mNoteList)
         mSavedPaperList!!.adapter = mAdapter
 
         //init paper name
         val bundle = intent.extras
-        if (bundle != null && bundle.getString("paper_name") != null) {
-            paper_name = bundle.getString("paper_name")
-            initPaperContent(paper_name)
+        if (bundle != null && bundle.getString("note_name") != null) {
+            note_name = bundle.getString("note_name")
+            initPaperContent(note_name)
         } else {
-            paper_name = TimeUtils.getDateByFileName(Calendar.getInstance().timeInMillis)
+            note_name = TimeUtils.getDateByFileName(Calendar.getInstance().timeInMillis)
         }
 
         // init boom menu
@@ -176,7 +178,7 @@ class EditPaperActivity : BaseActivity(), OnItemClickListener, OnBMClickListener
                 builder.setNegativeButton(resources.getString(R.string.no)) { dialog, which -> mDialog!!.dismiss() }
                 builder.setPositiveButton(resources.getString(R.string.yes)) { dialog, which ->
                     mDrawerLayout!!.closeDrawers()
-                    savePaper(ACTION_SAVE)
+                    savePaper(EditNoteActivity.ACTION_SAVE)
                     mDialog!!.dismiss()
                 }
                 mDialog = builder.create()
@@ -220,8 +222,8 @@ class EditPaperActivity : BaseActivity(), OnItemClickListener, OnBMClickListener
     }
 
     fun refreshViews() {
-        mPaperList = PaperFileUtils.readPaperList()
-        mAdapter = PaperListAdapter(this, mPaperList)
+        mNoteList = NoteFileUtils.readNoteList()
+        mAdapter = PaperListAdapter(this, mNoteList)
         mSavedPaperList!!.adapter = mAdapter
     }
 
@@ -279,12 +281,12 @@ class EditPaperActivity : BaseActivity(), OnItemClickListener, OnBMClickListener
                 mScratchPaper.paperHeight, Bitmap.Config.ARGB_8888)
         val bitCanvas = Canvas(mStorePaperBackGround)
         mScratchPaper.doDrawForSave(bitCanvas)
-        outState.putString(KEY_STORE_BITMAP, "store_paper")
-        MainApplication.store.put(outState.getString(KEY_STORE_BITMAP), mStorePaperBackGround)
+        outState.putString(EditNoteActivity.KEY_STORE_BITMAP, "store_paper")
+        MainApplication.store.put(outState.getString(EditNoteActivity.KEY_STORE_BITMAP), mStorePaperBackGround)
 
         val mStrokeList = mScratchPaper.strokeList
-        outState.putString(KEY_STORE_STROKE, "store_stroke")
-        MainApplication.store.put(outState.getString(KEY_STORE_STROKE), mStrokeList)
+        outState.putString(EditNoteActivity.KEY_STORE_STROKE, "store_stroke")
+        MainApplication.store.put(outState.getString(EditNoteActivity.KEY_STORE_STROKE), mStrokeList)
 
         mScratchPaper.stopDraw()
     }
@@ -292,17 +294,17 @@ class EditPaperActivity : BaseActivity(), OnItemClickListener, OnBMClickListener
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         // TODO Auto-generated method stub
         super.onRestoreInstanceState(savedInstanceState)
-        if (savedInstanceState.containsKey(KEY_STORE_BITMAP)) {
+        if (savedInstanceState.containsKey(EditNoteActivity.KEY_STORE_BITMAP)) {
             mScratchPaper.paperBackGround = MainApplication.store.get(
-                    savedInstanceState.get(KEY_STORE_BITMAP)) as Bitmap
-            MainApplication.store.remove(savedInstanceState.get(KEY_STORE_BITMAP))
-            savedInstanceState.remove(KEY_STORE_BITMAP)
+                    savedInstanceState.get(EditNoteActivity.KEY_STORE_BITMAP)) as Bitmap
+            MainApplication.store.remove(savedInstanceState.get(EditNoteActivity.KEY_STORE_BITMAP))
+            savedInstanceState.remove(EditNoteActivity.KEY_STORE_BITMAP)
         }
-        if (savedInstanceState.containsKey(KEY_STORE_STROKE)) {
+        if (savedInstanceState.containsKey(EditNoteActivity.KEY_STORE_STROKE)) {
             mScratchPaper.strokeList = MainApplication.store.get(
-                    savedInstanceState.get(KEY_STORE_STROKE)) as MutableList<DrawStroke>
-            MainApplication.store.remove(savedInstanceState.get(KEY_STORE_STROKE))
-            savedInstanceState.remove(KEY_STORE_STROKE)
+                    savedInstanceState.get(EditNoteActivity.KEY_STORE_STROKE)) as MutableList<ScratchPaperView.DrawStroke>
+            MainApplication.store.remove(savedInstanceState.get(EditNoteActivity.KEY_STORE_STROKE))
+            savedInstanceState.remove(EditNoteActivity.KEY_STORE_STROKE)
         }
         mScratchPaper.startDraw()
     }
@@ -322,29 +324,29 @@ class EditPaperActivity : BaseActivity(), OnItemClickListener, OnBMClickListener
         //启动纸张保存进程
         Thread(Runnable {
             // TODO Auto-generated method stub
-            if (paper_name.isNotEmpty()) {
-                PaperFileUtils.deletePaper(paper_name)
+            if (note_name.isNotEmpty()) {
+                NoteFileUtils.deleteNote(note_name)
             }
 
             val bitmap = Bitmap.createBitmap(mScratchPaper.paperWidth,
                     mScratchPaper.paperHeight, Bitmap.Config.ARGB_8888)
             val bitCanvas = Canvas(bitmap)
             mScratchPaper.doDrawForScreenShot(bitCanvas)
-            PaperFileUtils.savePaper(bitmap, paper_name)
+            NoteFileUtils.saveNote(bitmap, note_name)
             mScratchPaper.isEdited = false
             ChangePaperHandler.sendEmptyMessage(action)
         }).start()
     }
 
-    protected fun changePaperContent(paper_name_tmp: String) {
-        val new_paper_name = paper_name_tmp
+    protected fun changePaperContent(note_name_tmp: String) {
+        val new_note_name = note_name_tmp
         if (mDialog != null) {
             mDialog!!.dismiss()
         }
         val builder = AlertDialog.Builder(this)
         builder.setTitle(resources.getString(R.string.affirm_save_current_paper))
         builder.setNegativeButton(resources.getString(R.string.no)) { dialog, which ->
-            paper_name = new_paper_name
+            note_name = new_note_name
             ChangePaperHandler.sendEmptyMessage(0)
             mDialog!!.dismiss()
         }
@@ -354,16 +356,16 @@ class EditPaperActivity : BaseActivity(), OnItemClickListener, OnBMClickListener
             //启动纸张保存进程
             Thread(Runnable {
                 // TODO Auto-generated method stub
-                if (paper_name.isNotEmpty()) {
-                    PaperFileUtils.deletePaper(paper_name)
+                if (note_name.isNotEmpty()) {
+                    NoteFileUtils.deleteNote(note_name)
                 }
 
                 val bitmap = Bitmap.createBitmap(mScratchPaper.paperWidth,
                         mScratchPaper.paperHeight, Bitmap.Config.ARGB_8888)
                 val bitCanvas = Canvas(bitmap)
                 mScratchPaper.doDrawForScreenShot(bitCanvas)
-                PaperFileUtils.savePaper(bitmap, paper_name)
-                paper_name = new_paper_name
+                NoteFileUtils.saveNote(bitmap, note_name)
+                note_name = new_note_name
                 ChangePaperHandler.sendEmptyMessage(0)
             }).start()
             mDialog!!.dismiss()
@@ -375,15 +377,16 @@ class EditPaperActivity : BaseActivity(), OnItemClickListener, OnBMClickListener
 
     /**
      * 初始化纸张内容
-     * @param paper_name
+     * @param note_name
      */
-    protected fun initPaperContent(paper_name: String) {
-        if (FileUtils.isFileExist(PaperFileUtils.getPaperPath(paper_name))) {
-            mScratchPaper.paperBackGround = PaperFileUtils.getPaper(paper_name)
+    protected fun initPaperContent(note_name: String) {
+        LogUtils.d(TAG, NoteFileUtils.getNotePath(note_name))
+        if (FileUtils.isFileExist(NoteFileUtils.getNotePath(note_name))) {
+            mScratchPaper.paperBackGround = NoteFileUtils.getNote(note_name)
             mScratchPaper.clearStrokeList()
             mScratchPaper.initPaperPosition()
         } else {
-            PaperFileUtils.deletePaper(paper_name)
+            NoteFileUtils.deleteNote(note_name)
             finish()
         }
     }
@@ -400,7 +403,7 @@ class EditPaperActivity : BaseActivity(), OnItemClickListener, OnBMClickListener
             }
             builder.setPositiveButton(resources.getString(R.string.yes)) { dialog, which ->
                 mDrawerLayout!!.closeDrawers()
-                savePaper(ACTION_SAVE_WITH_EXIT)
+                savePaper(EditPaperActivity.ACTION_SAVE_WITH_EXIT)
                 mDialog?.dismiss()
             }
             mDialog = builder.create()

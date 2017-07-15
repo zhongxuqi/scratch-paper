@@ -17,12 +17,12 @@
         android:layout_height="0.5dp"
         android:background="@color/border"/>
     <LinearLayout
-        android:id="@+id/tab_paper"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tab_bar"
         android:orientation="horizontal"
         android:background="@color/white">
         <LinearLayout
+            android:id="@+id/tab_paper"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -41,6 +41,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tab_bar_paper"
+                android:textSize="@dimen/tabbar_size">
+            </TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tab_note"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+            <ImageView
+                android:id="@+id/tab_icon_note"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_note_black_24dp"
+                android:layout_marginBottom="1dp"
+                android:tint="@color/tab_default"/>
+            <TextView
+                android:id="@+id/tab_title_note"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tab_bar_note"
                 android:textSize="@dimen/tabbar_size">
             </TextView>
         </LinearLayout>

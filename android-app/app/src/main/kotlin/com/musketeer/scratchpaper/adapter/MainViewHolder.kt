@@ -17,6 +17,9 @@ import com.musketeer.scratchpaper.utils.SharePreferenceUtils
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
+import android.util.DisplayMetrics
+
+
 
 /**
  * Created by zhongxuqi on 08/07/2017.
@@ -60,6 +63,15 @@ class MainViewHolder constructor(itemView: View?, adapter: MainAdapter): Recycle
         return lp
     }
 
+    fun getScreenSize(): Int {
+        val metrics = adapter.context!!.resources.getDisplayMetrics()
+        val width = metrics.widthPixels
+        val height = metrics.heightPixels
+        val z = Math.sqrt(Math.pow(width.toDouble(), 2.toDouble()) + Math.pow(height.toDouble(), 2.toDouble()))
+        val f = (z / (metrics.xdpi * metrics.density))
+        return f.toInt()
+    }
+
     fun bindData(timeOfDay: Long, fileList: List<File>, isTop: Boolean, isBottom: Boolean) {
         val calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"))
         calendar.timeInMillis = timeOfDay
@@ -67,10 +79,16 @@ class MainViewHolder constructor(itemView: View?, adapter: MainAdapter): Recycle
         mPaperContainer.removeAllViews()
         timeLineTop.visibility = if (isTop) View.INVISIBLE else View.VISIBLE
         timeLineBottom.visibility = if (isBottom) View.INVISIBLE else View.VISIBLE
-        for (i in 0..fileList.size step SharePreferenceUtils.getInt(adapter.context!!, SharePreferenceConfig.ROW_NUM, 3)) {
+
+        var rowNum = 3
+        if (getScreenSize() > 7) {
+            rowNum = 4
+        }
+
+        for (i in 0..fileList.size step rowNum) {
             val container = initLineContainer()
 
-            for (j in 0..(SharePreferenceUtils.getInt(adapter.context!!, SharePreferenceConfig.ROW_NUM, 3)-1)) {
+            for (j in 0..(rowNum-1)) {
                 val cardView = LayoutInflater.from(adapter.context).inflate(R.layout.component_paper_card, null)
                 cardView.layoutParams = initCardLayoutParams()
                 if (i + j < fileList.size) {
