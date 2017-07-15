@@ -83,8 +83,7 @@ class EditNoteActivity : BaseActivity(), AdapterView.OnItemClickListener, OnBMCl
             if (note_name.isNotEmpty()) {
                 initPaperContent(note_name)
             } else {
-                mScratchNote.setPaperAndDesk(AppPreferenceUtils.getPaperChoose(this@EditNoteActivity),
-                        AppPreferenceUtils.getDeskChoose(this@EditNoteActivity))
+                mScratchNote.setPaper(AppPreferenceUtils.getPaperChoose(this@EditNoteActivity))
                 mScratchNote.max_undo = AppPreferenceUtils.getMaxUndo(this@EditNoteActivity)
                 mScratchNote.clearStrokeList()
                 note_name = TimeUtils.getDateByFileName(Calendar.getInstance().timeInMillis)
@@ -126,8 +125,7 @@ class EditNoteActivity : BaseActivity(), AdapterView.OnItemClickListener, OnBMCl
 
     override fun initData() {
         // TODO Auto-generated method stub
-        mScratchNote.setPaperAndDesk(AppPreferenceUtils.getPaperChoose(this),
-                AppPreferenceUtils.getDeskChoose(this))
+        mScratchNote.setPaper(AppPreferenceUtils.getPaperChoose(this))
         mScratchNote.max_undo = 5000
 
         //read paper files
@@ -277,8 +275,8 @@ class EditNoteActivity : BaseActivity(), AdapterView.OnItemClickListener, OnBMCl
     override fun onSaveInstanceState(outState: Bundle) {
         // TODO Auto-generated method stub
         super.onSaveInstanceState(outState)
-        val mStorePaperBackGround = Bitmap.createBitmap(mScratchNote.paperWidth,
-                mScratchNote.paperHeight, Bitmap.Config.ARGB_8888)
+        val mStorePaperBackGround = Bitmap.createBitmap(mScratchNote.mNoteBackGround!!.width,
+                mScratchNote.mNoteBackGround!!.height, Bitmap.Config.ARGB_8888)
         val bitCanvas = Canvas(mStorePaperBackGround)
         mScratchNote.doDrawForSave(bitCanvas)
         outState.putString(EditNoteActivity.KEY_STORE_BITMAP, "store_paper")
@@ -328,8 +326,8 @@ class EditNoteActivity : BaseActivity(), AdapterView.OnItemClickListener, OnBMCl
                 NoteFileUtils.deleteNote(note_name)
             }
 
-            val bitmap = Bitmap.createBitmap(mScratchNote.paperWidth,
-                    mScratchNote.paperHeight, Bitmap.Config.ARGB_8888)
+            val bitmap = Bitmap.createBitmap(mScratchNote.mNoteBackGround!!.width,
+                    mScratchNote.mNoteBackGround!!.height, Bitmap.Config.ARGB_8888)
             val bitCanvas = Canvas(bitmap)
             mScratchNote.doDrawForScreenShot(bitCanvas)
             NoteFileUtils.saveNote(bitmap, note_name)
@@ -360,8 +358,8 @@ class EditNoteActivity : BaseActivity(), AdapterView.OnItemClickListener, OnBMCl
                     NoteFileUtils.deleteNote(note_name)
                 }
 
-                val bitmap = Bitmap.createBitmap(mScratchNote.paperWidth,
-                        mScratchNote.paperHeight, Bitmap.Config.ARGB_8888)
+                val bitmap = Bitmap.createBitmap(mScratchNote.mNoteBackGround!!.width,
+                        mScratchNote.mNoteBackGround!!.height, Bitmap.Config.ARGB_8888)
                 val bitCanvas = Canvas(bitmap)
                 mScratchNote.doDrawForScreenShot(bitCanvas)
                 NoteFileUtils.saveNote(bitmap, note_name)
@@ -384,7 +382,6 @@ class EditNoteActivity : BaseActivity(), AdapterView.OnItemClickListener, OnBMCl
         if (FileUtils.isFileExist(NoteFileUtils.getNotePath(note_name))) {
             mScratchNote.paperBackGround = NoteFileUtils.getNote(note_name)
             mScratchNote.clearStrokeList()
-            mScratchNote.initPaperPosition()
         } else {
             NoteFileUtils.deleteNote(note_name)
             finish()
