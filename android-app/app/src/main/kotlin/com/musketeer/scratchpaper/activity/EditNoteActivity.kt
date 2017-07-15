@@ -32,7 +32,7 @@ import com.musketeer.scratchpaper.utils.AppPreferenceUtils
 import com.musketeer.scratchpaper.utils.FileUtils
 import com.musketeer.scratchpaper.utils.LogUtils
 import com.musketeer.scratchpaper.utils.TimeUtils
-import com.musketeer.scratchpaper.view.ScratchPaperView
+import com.musketeer.scratchpaper.view.ScratchNoteView
 import com.nightonke.boommenu.BoomButtons.OnBMClickListener
 import com.nightonke.boommenu.BoomButtons.SimpleCircleButton
 import com.nightonke.boommenu.BoomMenuButton
@@ -48,8 +48,8 @@ class EditNoteActivity : BaseActivity(), AdapterView.OnItemClickListener, OnBMCl
         private val KEY_STORE_STROKE = "store_stroke"
     }
 
-    private val mScratchPaper: ScratchPaperView by lazy {
-        findViewById(R.id.scratch_paper) as ScratchPaperView
+    private val mScratchNote: ScratchNoteView by lazy {
+        findViewById(R.id.scratch_paper) as ScratchNoteView
     }
     private var mDrawerLayout: DrawerLayout? = null
     private val mBoomMenuButton: BoomMenuButton by lazy {
@@ -83,10 +83,10 @@ class EditNoteActivity : BaseActivity(), AdapterView.OnItemClickListener, OnBMCl
             if (note_name.isNotEmpty()) {
                 initPaperContent(note_name)
             } else {
-                mScratchPaper.setPaperAndDesk(AppPreferenceUtils.getPaperChoose(this@EditNoteActivity),
+                mScratchNote.setPaperAndDesk(AppPreferenceUtils.getPaperChoose(this@EditNoteActivity),
                         AppPreferenceUtils.getDeskChoose(this@EditNoteActivity))
-                mScratchPaper.max_undo = AppPreferenceUtils.getMaxUndo(this@EditNoteActivity)
-                mScratchPaper.clearStrokeList()
+                mScratchNote.max_undo = AppPreferenceUtils.getMaxUndo(this@EditNoteActivity)
+                mScratchNote.clearStrokeList()
                 note_name = TimeUtils.getDateByFileName(Calendar.getInstance().timeInMillis)
             }
             dismissLoadingDialog()
@@ -102,7 +102,7 @@ class EditNoteActivity : BaseActivity(), AdapterView.OnItemClickListener, OnBMCl
         builder.setView(view)
         mLoadingDialog = builder.create()
         supportActionBar?.hide()
-        setContentView(R.layout.activity_edit_paper)
+        setContentView(R.layout.activity_edit_note)
     }
 
     override fun initView() {
@@ -126,9 +126,9 @@ class EditNoteActivity : BaseActivity(), AdapterView.OnItemClickListener, OnBMCl
 
     override fun initData() {
         // TODO Auto-generated method stub
-        mScratchPaper.setPaperAndDesk(AppPreferenceUtils.getPaperChoose(this),
+        mScratchNote.setPaperAndDesk(AppPreferenceUtils.getPaperChoose(this),
                 AppPreferenceUtils.getDeskChoose(this))
-        mScratchPaper.max_undo = 5000
+        mScratchNote.max_undo = 5000
 
         //read paper files
         mNoteList = NoteFileUtils.readNoteList()
@@ -185,23 +185,23 @@ class EditNoteActivity : BaseActivity(), AdapterView.OnItemClickListener, OnBMCl
                 mDialog!!.show()
             }
             1 -> {
-                mScratchPaper.undoLastAction()
+                mScratchNote.undoLastAction()
             }
             2 -> {
                 mPaintStatus.setImageResource(R.drawable.ic_edit_black_24dp)
-                if (mScratchPaper.color == Color.WHITE) {
-                    mScratchPaper.color = Color.BLACK
+                if (mScratchNote.color == Color.WHITE) {
+                    mScratchNote.color = Color.BLACK
                 }
-                mPaintStatus.setColorFilter(mScratchPaper.color)
-                mScratchPaper.strokeWidth = 5
-                mScratchPaper.isErase = false
+                mPaintStatus.setColorFilter(mScratchNote.color)
+                mScratchNote.strokeWidth = 5
+                mScratchNote.isErase = false
             }
             3 -> {
                 mPaintStatus.setImageResource(R.mipmap.icon_eraser)
                 mPaintStatus.setColorFilter(Color.TRANSPARENT)
-                mScratchPaper.color = Color.WHITE
-                mScratchPaper.strokeWidth = 240
-                mScratchPaper.isErase = true
+                mScratchNote.color = Color.WHITE
+                mScratchNote.strokeWidth = 240
+                mScratchNote.isErase = true
             }
             4 -> {
                 if (mDialog != null) {
@@ -212,7 +212,7 @@ class EditNoteActivity : BaseActivity(), AdapterView.OnItemClickListener, OnBMCl
                         .setMessage(resources.getString(R.string.affirm_clear_all))
                 builder.setNegativeButton(resources.getString(R.string.no)) { dialog, which -> mDialog!!.dismiss() }
                 builder.setPositiveButton(resources.getString(R.string.yes)) { dialog, which ->
-                    mScratchPaper.clearAll()
+                    mScratchNote.clearAll()
                     mDialog!!.dismiss()
                 }
                 mDialog = builder.create()
@@ -236,7 +236,7 @@ class EditNoteActivity : BaseActivity(), AdapterView.OnItemClickListener, OnBMCl
     override fun onResume() {
         // TODO Auto-generated method stub
         super.onResume()
-        mScratchPaper.startDraw()
+        mScratchNote.startDraw()
         MobclickAgent.onResume(this)
     }
 
@@ -245,7 +245,7 @@ class EditNoteActivity : BaseActivity(), AdapterView.OnItemClickListener, OnBMCl
         super.onClick(v)
         when (v.id) {
             R.id.paint_status -> {
-                if (mScratchPaper.isErase) {
+                if (mScratchNote.isErase) {
                     return
                 }
                 ColorPickerDialogBuilder.with(this).setTitle(resources.getString(R.string.choose_color))
@@ -254,13 +254,13 @@ class EditNoteActivity : BaseActivity(), AdapterView.OnItemClickListener, OnBMCl
                         .setOnColorSelectedListener(object: OnColorSelectedListener {
                             override fun onColorSelected(selectedColor: Int) {
                                 mPaintStatus.setColorFilter(selectedColor)
-                                mScratchPaper.color = selectedColor
+                                mScratchNote.color = selectedColor
                             }
                         })
                         .setPositiveButton(resources.getText(R.string.affirm), object: ColorPickerClickListener {
                             override fun onClick(dialog: DialogInterface?, lastSelectedColor: Int, allColors: Array<out Int>?) {
                                 mPaintStatus.setColorFilter(lastSelectedColor)
-                                mScratchPaper.color = lastSelectedColor
+                                mScratchNote.color = lastSelectedColor
                                 dialog?.dismiss()
                             }
                         })
@@ -277,36 +277,36 @@ class EditNoteActivity : BaseActivity(), AdapterView.OnItemClickListener, OnBMCl
     override fun onSaveInstanceState(outState: Bundle) {
         // TODO Auto-generated method stub
         super.onSaveInstanceState(outState)
-        val mStorePaperBackGround = Bitmap.createBitmap(mScratchPaper.paperWidth,
-                mScratchPaper.paperHeight, Bitmap.Config.ARGB_8888)
+        val mStorePaperBackGround = Bitmap.createBitmap(mScratchNote.paperWidth,
+                mScratchNote.paperHeight, Bitmap.Config.ARGB_8888)
         val bitCanvas = Canvas(mStorePaperBackGround)
-        mScratchPaper.doDrawForSave(bitCanvas)
+        mScratchNote.doDrawForSave(bitCanvas)
         outState.putString(EditNoteActivity.KEY_STORE_BITMAP, "store_paper")
         MainApplication.store.put(outState.getString(EditNoteActivity.KEY_STORE_BITMAP), mStorePaperBackGround)
 
-        val mStrokeList = mScratchPaper.strokeList
+        val mStrokeList = mScratchNote.strokeList
         outState.putString(EditNoteActivity.KEY_STORE_STROKE, "store_stroke")
         MainApplication.store.put(outState.getString(EditNoteActivity.KEY_STORE_STROKE), mStrokeList)
 
-        mScratchPaper.stopDraw()
+        mScratchNote.stopDraw()
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         // TODO Auto-generated method stub
         super.onRestoreInstanceState(savedInstanceState)
         if (savedInstanceState.containsKey(EditNoteActivity.KEY_STORE_BITMAP)) {
-            mScratchPaper.paperBackGround = MainApplication.store.get(
+            mScratchNote.paperBackGround = MainApplication.store.get(
                     savedInstanceState.get(EditNoteActivity.KEY_STORE_BITMAP)) as Bitmap
             MainApplication.store.remove(savedInstanceState.get(EditNoteActivity.KEY_STORE_BITMAP))
             savedInstanceState.remove(EditNoteActivity.KEY_STORE_BITMAP)
         }
         if (savedInstanceState.containsKey(EditNoteActivity.KEY_STORE_STROKE)) {
-            mScratchPaper.strokeList = MainApplication.store.get(
-                    savedInstanceState.get(EditNoteActivity.KEY_STORE_STROKE)) as MutableList<ScratchPaperView.DrawStroke>
+            mScratchNote.strokeList = MainApplication.store.get(
+                    savedInstanceState.get(EditNoteActivity.KEY_STORE_STROKE)) as MutableList<ScratchNoteView.DrawStroke>
             MainApplication.store.remove(savedInstanceState.get(EditNoteActivity.KEY_STORE_STROKE))
             savedInstanceState.remove(EditNoteActivity.KEY_STORE_STROKE)
         }
-        mScratchPaper.startDraw()
+        mScratchNote.startDraw()
     }
 
     override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
@@ -328,12 +328,12 @@ class EditNoteActivity : BaseActivity(), AdapterView.OnItemClickListener, OnBMCl
                 NoteFileUtils.deleteNote(note_name)
             }
 
-            val bitmap = Bitmap.createBitmap(mScratchPaper.paperWidth,
-                    mScratchPaper.paperHeight, Bitmap.Config.ARGB_8888)
+            val bitmap = Bitmap.createBitmap(mScratchNote.paperWidth,
+                    mScratchNote.paperHeight, Bitmap.Config.ARGB_8888)
             val bitCanvas = Canvas(bitmap)
-            mScratchPaper.doDrawForScreenShot(bitCanvas)
+            mScratchNote.doDrawForScreenShot(bitCanvas)
             NoteFileUtils.saveNote(bitmap, note_name)
-            mScratchPaper.isEdited = false
+            mScratchNote.isEdited = false
             ChangePaperHandler.sendEmptyMessage(action)
         }).start()
     }
@@ -360,10 +360,10 @@ class EditNoteActivity : BaseActivity(), AdapterView.OnItemClickListener, OnBMCl
                     NoteFileUtils.deleteNote(note_name)
                 }
 
-                val bitmap = Bitmap.createBitmap(mScratchPaper.paperWidth,
-                        mScratchPaper.paperHeight, Bitmap.Config.ARGB_8888)
+                val bitmap = Bitmap.createBitmap(mScratchNote.paperWidth,
+                        mScratchNote.paperHeight, Bitmap.Config.ARGB_8888)
                 val bitCanvas = Canvas(bitmap)
-                mScratchPaper.doDrawForScreenShot(bitCanvas)
+                mScratchNote.doDrawForScreenShot(bitCanvas)
                 NoteFileUtils.saveNote(bitmap, note_name)
                 note_name = new_note_name
                 ChangePaperHandler.sendEmptyMessage(0)
@@ -382,9 +382,9 @@ class EditNoteActivity : BaseActivity(), AdapterView.OnItemClickListener, OnBMCl
     protected fun initPaperContent(note_name: String) {
         LogUtils.d(TAG, NoteFileUtils.getNotePath(note_name))
         if (FileUtils.isFileExist(NoteFileUtils.getNotePath(note_name))) {
-            mScratchPaper.paperBackGround = NoteFileUtils.getNote(note_name)
-            mScratchPaper.clearStrokeList()
-            mScratchPaper.initPaperPosition()
+            mScratchNote.paperBackGround = NoteFileUtils.getNote(note_name)
+            mScratchNote.clearStrokeList()
+            mScratchNote.initPaperPosition()
         } else {
             NoteFileUtils.deleteNote(note_name)
             finish()
@@ -392,7 +392,7 @@ class EditNoteActivity : BaseActivity(), AdapterView.OnItemClickListener, OnBMCl
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_BACK && mScratchPaper.isEdited) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && mScratchNote.isEdited) {
             mDialog?.dismiss()
             val builder = AlertDialog.Builder(this)
             builder.setTitle(resources.getString(R.string.exit_with_save_file))
