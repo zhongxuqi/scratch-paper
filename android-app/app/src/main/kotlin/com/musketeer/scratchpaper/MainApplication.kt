@@ -43,6 +43,9 @@ class MainApplication : BaseApplication() {
         var mCacheNotePath: String = ""
         var mCacheNotePathComp: String = ""
 
+        var mCacheImagePath: String = ""
+        var mCacheImagePathComp: String = ""
+
         var errorLogPath: String? = null
         var store: MutableMap<String, Any> = HashMap()
     }
@@ -81,5 +84,9 @@ class MainApplication : BaseApplication() {
         FileUtils.createDir(File(mCacheNotePath))
         mCacheNotePathComp = sdcard + "/cache/note_comp/"
         FileUtils.createDir(File(mCacheNotePathComp))
+        mCacheImagePath = sdcard + "/cache/picture/"
+        FileUtils.createDir(File(mCacheImagePath))
+        mCacheImagePathComp = sdcard + "/cache/picture_comp/"
+        FileUtils.createDir(File(mCacheImagePathComp))
     }
 }

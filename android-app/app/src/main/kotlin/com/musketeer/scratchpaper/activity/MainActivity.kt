@@ -17,6 +17,7 @@ import com.musketeer.scratchpaper.utils.LogUtils
 import com.muskeeter.base.acitivity.BaseFragmentActivity
 import com.musketeer.scratchpaper.adapter.FragmentAdapter
 import com.musketeer.scratchpaper.config.Config
+import com.musketeer.scratchpaper.fragment.ImageFragment
 import com.musketeer.scratchpaper.fragment.MainFragment
 import com.musketeer.scratchpaper.fragment.MyFragment
 import com.musketeer.scratchpaper.fragment.NoteFragment
@@ -35,6 +36,7 @@ class MainActivity : BaseFragmentActivity(){
     }
     private val mainFragment = MainFragment()
     private val noteFragment = NoteFragment()
+    private val imageFragment = ImageFragment()
     private val myFragment = MyFragment()
     private val fragmentList = mutableListOf<Fragment>()
 
@@ -55,6 +57,14 @@ class MainActivity : BaseFragmentActivity(){
 
     private val mTabTitleNote: TextView by lazy {
         findViewById(R.id.tab_title_note) as TextView
+    }
+
+    private val mTabIconImage: ImageView by lazy {
+        findViewById(R.id.tab_icon_image) as ImageView
+    }
+
+    private val mTabTitleImage: TextView by lazy {
+        findViewById(R.id.tab_title_image) as TextView
     }
 
     private val mTabIconMy: ImageView by lazy {
@@ -84,9 +94,14 @@ class MainActivity : BaseFragmentActivity(){
                 viewPager.setCurrentItem(1)
             }
         })
-        findViewById(R.id.tab_my).setOnClickListener(object: View.OnClickListener{
+        findViewById(R.id.tab_image).setOnClickListener(object: View.OnClickListener{
             override fun onClick(v: View?) {
                 viewPager.setCurrentItem(2)
+            }
+        })
+        findViewById(R.id.tab_my).setOnClickListener(object: View.OnClickListener{
+            override fun onClick(v: View?) {
+                viewPager.setCurrentItem(3)
             }
         })
     }
@@ -94,6 +109,7 @@ class MainActivity : BaseFragmentActivity(){
     override fun initData() {
         fragmentList.add(mainFragment)
         fragmentList.add(noteFragment)
+        fragmentList.add(imageFragment)
         fragmentList.add(myFragment)
         viewPager.adapter = FragmentAdapter(supportFragmentManager, fragmentList)
         viewPager.setCurrentItem(0)
@@ -120,6 +136,9 @@ class MainActivity : BaseFragmentActivity(){
         mTabIconNote.setColorFilter(resources.getColor(R.color.tab_default))
         mTabTitleNote.setTextColor(resources.getColor(R.color.tab_default))
 
+        mTabIconImage.setColorFilter(resources.getColor(R.color.tab_default))
+        mTabTitleImage.setTextColor(resources.getColor(R.color.tab_default))
+
         mTabIconMy.setColorFilter(resources.getColor(R.color.tab_default))
         mTabTitleMy.setTextColor(resources.getColor(R.color.tab_default))
         when(position) {
@@ -132,6 +151,10 @@ class MainActivity : BaseFragmentActivity(){
                 mTabTitleNote.setTextColor(resources.getColor(R.color.tab_active))
             }
             2 -> {
+                mTabIconImage.setColorFilter(resources.getColor(R.color.tab_active))
+                mTabTitleImage.setTextColor(resources.getColor(R.color.tab_active))
+            }
+            3 -> {
                 mTabIconMy.setColorFilter(resources.getColor(R.color.tab_active))
                 mTabTitleMy.setTextColor(resources.getColor(R.color.tab_active))
             }

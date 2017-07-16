@@ -101,7 +101,7 @@ abstract class BaseFileUtils {
      * *
      * @param image_name
      */
-    fun saveImage(bitmap: Bitmap, image_name: String) {
+    open fun saveImage(bitmap: Bitmap, image_name: String) {
         var formatPaperName = image_name
         if (!formatPaperName.contains(".png")) {
             formatPaperName += ".png"

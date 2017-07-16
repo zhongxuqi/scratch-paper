@@ -37,6 +37,7 @@
     <!-- tab -->
     <string name="tab_bar_paper">草稿</string>
     <string name="tab_bar_note">便签</string>
+    <string name="tab_bar_image">图片</string>
     <string name="tab_bar_my">我的</string>
 
     <!-- edit paper acitivity -->

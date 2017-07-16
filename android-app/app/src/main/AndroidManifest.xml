@@ -142,7 +142,9 @@
             android:value="AllPlatform" />
 
         <activity android:name=".activity.EditNoteActivity" />
-        <activity android:name=".activity.BrowseNoteActivity"></activity>
+        <activity android:name=".activity.BrowseNoteActivity" />
+        <activity android:name=".activity.BrowseImageActivity" />
+        <activity android:name=".activity.EditImageActivity"></activity>
     </application>
 
 </manifest>
