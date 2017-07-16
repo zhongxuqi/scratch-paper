@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
-import android.widget.TextView
 import com.muskeeter.base.fragment.BaseSupportFragment
 import com.musketeer.scratchpaper.R
 import com.musketeer.scratchpaper.activity.BrowseImageActivity
@@ -52,8 +51,6 @@ class ImageFragment: BaseSupportFragment() {
     }
 
     var mDialog: AlertDialog? = null
-    var mLoadingDialog: AlertDialog? = null
-    var loadingText: TextView? = null
 
     override fun setContentView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?) {
         if (BaseView == null) BaseView = inflater?.inflate(R.layout.fragment_image, null)
@@ -61,12 +58,6 @@ class ImageFragment: BaseSupportFragment() {
 
     override fun initView() {
         mNoteListView.layoutManager = layoutManger
-
-        val builder = AlertDialog.Builder(activity)
-        val view = LayoutInflater.from(activity).inflate(R.layout.dialog_loading, null)
-        loadingText = view.findViewById(R.id.loading_text) as TextView
-        builder.setView(view)
-        mLoadingDialog = builder.create()
     }
 
     override fun initEvent() {
@@ -76,7 +67,7 @@ class ImageFragment: BaseSupportFragment() {
                 val imageFile = v?.getTag() as File
                 val bundle = Bundle()
                 bundle.putString("image_name", imageFile.name)
-                startActivityForResult(BrowseImageActivity::class.java, bundle, Config.ACTION_EDIT_PAPER)
+                startActivityForResult(BrowseImageActivity::class.java, bundle, Config.ACTION_EDIT_FILE)
             }
         }
         mAdapter.onItemLongClickListener = object : View.OnLongClickListener{
@@ -94,7 +85,7 @@ class ImageFragment: BaseSupportFragment() {
                     // TODO Auto-generated method stub
                     val bundle = Bundle()
                     bundle.putString("image_name", fileName)
-                    startActivityForResult(EditImageActivity::class.java, bundle, Config.ACTION_EDIT_PAPER)
+                    startActivityForResult(EditImageActivity::class.java, bundle, Config.ACTION_EDIT_FILE)
                     mDialog?.dismiss()
                 }
                 //删除内容
@@ -177,7 +168,7 @@ class ImageFragment: BaseSupportFragment() {
 
                     override fun onAnimationEnd(animation: Animation) {
                         // TODO Auto-generated method stub
-                        startActivityForResult(EditImageActivity::class.java, Config.ACTION_ADD_PAPER)
+                        startActivityForResult(EditImageActivity::class.java, Config.ACTION_ADD_FILE)
                     }
 
                     override fun onAnimationRepeat(animation: Animation) {
@@ -192,44 +183,9 @@ class ImageFragment: BaseSupportFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when(requestCode) {
-            Config.ACTION_ADD_PAPER -> refreshViews()
-            Config.ACTION_EDIT_PAPER -> refreshViews()
+            Config.ACTION_ADD_FILE -> refreshViews()
+            Config.ACTION_EDIT_FILE -> refreshViews()
             Config.ACTION_CHANGE_SETTINGS -> initData()
         }
-    }
-
-    /**
-     * 设置LoadingDialog并显示
-     * @param resId
-     */
-    protected fun showLoadingDialog(resId: Int) {
-        mLoadingDialog!!.setCancelable(true)
-        loadingText!!.setText(resId)
-        mLoadingDialog!!.show()
-    }
-
-    protected fun showLoadingDialog(message: String) {
-        mLoadingDialog!!.setCancelable(true)
-        loadingText!!.text = message
-        mLoadingDialog!!.show()
-    }
-
-    protected fun showLoadingDialogNotCancel(resId: Int) {
-        mLoadingDialog!!.setCancelable(false)
-        loadingText!!.setText(resId)
-        mLoadingDialog!!.show()
-    }
-
-    protected fun showLoadingDialogNotCancel(message: String) {
-        mLoadingDialog!!.setCancelable(false)
-        loadingText!!.text = message
-        mLoadingDialog!!.show()
-    }
-
-    /**
-     * 关闭LoadingDialog
-     */
-    protected fun dismissLoadingDialog() {
-        mLoadingDialog!!.dismiss()
     }
 }

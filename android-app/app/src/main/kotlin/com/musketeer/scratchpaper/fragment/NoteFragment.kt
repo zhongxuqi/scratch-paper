@@ -2,7 +2,6 @@ package com.musketeer.scratchpaper.fragment
 
 import android.app.AlertDialog
 import android.content.Intent
-import android.content.res.Resources
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -12,19 +11,15 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
-import android.widget.TextView
 import com.muskeeter.base.fragment.BaseSupportFragment
-import com.musketeer.scratchpaper.MainApplication
 import com.musketeer.scratchpaper.R
 import com.musketeer.scratchpaper.activity.BrowseNoteActivity
 import com.musketeer.scratchpaper.activity.EditNoteActivity
 import com.musketeer.scratchpaper.adapter.MainAdapter
-import com.musketeer.scratchpaper.common.SharePreferenceConfig
 import com.musketeer.scratchpaper.config.Config
 import com.musketeer.scratchpaper.fileutils.NoteFileUtils
 import com.musketeer.scratchpaper.fileutils.PaperFileUtils
 import com.musketeer.scratchpaper.utils.LogUtils
-import com.musketeer.scratchpaper.utils.SharePreferenceUtils
 import com.umeng.socialize.ShareAction
 import com.umeng.socialize.UMShareListener
 import com.umeng.socialize.bean.SHARE_MEDIA
@@ -57,8 +52,6 @@ class NoteFragment: BaseSupportFragment() {
     }
 
     var mDialog: AlertDialog? = null
-    var mLoadingDialog: AlertDialog? = null
-    var loadingText: TextView? = null
 
     override fun setContentView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?) {
         if (BaseView == null) BaseView = inflater?.inflate(R.layout.fragment_note, null)
@@ -66,12 +59,6 @@ class NoteFragment: BaseSupportFragment() {
 
     override fun initView() {
         mNoteListView.layoutManager = layoutManger
-
-        val builder = AlertDialog.Builder(activity)
-        val view = LayoutInflater.from(activity).inflate(R.layout.dialog_loading, null)
-        loadingText = view.findViewById(R.id.loading_text) as TextView
-        builder.setView(view)
-        mLoadingDialog = builder.create()
     }
 
     override fun initEvent() {
@@ -81,7 +68,7 @@ class NoteFragment: BaseSupportFragment() {
                 val noteFile = v?.getTag() as File
                 val bundle = Bundle()
                 bundle.putString("note_name", noteFile.name)
-                startActivityForResult(BrowseNoteActivity::class.java, bundle, Config.ACTION_EDIT_PAPER)
+                startActivityForResult(BrowseNoteActivity::class.java, bundle, Config.ACTION_EDIT_FILE)
             }
         }
         mAdapter.onItemLongClickListener = object : View.OnLongClickListener{
@@ -99,7 +86,7 @@ class NoteFragment: BaseSupportFragment() {
                     // TODO Auto-generated method stub
                     val bundle = Bundle()
                     bundle.putString("note_name", fileName)
-                    startActivityForResult(EditNoteActivity::class.java, bundle, Config.ACTION_EDIT_PAPER)
+                    startActivityForResult(EditNoteActivity::class.java, bundle, Config.ACTION_EDIT_FILE)
                     mDialog?.dismiss()
                 }
                 //删除内容
@@ -182,7 +169,7 @@ class NoteFragment: BaseSupportFragment() {
 
                     override fun onAnimationEnd(animation: Animation) {
                         // TODO Auto-generated method stub
-                        startActivityForResult(EditNoteActivity::class.java, Config.ACTION_ADD_PAPER)
+                        startActivityForResult(EditNoteActivity::class.java, Config.ACTION_ADD_FILE)
                     }
 
                     override fun onAnimationRepeat(animation: Animation) {
@@ -197,44 +184,9 @@ class NoteFragment: BaseSupportFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when(requestCode) {
-            Config.ACTION_ADD_PAPER -> refreshViews()
-            Config.ACTION_EDIT_PAPER -> refreshViews()
+            Config.ACTION_ADD_FILE -> refreshViews()
+            Config.ACTION_EDIT_FILE -> refreshViews()
             Config.ACTION_CHANGE_SETTINGS -> initData()
         }
-    }
-
-    /**
-     * 设置LoadingDialog并显示
-     * @param resId
-     */
-    protected fun showLoadingDialog(resId: Int) {
-        mLoadingDialog!!.setCancelable(true)
-        loadingText!!.setText(resId)
-        mLoadingDialog!!.show()
-    }
-
-    protected fun showLoadingDialog(message: String) {
-        mLoadingDialog!!.setCancelable(true)
-        loadingText!!.text = message
-        mLoadingDialog!!.show()
-    }
-
-    protected fun showLoadingDialogNotCancel(resId: Int) {
-        mLoadingDialog!!.setCancelable(false)
-        loadingText!!.setText(resId)
-        mLoadingDialog!!.show()
-    }
-
-    protected fun showLoadingDialogNotCancel(message: String) {
-        mLoadingDialog!!.setCancelable(false)
-        loadingText!!.text = message
-        mLoadingDialog!!.show()
-    }
-
-    /**
-     * 关闭LoadingDialog
-     */
-    protected fun dismissLoadingDialog() {
-        mLoadingDialog!!.dismiss()
     }
 }

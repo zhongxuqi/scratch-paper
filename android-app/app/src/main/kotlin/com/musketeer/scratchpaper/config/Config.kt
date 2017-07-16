@@ -5,8 +5,8 @@ package com.musketeer.scratchpaper.config
  */
 class Config {
     companion object {
-        val ACTION_ADD_PAPER = 1
-        val ACTION_EDIT_PAPER = 2
+        val ACTION_ADD_FILE = 1
+        val ACTION_EDIT_FILE = 2
         val ACTION_CHANGE_SETTINGS = 3
         val ACTION_SELECT_IMAGE = 4
     }

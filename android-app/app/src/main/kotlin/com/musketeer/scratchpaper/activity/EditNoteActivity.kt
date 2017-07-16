@@ -60,8 +60,6 @@ class EditNoteActivity : BaseActivity(), AdapterView.OnItemClickListener, OnBMCl
     }
 
     private var mDialog: AlertDialog? = null
-    private var mLoadingDialog: AlertDialog? = null
-    private var loadingText: TextView? = null
 
     //save attribute
     private var note_name: String = ""
@@ -95,11 +93,6 @@ class EditNoteActivity : BaseActivity(), AdapterView.OnItemClickListener, OnBMCl
     }
 
     override fun setContentView(savedInstanceState: Bundle?) {
-        val builder = AlertDialog.Builder(this)
-        val view = LayoutInflater.from(this).inflate(R.layout.dialog_loading, null)
-        loadingText = view.findViewById(R.id.loading_text) as TextView
-        builder.setView(view)
-        mLoadingDialog = builder.create()
         supportActionBar?.hide()
         setContentView(R.layout.activity_edit_note)
     }
@@ -408,40 +401,5 @@ class EditNoteActivity : BaseActivity(), AdapterView.OnItemClickListener, OnBMCl
             return true
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-    /**
-     * 设置LoadingDialog并显示
-     * @param resId
-     */
-    protected fun showLoadingDialog(resId: Int) {
-        mLoadingDialog!!.setCancelable(true)
-        loadingText!!.setText(resId)
-        mLoadingDialog!!.show()
-    }
-
-    protected fun showLoadingDialog(message: String) {
-        mLoadingDialog!!.setCancelable(true)
-        loadingText!!.text = message
-        mLoadingDialog!!.show()
-    }
-
-    protected fun showLoadingDialogNotCancel(resId: Int) {
-        mLoadingDialog!!.setCancelable(false)
-        loadingText!!.setText(resId)
-        mLoadingDialog!!.show()
-    }
-
-    protected fun showLoadingDialogNotCancel(message: String) {
-        mLoadingDialog!!.setCancelable(false)
-        loadingText!!.text = message
-        mLoadingDialog!!.show()
-    }
-
-    /**
-     * 关闭LoadingDialog
-     */
-    protected fun dismissLoadingDialog() {
-        mLoadingDialog!!.dismiss()
     }
 }

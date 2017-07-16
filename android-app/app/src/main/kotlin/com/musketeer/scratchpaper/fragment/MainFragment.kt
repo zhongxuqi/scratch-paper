@@ -13,7 +13,6 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
-import android.widget.TextView
 import com.muskeeter.base.fragment.BaseSupportFragment
 import com.musketeer.scratchpaper.R
 import com.musketeer.scratchpaper.activity.BrowsePaperActivity
@@ -54,8 +53,6 @@ class MainFragment: BaseSupportFragment() {
     }
 
     var mDialog: AlertDialog? = null
-    var mLoadingDialog: AlertDialog? = null
-    var loadingText: TextView? = null
 
     private val handler = object : Handler() {
         override fun handleMessage(msg: Message) {
@@ -72,12 +69,6 @@ class MainFragment: BaseSupportFragment() {
 
     override fun initView() {
         mPaperListView.layoutManager = layoutManger
-
-        val builder = AlertDialog.Builder(activity)
-        val view = LayoutInflater.from(activity).inflate(R.layout.dialog_loading, null)
-        loadingText = view.findViewById(R.id.loading_text) as TextView
-        builder.setView(view)
-        mLoadingDialog = builder.create()
     }
 
     override fun initEvent() {
@@ -87,7 +78,7 @@ class MainFragment: BaseSupportFragment() {
                 val paperFile = v?.getTag() as File
                 val bundle = Bundle()
                 bundle.putString("paper_name", paperFile.name)
-                startActivityForResult(BrowsePaperActivity::class.java, bundle, Config.ACTION_EDIT_PAPER)
+                startActivityForResult(BrowsePaperActivity::class.java, bundle, Config.ACTION_EDIT_FILE)
 
                 if (mDialog != null) {
                     mDialog!!.dismiss()
@@ -110,7 +101,7 @@ class MainFragment: BaseSupportFragment() {
                     // TODO Auto-generated method stub
                     val bundle = Bundle()
                     bundle.putString("paper_name", fileName)
-                    startActivityForResult(EditPaperActivity::class.java, bundle, Config.ACTION_EDIT_PAPER)
+                    startActivityForResult(EditPaperActivity::class.java, bundle, Config.ACTION_EDIT_FILE)
                     mDialog!!.dismiss()
                 }
                 //删除内容
@@ -193,7 +184,7 @@ class MainFragment: BaseSupportFragment() {
 
                     override fun onAnimationEnd(animation: Animation) {
                         // TODO Auto-generated method stub
-                        startActivityForResult(EditPaperActivity::class.java, Config.ACTION_ADD_PAPER)
+                        startActivityForResult(EditPaperActivity::class.java, Config.ACTION_ADD_FILE)
                     }
 
                     override fun onAnimationRepeat(animation: Animation) {
@@ -208,44 +199,9 @@ class MainFragment: BaseSupportFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when(requestCode) {
-            Config.ACTION_ADD_PAPER -> refreshViews()
-            Config.ACTION_EDIT_PAPER -> refreshViews()
+            Config.ACTION_ADD_FILE -> refreshViews()
+            Config.ACTION_EDIT_FILE -> refreshViews()
             Config.ACTION_CHANGE_SETTINGS -> initData()
         }
-    }
-
-    /**
-     * 设置LoadingDialog并显示
-     * @param resId
-     */
-    protected fun showLoadingDialog(resId: Int) {
-        mLoadingDialog!!.setCancelable(true)
-        loadingText!!.setText(resId)
-        mLoadingDialog!!.show()
-    }
-
-    protected fun showLoadingDialog(message: String) {
-        mLoadingDialog!!.setCancelable(true)
-        loadingText!!.text = message
-        mLoadingDialog!!.show()
-    }
-
-    protected fun showLoadingDialogNotCancel(resId: Int) {
-        mLoadingDialog!!.setCancelable(false)
-        loadingText!!.setText(resId)
-        mLoadingDialog!!.show()
-    }
-
-    protected fun showLoadingDialogNotCancel(message: String) {
-        mLoadingDialog!!.setCancelable(false)
-        loadingText!!.text = message
-        mLoadingDialog!!.show()
-    }
-
-    /**
-     * 关闭LoadingDialog
-     */
-    protected fun dismissLoadingDialog() {
-        mLoadingDialog!!.dismiss()
     }
 }
