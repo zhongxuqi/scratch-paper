@@ -37,7 +37,6 @@ class MainActivity : BaseFragmentActivity(){
     private val mainFragment = MainFragment()
     private val noteFragment = NoteFragment()
     private val imageFragment = ImageFragment()
-    private val myFragment = MyFragment()
     private val fragmentList = mutableListOf<Fragment>()
 
     private var closeTime: Long = 0
@@ -67,14 +66,6 @@ class MainActivity : BaseFragmentActivity(){
         findViewById(R.id.tab_title_image) as TextView
     }
 
-    private val mTabIconMy: ImageView by lazy {
-        findViewById(R.id.tab_icon_my) as ImageView
-    }
-
-    private val mTabTitleMy: TextView by lazy {
-        findViewById(R.id.tab_title_my) as TextView
-    }
-
     override fun setContentView(savedInstanceState: Bundle?) {
         setContentView(R.layout.activity_main)
     }
@@ -99,18 +90,12 @@ class MainActivity : BaseFragmentActivity(){
                 viewPager.setCurrentItem(2)
             }
         })
-        findViewById(R.id.tab_my).setOnClickListener(object: View.OnClickListener{
-            override fun onClick(v: View?) {
-                viewPager.setCurrentItem(3)
-            }
-        })
     }
 
     override fun initData() {
         fragmentList.add(mainFragment)
         fragmentList.add(noteFragment)
         fragmentList.add(imageFragment)
-        fragmentList.add(myFragment)
         viewPager.adapter = FragmentAdapter(supportFragmentManager, fragmentList)
         viewPager.setCurrentItem(0)
         selectTab(0)
@@ -138,9 +123,6 @@ class MainActivity : BaseFragmentActivity(){
 
         mTabIconImage.setColorFilter(resources.getColor(R.color.tab_default))
         mTabTitleImage.setTextColor(resources.getColor(R.color.tab_default))
-
-        mTabIconMy.setColorFilter(resources.getColor(R.color.tab_default))
-        mTabTitleMy.setTextColor(resources.getColor(R.color.tab_default))
         when(position) {
             0 -> {
                 mTabIconPaper.setColorFilter(resources.getColor(R.color.tab_active))
@@ -153,10 +135,6 @@ class MainActivity : BaseFragmentActivity(){
             2 -> {
                 mTabIconImage.setColorFilter(resources.getColor(R.color.tab_active))
                 mTabTitleImage.setTextColor(resources.getColor(R.color.tab_active))
-            }
-            3 -> {
-                mTabIconMy.setColorFilter(resources.getColor(R.color.tab_active))
-                mTabTitleMy.setTextColor(resources.getColor(R.color.tab_active))
             }
         }
     }

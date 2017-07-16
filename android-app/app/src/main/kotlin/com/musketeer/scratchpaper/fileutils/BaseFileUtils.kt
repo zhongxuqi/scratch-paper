@@ -60,17 +60,6 @@ abstract class BaseFileUtils {
 
     /**
      * 从图片名获取图片位图
-     * @param paper_name
-     * *
-     * @return
-     */
-    fun getImageBitmap(image: File): Bitmap {
-        return BitmapFactory.decodeFile(image.absolutePath)
-                .copy(Bitmap.Config.ARGB_8888, true)
-    }
-
-    /**
-     * 从图片名获取图片位图
      * @param image_name
      * *
      * @return

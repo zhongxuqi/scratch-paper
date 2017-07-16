@@ -9,7 +9,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.muskeeter.base.utils.ScreenUtils
 import com.musketeer.scratchpaper.R
-import com.musketeer.scratchpaper.fileutils.PaperFileUtils
+import com.musketeer.scratchpaper.utils.BitmapUtils
 import java.io.File
 import java.util.*
 import com.musketeer.scratchpaper.utils.ImageUtils
@@ -88,7 +88,7 @@ class MainViewHolder constructor(itemView: View?, adapter: MainAdapter): Recycle
                 if (i + j < fileList.size) {
                     val imageView = cardView.findViewById(R.id.paper_content) as ImageView
                     var offsetXY = IntArray(2)
-                    val bitmap = ImageUtils.drawImageDropShadow(PaperFileUtils.getImageBitmap(fileList[i + j]), offsetXY)
+                    val bitmap = ImageUtils.drawImageDropShadow(BitmapUtils.getImageBitmap(fileList[i + j]), offsetXY)
                     imageView.setImageBitmap(bitmap)
                     imageView.setTag(fileList[i + j])
                     imageView.setOnClickListener(object: View.OnClickListener{

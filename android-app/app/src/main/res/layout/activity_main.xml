@@ -92,29 +92,5 @@
                 android:textSize="@dimen/tabbar_size">
             </TextView>
         </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/tab_my"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center">
-            <ImageView
-                android:id="@+id/tab_icon_my"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/icon_my"
-                android:layout_marginBottom="1dp"
-                android:tint="@color/tab_default"/>
-            <TextView
-                android:id="@+id/tab_title_my"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tab_bar_my"
-                android:textSize="@dimen/tabbar_size">
-            </TextView>
-        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
