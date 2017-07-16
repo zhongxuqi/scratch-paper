@@ -25,6 +25,7 @@
     <string name="drawer_open">open menu</string>
     <string name="drawer_close">close menu</string>
     <string name="affirm">确定</string>
+    <string name="stroke_width">画笔宽度</string>
 
     <!-- main activity -->
     <string name="new_scratch_paper">新建草稿纸</string>

@@ -379,7 +379,7 @@ class ScratchNoteView : SurfaceView, SurfaceHolder.Callback {
 
             //check if inside of screen
             mPaint.color = mStrokeList[i].color
-            mPaint.setStrokeWidth(mStrokeList[0].strokeWidth.toFloat())
+            mPaint.setStrokeWidth(mStrokeList[i].strokeWidth.toFloat())
             canvas.drawLine(realStartX, realStartY, realEndX, realEndY, mPaint)
         }
     }

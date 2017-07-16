@@ -511,8 +511,8 @@ class ScratchPaperView : SurfaceView, SurfaceHolder.Callback {
 
             //check if inside of screen
             mPaint.color = mStrokeList[i].color
-            mPaint.setStrokeWidth(if (mStrokeList[0].strokeWidth / maxScale >= 1)
-                mStrokeList[0].strokeWidth / maxScale
+            mPaint.setStrokeWidth(if (mStrokeList[i].strokeWidth / maxScale >= 1)
+                mStrokeList[i].strokeWidth / maxScale
             else
                 1F)
             canvas.drawLine(realStartX, realStartY, realEndX, realEndY, mPaint)

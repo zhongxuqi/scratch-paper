@@ -13,10 +13,7 @@ import android.view.Gravity
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ImageView
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.*
 import com.flask.colorpicker.ColorPickerView
 import com.flask.colorpicker.OnColorSelectedListener
 import com.flask.colorpicker.builder.ColorPickerClickListener
@@ -27,6 +24,7 @@ import com.musketeer.scratchpaper.MainApplication
 
 import com.musketeer.scratchpaper.R
 import com.musketeer.scratchpaper.adapter.PaperListAdapter
+import com.musketeer.scratchpaper.config.Config
 import com.musketeer.scratchpaper.fileutils.NoteFileUtils
 import com.musketeer.scratchpaper.utils.AppPreferenceUtils
 import com.musketeer.scratchpaper.utils.FileUtils
@@ -239,28 +237,36 @@ class EditNoteActivity : BaseActivity(), AdapterView.OnItemClickListener, OnBMCl
                 if (mScratchNote.isErase) {
                     return
                 }
-                ColorPickerDialogBuilder.with(this).setTitle(resources.getString(R.string.choose_color))
-                        .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
-                        .density(12)
-                        .setOnColorSelectedListener(object: OnColorSelectedListener {
-                            override fun onColorSelected(selectedColor: Int) {
-                                mPaintStatus.setColorFilter(selectedColor)
-                                mScratchNote.color = selectedColor
-                            }
-                        })
-                        .setPositiveButton(resources.getText(R.string.affirm), object: ColorPickerClickListener {
-                            override fun onClick(dialog: DialogInterface?, lastSelectedColor: Int, allColors: Array<out Int>?) {
-                                mPaintStatus.setColorFilter(lastSelectedColor)
-                                mScratchNote.color = lastSelectedColor
-                                dialog?.dismiss()
-                            }
-                        })
-                        .setNegativeButton(resources.getText(R.string.cancel), object: DialogInterface.OnClickListener {
-                            override fun onClick(dialog: DialogInterface?, which: Int) {
-                                dialog?.dismiss()
-                            }
-                        })
-                        .build().show()
+                mDialog?.dismiss()
+                val builder = AlertDialog.Builder(this)
+                val view = LayoutInflater.from(this).inflate(R.layout.dialog_paint_config, null)
+                builder.setView(view)
+                val colorPicker = view.findViewById(R.id.color_picker_view) as ColorPickerView
+                val strokePicker = view.findViewById(R.id.paint_sroke_width) as SeekBar
+                builder.setNegativeButton(resources.getText(R.string.cancel), object : DialogInterface.OnClickListener{
+                    override fun onClick(dialog: DialogInterface?, which: Int) {
+                        mDialog?.dismiss()
+                    }
+                })
+                builder.setPositiveButton(resources.getText(R.string.affirm), object : DialogInterface.OnClickListener{
+                    override fun onClick(dialog: DialogInterface?, which: Int) {
+                        mPaintStatus.setColorFilter(colorPicker.selectedColor)
+                        mScratchNote.color = colorPicker.selectedColor
+                        if (strokePicker.progress < Config.MIN_STROKE_WIDTH) {
+                            strokePicker.progress = Config.MIN_STROKE_WIDTH
+                        }
+                        mScratchNote.strokeWidth = strokePicker.progress
+                        dialog?.dismiss()
+                    }
+                })
+                mDialog = builder.create()
+                mDialog?.show()
+                if (mScratchNote.color == Color.BLACK) {
+                    colorPicker.setInitialColor(Color.BLUE, true)
+                } else {
+                    colorPicker.setInitialColor(mScratchNote.color, true)
+                }
+                strokePicker.progress = mScratchNote.strokeWidth
             }
         }
     }
