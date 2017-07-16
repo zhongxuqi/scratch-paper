@@ -95,7 +95,7 @@ class MainActivity : BaseFragmentActivity(){
         fragmentList.add(mainFragment)
         fragmentList.add(noteFragment)
         fragmentList.add(myFragment)
-        viewPager.adapter = FragmentAdapter(fragmentManager, fragmentList)
+        viewPager.adapter = FragmentAdapter(supportFragmentManager, fragmentList)
         viewPager.setCurrentItem(0)
         selectTab(0)
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{

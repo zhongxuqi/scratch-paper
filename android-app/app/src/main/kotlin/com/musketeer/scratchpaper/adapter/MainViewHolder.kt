@@ -1,6 +1,5 @@
 package com.musketeer.scratchpaper.adapter
 
-import android.graphics.Bitmap
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -9,15 +8,10 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.muskeeter.base.utils.ScreenUtils
-import com.musketeer.scratchpaper.MainApplication
 import com.musketeer.scratchpaper.R
-import com.musketeer.scratchpaper.common.SharePreferenceConfig
-import com.musketeer.scratchpaper.paperfile.PaperFileUtils
-import com.musketeer.scratchpaper.utils.SharePreferenceUtils
+import com.musketeer.scratchpaper.fileutils.PaperFileUtils
 import java.io.File
-import java.text.SimpleDateFormat
 import java.util.*
-import android.util.DisplayMetrics
 import com.musketeer.scratchpaper.utils.ImageUtils
 
 
@@ -94,7 +88,7 @@ class MainViewHolder constructor(itemView: View?, adapter: MainAdapter): Recycle
                 if (i + j < fileList.size) {
                     val imageView = cardView.findViewById(R.id.paper_content) as ImageView
                     var offsetXY = IntArray(2)
-                    val bitmap = ImageUtils.drawImageDropShadow(PaperFileUtils.getPaperBitmap(fileList[i + j]), offsetXY)
+                    val bitmap = ImageUtils.drawImageDropShadow(PaperFileUtils.getImageBitmap(fileList[i + j]), offsetXY)
                     imageView.setImageBitmap(bitmap)
                     imageView.setTag(fileList[i + j])
                     imageView.setOnClickListener(object: View.OnClickListener{

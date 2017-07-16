@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.musketeer.scratchpaper.R
-import com.musketeer.scratchpaper.bean.PaperGroup
+import com.musketeer.scratchpaper.bean.ImageGroup
 
 /**
  * Created by zhongxuqi on 08/07/2017.
@@ -16,10 +16,10 @@ class MainAdapter: RecyclerView.Adapter<MainViewHolder> {
         val TAG = "MainAdapter"
     }
     var context: Context? = null
-    var paperGroupList: MutableList<PaperGroup> = mutableListOf()
+    var imageGroupList: MutableList<ImageGroup> = mutableListOf()
         set(value) {
-            paperGroupList.clear()
-            paperGroupList.addAll(value)
+            imageGroupList.clear()
+            imageGroupList.addAll(value)
             notifyDataSetChanged()
         }
     var onItemClickListener: View.OnClickListener? = null
@@ -34,11 +34,11 @@ class MainAdapter: RecyclerView.Adapter<MainViewHolder> {
         var isInner = false
         var indexOut = 0
         var indexInner = 0
-        paperGroupList.forEachIndexed { indexOfList, paperGroup ->
-            paperGroup.paperList.forEachIndexed { indexOfGroup, s ->
+        imageGroupList.forEachIndexed { indexOfList, paperGroup ->
+            paperGroup.imageList.forEachIndexed { indexOfGroup, s ->
                 if (s.name.contains(paper_name)) {
                     hasMatch = true
-                    if (paperGroup.paperList.size == 1) {
+                    if (paperGroup.imageList.size == 1) {
                         indexOut = indexOfList
                     } else {
                         isInner = true
@@ -50,16 +50,16 @@ class MainAdapter: RecyclerView.Adapter<MainViewHolder> {
         }
         if (hasMatch) {
             if (isInner) {
-                paperGroupList[indexOut].paperList.removeAt(indexInner)
+                imageGroupList[indexOut].imageList.removeAt(indexInner)
             } else {
-                paperGroupList.removeAt(indexOut)
+                imageGroupList.removeAt(indexOut)
             }
             notifyDataSetChanged()
         }
     }
 
     override fun getItemCount(): Int {
-        return paperGroupList.size
+        return imageGroupList.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): MainViewHolder {
@@ -69,6 +69,6 @@ class MainAdapter: RecyclerView.Adapter<MainViewHolder> {
     }
 
     override fun onBindViewHolder(holder: MainViewHolder?, position: Int) {
-        holder?.bindData(paperGroupList[position].timeOfData, paperGroupList[position].paperList, position == 0, position + 1 == paperGroupList.size)
+        holder?.bindData(imageGroupList[position].timeOfData, imageGroupList[position].imageList, position == 0, position + 1 == imageGroupList.size)
     }
 }

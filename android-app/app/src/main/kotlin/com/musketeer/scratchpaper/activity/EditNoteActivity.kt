@@ -27,7 +27,7 @@ import com.musketeer.scratchpaper.MainApplication
 
 import com.musketeer.scratchpaper.R
 import com.musketeer.scratchpaper.adapter.PaperListAdapter
-import com.musketeer.scratchpaper.paperfile.NoteFileUtils
+import com.musketeer.scratchpaper.fileutils.NoteFileUtils
 import com.musketeer.scratchpaper.utils.AppPreferenceUtils
 import com.musketeer.scratchpaper.utils.FileUtils
 import com.musketeer.scratchpaper.utils.LogUtils
@@ -129,7 +129,7 @@ class EditNoteActivity : BaseActivity(), AdapterView.OnItemClickListener, OnBMCl
         mScratchNote.max_undo = 5000
 
         //read paper files
-        mNoteList = NoteFileUtils.readNoteList()
+        mNoteList = NoteFileUtils.readImageList()
         mAdapter = PaperListAdapter(this, mNoteList)
         mSavedPaperList!!.adapter = mAdapter
 
@@ -220,7 +220,7 @@ class EditNoteActivity : BaseActivity(), AdapterView.OnItemClickListener, OnBMCl
     }
 
     fun refreshViews() {
-        mNoteList = NoteFileUtils.readNoteList()
+        mNoteList = NoteFileUtils.readImageList()
         mAdapter = PaperListAdapter(this, mNoteList)
         mSavedPaperList!!.adapter = mAdapter
     }
@@ -323,14 +323,14 @@ class EditNoteActivity : BaseActivity(), AdapterView.OnItemClickListener, OnBMCl
         Thread(Runnable {
             // TODO Auto-generated method stub
             if (note_name.isNotEmpty()) {
-                NoteFileUtils.deleteNote(note_name)
+                NoteFileUtils.deleteImage(note_name)
             }
 
             val bitmap = Bitmap.createBitmap(mScratchNote.mNoteBackGround!!.width,
                     mScratchNote.mNoteBackGround!!.height, Bitmap.Config.ARGB_8888)
             val bitCanvas = Canvas(bitmap)
             mScratchNote.doDrawForScreenShot(bitCanvas)
-            NoteFileUtils.saveNote(bitmap, note_name)
+            NoteFileUtils.saveImage(bitmap, note_name)
             mScratchNote.isEdited = false
             ChangePaperHandler.sendEmptyMessage(action)
         }).start()
@@ -355,14 +355,14 @@ class EditNoteActivity : BaseActivity(), AdapterView.OnItemClickListener, OnBMCl
             Thread(Runnable {
                 // TODO Auto-generated method stub
                 if (note_name.isNotEmpty()) {
-                    NoteFileUtils.deleteNote(note_name)
+                    NoteFileUtils.deleteImage(note_name)
                 }
 
                 val bitmap = Bitmap.createBitmap(mScratchNote.mNoteBackGround!!.width,
                         mScratchNote.mNoteBackGround!!.height, Bitmap.Config.ARGB_8888)
                 val bitCanvas = Canvas(bitmap)
                 mScratchNote.doDrawForScreenShot(bitCanvas)
-                NoteFileUtils.saveNote(bitmap, note_name)
+                NoteFileUtils.saveImage(bitmap, note_name)
                 note_name = new_note_name
                 ChangePaperHandler.sendEmptyMessage(0)
             }).start()
@@ -378,12 +378,12 @@ class EditNoteActivity : BaseActivity(), AdapterView.OnItemClickListener, OnBMCl
      * @param note_name
      */
     protected fun initPaperContent(note_name: String) {
-        LogUtils.d(TAG, NoteFileUtils.getNotePath(note_name))
-        if (FileUtils.isFileExist(NoteFileUtils.getNotePath(note_name))) {
-            mScratchNote.paperBackGround = NoteFileUtils.getNote(note_name)
+        LogUtils.d(TAG, NoteFileUtils.getImagePath(note_name))
+        if (FileUtils.isFileExist(NoteFileUtils.getImagePath(note_name))) {
+            mScratchNote.paperBackGround = NoteFileUtils.getImage(note_name)
             mScratchNote.clearStrokeList()
         } else {
-            NoteFileUtils.deleteNote(note_name)
+            NoteFileUtils.deleteImage(note_name)
             finish()
         }
     }

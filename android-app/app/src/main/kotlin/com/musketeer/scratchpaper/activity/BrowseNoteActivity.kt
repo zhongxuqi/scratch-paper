@@ -9,11 +9,9 @@ import com.muskeeter.base.acitivity.BaseActivity
 
 import com.musketeer.scratchpaper.R
 import com.musketeer.scratchpaper.adapter.PaperBrowserAdapter
-import com.musketeer.scratchpaper.common.SharePreferenceConfig
 import com.musketeer.scratchpaper.config.Config
-import com.musketeer.scratchpaper.paperfile.NoteFileUtils
+import com.musketeer.scratchpaper.fileutils.NoteFileUtils
 import com.musketeer.scratchpaper.utils.FileUtils
-import com.musketeer.scratchpaper.utils.SharePreferenceUtils
 import com.umeng.analytics.MobclickAgent
 import java.io.File
 
@@ -26,7 +24,7 @@ class BrowseNoteActivity : BaseActivity() {
         findViewById(R.id.list_info) as TextView
     }
     val adapter : PaperBrowserAdapter by lazy {
-        PaperBrowserAdapter(this, NoteFileUtils.readSortedNoteList())
+        PaperBrowserAdapter(this, NoteFileUtils.readSortedImageList())
     }
 
     override fun setContentView(savedInstanceState: Bundle?) {
@@ -70,10 +68,10 @@ class BrowseNoteActivity : BaseActivity() {
         val bunle = intent.extras
         if (bunle != null && bunle.getString("note_name") != null) {
             mNoteName = bunle.getString("note_name")
-            if (FileUtils.isFileExist(NoteFileUtils.getNotePath(mNoteName))) {
+            if (FileUtils.isFileExist(NoteFileUtils.getImagePath(mNoteName))) {
                 noteBrowser.currentItem = adapter.getPaperPosition(mNoteName)
             } else {
-                NoteFileUtils.deleteNote(mNoteName)
+                NoteFileUtils.deleteImage(mNoteName)
                 finish()
             }
         } else {

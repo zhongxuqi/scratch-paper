@@ -1,13 +1,10 @@
 package com.musketeer.scratchpaper.fragment
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
-import android.content.res.Resources
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -15,21 +12,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import com.muskeeter.base.fragment.BaseSupportFragment
-import com.musketeer.scratchpaper.MainApplication
 import com.musketeer.scratchpaper.R
 import com.musketeer.scratchpaper.activity.BrowsePaperActivity
 import com.musketeer.scratchpaper.activity.EditPaperActivity
 import com.musketeer.scratchpaper.adapter.MainAdapter
-import com.musketeer.scratchpaper.common.SharePreferenceConfig
 import com.musketeer.scratchpaper.config.Config
-import com.musketeer.scratchpaper.paperfile.PaperFileUtils
-import com.musketeer.scratchpaper.utils.AppPreferenceUtils
+import com.musketeer.scratchpaper.fileutils.PaperFileUtils
 import com.musketeer.scratchpaper.utils.LogUtils
-import com.musketeer.scratchpaper.utils.SharePreferenceUtils
 import com.umeng.socialize.ShareAction
 import com.umeng.socialize.UMShareListener
 import com.umeng.socialize.bean.SHARE_MEDIA
@@ -46,8 +38,8 @@ class MainFragment: BaseSupportFragment() {
         val TAG = "MainFragment"
     }
 
-    val mRecyclerView: RecyclerView by lazy {
-        findViewById(R.id.recycler_view) as RecyclerView
+    val mPaperListView: RecyclerView by lazy {
+        findViewById(R.id.main_paper_list) as RecyclerView
     }
     val mAdapter: MainAdapter by lazy {
         MainAdapter(activity)
@@ -75,11 +67,11 @@ class MainFragment: BaseSupportFragment() {
     }
 
     override fun setContentView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?) {
-        BaseView = inflater?.inflate(R.layout.fragment_main, null)
+        if (BaseView == null) BaseView = inflater?.inflate(R.layout.fragment_main, null)
     }
 
     override fun initView() {
-        mRecyclerView.layoutManager = layoutManger
+        mPaperListView.layoutManager = layoutManger
 
         val builder = AlertDialog.Builder(activity)
         val view = LayoutInflater.from(activity).inflate(R.layout.dialog_loading, null)
@@ -130,7 +122,7 @@ class MainFragment: BaseSupportFragment() {
                     deleteDialogBuilder.setMessage(resources.getString(R.string.affirm_delete))
                     deleteDialogBuilder.setNegativeButton(resources.getString(R.string.no)) { dialog, which -> mDialog!!.dismiss() }
                     deleteDialogBuilder.setPositiveButton(resources.getString(R.string.yes)) { dialog, which ->
-                        PaperFileUtils.deletePaper(fileName)
+                        PaperFileUtils.deleteImage(fileName)
                         mAdapter.removeItem(fileName)
                         mDialog?.dismiss()
                     }
@@ -140,7 +132,7 @@ class MainFragment: BaseSupportFragment() {
                 //分享
                 val shareButton = contentView.findViewById(R.id.share)
                 shareButton.setOnClickListener {
-                    val filePath = PaperFileUtils.getPaperPath(fileName)
+                    val filePath = PaperFileUtils.getImagePath(fileName)
                     val image = UMImage(activity, File(filePath))
                     image.setThumb(UMImage(activity, File(filePath)))
                     image.compressStyle = UMImage.CompressStyle.SCALE
@@ -178,14 +170,12 @@ class MainFragment: BaseSupportFragment() {
     }
 
     override fun initData() {
-        mAdapter.paperGroupList = PaperFileUtils.readPaperListGroup()
-        mRecyclerView.adapter = mAdapter
-
-        checkConfig()
+        mAdapter.imageGroupList = PaperFileUtils.readImageListGroup()
+        mPaperListView.adapter = mAdapter
     }
 
     fun refreshViews() {
-        mAdapter.paperGroupList = PaperFileUtils.readPaperListGroup()
+        mAdapter.imageGroupList = PaperFileUtils.readImageListGroup()
         mAdapter.notifyDataSetChanged()
     }
 
@@ -221,22 +211,6 @@ class MainFragment: BaseSupportFragment() {
             Config.ACTION_ADD_PAPER -> refreshViews()
             Config.ACTION_EDIT_PAPER -> refreshViews()
             Config.ACTION_CHANGE_SETTINGS -> initData()
-        }
-    }
-
-    private fun checkConfig() {
-        // TODO Auto-generated method stub
-        try {
-            resources.getDrawable(SharePreferenceUtils.getInt(activity,
-                    SharePreferenceConfig.PAPER,
-                    MainApplication.DEFAULT_PAPER))
-            resources.getDrawable(SharePreferenceUtils.getInt(activity,
-                    SharePreferenceConfig.DESK,
-                    MainApplication.DEFAULT_DESK))
-        } catch (e: Resources.NotFoundException) {
-            SharePreferenceUtils.putInt(activity, SharePreferenceConfig.MAX_UNDO,
-                    MainApplication.PAPER_MAX_UNDO)
-            SharePreferenceUtils.putInt(activity, SharePreferenceConfig.ROW_NUM, 3)
         }
     }
 

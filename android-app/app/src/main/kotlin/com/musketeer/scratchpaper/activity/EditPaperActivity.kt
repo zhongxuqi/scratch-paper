@@ -20,7 +20,7 @@ import com.flask.colorpicker.builder.ColorPickerDialogBuilder
 import com.musketeer.scratchpaper.MainApplication
 import com.musketeer.scratchpaper.R
 import com.musketeer.scratchpaper.adapter.PaperListAdapter
-import com.musketeer.scratchpaper.paperfile.PaperFileUtils
+import com.musketeer.scratchpaper.fileutils.PaperFileUtils
 import com.musketeer.scratchpaper.utils.AppPreferenceUtils
 import com.musketeer.scratchpaper.utils.FileUtils
 import com.musketeer.scratchpaper.utils.TimeUtils
@@ -129,7 +129,7 @@ class EditPaperActivity : BaseActivity(), OnItemClickListener, OnBMClickListener
         mScratchPaper.max_undo = 5000
 
         //read paper files
-        mPaperList = PaperFileUtils.readPaperList()
+        mPaperList = PaperFileUtils.readImageList()
         mAdapter = PaperListAdapter(this, mPaperList)
         mSavedPaperList!!.adapter = mAdapter
 
@@ -220,7 +220,7 @@ class EditPaperActivity : BaseActivity(), OnItemClickListener, OnBMClickListener
     }
 
     fun refreshViews() {
-        mPaperList = PaperFileUtils.readPaperList()
+        mPaperList = PaperFileUtils.readImageList()
         mAdapter = PaperListAdapter(this, mPaperList)
         mSavedPaperList!!.adapter = mAdapter
     }
@@ -323,14 +323,14 @@ class EditPaperActivity : BaseActivity(), OnItemClickListener, OnBMClickListener
         Thread(Runnable {
             // TODO Auto-generated method stub
             if (paper_name.isNotEmpty()) {
-                PaperFileUtils.deletePaper(paper_name)
+                PaperFileUtils.deleteImage(paper_name)
             }
 
             val bitmap = Bitmap.createBitmap(mScratchPaper.paperWidth,
                     mScratchPaper.paperHeight, Bitmap.Config.ARGB_8888)
             val bitCanvas = Canvas(bitmap)
             mScratchPaper.doDrawForScreenShot(bitCanvas)
-            PaperFileUtils.savePaper(bitmap, paper_name)
+            PaperFileUtils.saveImage(bitmap, paper_name)
             mScratchPaper.isEdited = false
             ChangePaperHandler.sendEmptyMessage(action)
         }).start()
@@ -355,14 +355,14 @@ class EditPaperActivity : BaseActivity(), OnItemClickListener, OnBMClickListener
             Thread(Runnable {
                 // TODO Auto-generated method stub
                 if (paper_name.isNotEmpty()) {
-                    PaperFileUtils.deletePaper(paper_name)
+                    PaperFileUtils.deleteImage(paper_name)
                 }
 
                 val bitmap = Bitmap.createBitmap(mScratchPaper.paperWidth,
                         mScratchPaper.paperHeight, Bitmap.Config.ARGB_8888)
                 val bitCanvas = Canvas(bitmap)
                 mScratchPaper.doDrawForScreenShot(bitCanvas)
-                PaperFileUtils.savePaper(bitmap, paper_name)
+                PaperFileUtils.saveImage(bitmap, paper_name)
                 paper_name = new_paper_name
                 ChangePaperHandler.sendEmptyMessage(0)
             }).start()
@@ -378,12 +378,12 @@ class EditPaperActivity : BaseActivity(), OnItemClickListener, OnBMClickListener
      * @param paper_name
      */
     protected fun initPaperContent(paper_name: String) {
-        if (FileUtils.isFileExist(PaperFileUtils.getPaperPath(paper_name))) {
-            mScratchPaper.paperBackGround = PaperFileUtils.getPaper(paper_name)
+        if (FileUtils.isFileExist(PaperFileUtils.getImagePath(paper_name))) {
+            mScratchPaper.paperBackGround = PaperFileUtils.getImage(paper_name)
             mScratchPaper.clearStrokeList()
             mScratchPaper.initPaperPosition()
         } else {
-            PaperFileUtils.deletePaper(paper_name)
+            PaperFileUtils.deleteImage(paper_name)
             finish()
         }
     }

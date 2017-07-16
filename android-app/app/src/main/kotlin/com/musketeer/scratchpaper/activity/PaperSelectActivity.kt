@@ -13,7 +13,7 @@ import android.widget.GridView
 import com.musketeer.scratchpaper.R
 import com.musketeer.scratchpaper.adapter.PaperListAdapter
 import com.musketeer.scratchpaper.common.SharePreferenceConfig
-import com.musketeer.scratchpaper.paperfile.PaperFileUtils
+import com.musketeer.scratchpaper.fileutils.PaperFileUtils
 import com.musketeer.scratchpaper.utils.AppPreferenceUtils
 import com.musketeer.scratchpaper.utils.LogUtils
 import com.musketeer.scratchpaper.utils.SharePreferenceUtils
@@ -63,7 +63,7 @@ class PaperSelectActivity : BaseActivity(), OnItemClickListener {
         mSavedPaperList!!.numColumns = AppPreferenceUtils.getRowNum(this)
 
         //read paper files
-        mPaperList = PaperFileUtils.readPaperList()
+        mPaperList = PaperFileUtils.readImageList()
         mAdapter = PaperListAdapter(this, mPaperList)
         mSavedPaperList!!.adapter = mAdapter
     }

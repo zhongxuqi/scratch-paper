@@ -37,11 +37,11 @@ class MainApplication : BaseApplication() {
         var instance: MainApplication? = null
             private set
 
-        var mCachePath: String? = null
-        var mCachePathComp: String? = null
+        var mCachePath: String = ""
+        var mCachePathComp: String = ""
 
-        var mCacheNotePath: String? = null
-        var mCacheNotePathComp: String? = null
+        var mCacheNotePath: String = ""
+        var mCacheNotePathComp: String = ""
 
         var errorLogPath: String? = null
         var store: MutableMap<String, Any> = HashMap()

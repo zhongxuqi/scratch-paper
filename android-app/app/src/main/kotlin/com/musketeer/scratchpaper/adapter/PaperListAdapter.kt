@@ -13,16 +13,14 @@
 package com.musketeer.scratchpaper.adapter
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
-import android.widget.TextView
 
 import com.musketeer.scratchpaper.R
-import com.musketeer.scratchpaper.paperfile.PaperFileUtils
+import com.musketeer.scratchpaper.fileutils.PaperFileUtils
 
 /**
  * @author zhongxuqi
@@ -58,11 +56,11 @@ class PaperListAdapter(private val mContext: Context, private val mFileList: Mut
             mHolder = convertView.tag as Holder
         }
 
-        val bitmap = PaperFileUtils.getPaperThumbNail(mFileList[position])
+        val bitmap = PaperFileUtils.getImageThumbNail(mFileList[position])
 
         //如果没有这个文件或文件有误，就删除它
         if (bitmap == null) {
-            PaperFileUtils.deletePaper(getItem(position))
+            PaperFileUtils.deleteImage(getItem(position))
             mFileList.removeAt(position)
             notifyDataSetChanged()
             return convertView

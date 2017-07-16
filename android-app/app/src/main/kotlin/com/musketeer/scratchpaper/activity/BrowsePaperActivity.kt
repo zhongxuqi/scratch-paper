@@ -3,17 +3,14 @@ package com.musketeer.scratchpaper.activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.ViewPager
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 
 import com.musketeer.scratchpaper.R
 import com.musketeer.scratchpaper.common.SharePreferenceConfig
-import com.musketeer.scratchpaper.paperfile.PaperFileUtils
+import com.musketeer.scratchpaper.fileutils.PaperFileUtils
 import com.musketeer.scratchpaper.utils.FileUtils
 import com.musketeer.scratchpaper.utils.SharePreferenceUtils
-import com.musketeer.scratchpaper.view.TouchImageView
 import com.muskeeter.base.acitivity.BaseActivity
 import com.musketeer.scratchpaper.adapter.PaperBrowserAdapter
 import com.musketeer.scratchpaper.config.Config
@@ -30,7 +27,7 @@ class BrowsePaperActivity : BaseActivity() {
         findViewById(R.id.list_info) as TextView
     }
     val adapter : PaperBrowserAdapter by lazy {
-        PaperBrowserAdapter(this, PaperFileUtils.readSortedPaperList())
+        PaperBrowserAdapter(this, PaperFileUtils.readSortedImageList())
     }
 
     override fun setContentView(savedInstanceState: Bundle?) {
@@ -74,10 +71,10 @@ class BrowsePaperActivity : BaseActivity() {
         val bunle = intent.extras
         if (bunle != null && bunle.getString("paper_name") != null) {
             mPaperName = bunle.getString("paper_name")
-            if (FileUtils.isFileExist(PaperFileUtils.getPaperPath(mPaperName))) {
+            if (FileUtils.isFileExist(PaperFileUtils.getImagePath(mPaperName))) {
                 paperBrowser.currentItem = adapter.getPaperPosition(mPaperName)
             } else {
-                PaperFileUtils.deletePaper(mPaperName)
+                PaperFileUtils.deleteImage(mPaperName)
                 finish()
             }
         } else {

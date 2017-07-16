@@ -11,7 +11,7 @@ import android.widget.RemoteViews
 
 import com.musketeer.scratchpaper.R
 import com.musketeer.scratchpaper.common.SharePreferenceConfig
-import com.musketeer.scratchpaper.paperfile.PaperFileUtils
+import com.musketeer.scratchpaper.fileutils.PaperFileUtils
 import com.musketeer.scratchpaper.utils.SharePreferenceUtils
 
 class PaperWidgetProvider : AppWidgetProvider() {
@@ -25,7 +25,7 @@ class PaperWidgetProvider : AppWidgetProvider() {
         super.onUpdate(context, appWidgetManager, appWidgetIds)
         val paper_name = SharePreferenceUtils.getString(context, SharePreferenceConfig.WIDGET_PAPER_NAME, "")
         if (paper_name.isNotEmpty()) {
-            val bitmap = PaperFileUtils.getPaperThumbNail(paper_name)
+            val bitmap = PaperFileUtils.getImageThumbNail(paper_name)
             mWidgetViews = RemoteViews(context.packageName, R.layout.paper_widget)
             mWidgetViews!!.setImageViewBitmap(R.id.widget_paper_content, bitmap)
             appWidgetManager.updateAppWidget(appWidgetIds, mWidgetViews)
@@ -45,7 +45,7 @@ class PaperWidgetProvider : AppWidgetProvider() {
         // TODO Auto-generated method stub
         super.onReceive(context, intent)
         if (intent != null && intent.hasExtra("widget_name") && intent.getStringExtra("widget_name") == TAG) {
-            val bitmap = PaperFileUtils.getPaperThumbNail(intent.getStringExtra("paper_name"))
+            val bitmap = PaperFileUtils.getImageThumbNail(intent.getStringExtra("paper_name"))
             mWidgetViews = RemoteViews(context.packageName, R.layout.paper_widget)
             mWidgetViews!!.setImageViewBitmap(R.id.widget_paper_content, bitmap)
             mAppWidgetManager = AppWidgetManager.getInstance(context)
