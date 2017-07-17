@@ -224,7 +224,7 @@ class ScratchPaperView : SurfaceView, SurfaceHolder.Callback {
                     }
 
                     // draw paper background
-                    canvas.drawBitmap(ImageUtils.drawImageDropShadow(mPaperBackGround!!, offsetXY), mMatrix, null)
+                    canvas.drawBitmap(mPaperBackGround!!, mMatrix, null)
 
                     // draw strokes
                     for (i in mStrokeList.indices) {
