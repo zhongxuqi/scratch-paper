@@ -46,9 +46,6 @@
         <activity
             android:name=".activity.EditPaperActivity"
             android:label="@string/title_activity_edit_paper" />
-        <activity
-            android:name=".activity.HelpActivity"
-            android:label="@string/title_activity_help" />
         <!--
         <activity
             android:name=".activity.SavedScratchPaperActivity"
@@ -58,9 +55,6 @@
         <activity
             android:name=".activity.BrowsePaperActivity"
             android:label="@string/title_activity_browse_paper" />
-        <activity
-            android:name=".activity.settings.SettingsActivity"
-            android:label="@string/action_settings" />
         <activity
             android:name=".activity.settings.SetPaperActivity"
             android:label="@string/title_activity_set_paper" />

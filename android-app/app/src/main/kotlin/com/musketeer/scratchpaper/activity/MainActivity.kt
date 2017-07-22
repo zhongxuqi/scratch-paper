@@ -11,7 +11,6 @@ import android.widget.ImageView
 import android.widget.TextView
 
 import com.musketeer.scratchpaper.R
-import com.musketeer.scratchpaper.activity.settings.SettingsActivity
 import com.musketeer.scratchpaper.common.Contants
 import com.musketeer.scratchpaper.utils.LogUtils
 import com.muskeeter.base.acitivity.BaseFragmentActivity
@@ -19,7 +18,6 @@ import com.musketeer.scratchpaper.adapter.FragmentAdapter
 import com.musketeer.scratchpaper.config.Config
 import com.musketeer.scratchpaper.fragment.ImageFragment
 import com.musketeer.scratchpaper.fragment.MainFragment
-import com.musketeer.scratchpaper.fragment.MyFragment
 import com.musketeer.scratchpaper.fragment.NoteFragment
 import com.qq.e.ads.interstitial.InterstitialAD
 import com.qq.e.ads.interstitial.InterstitialADListener

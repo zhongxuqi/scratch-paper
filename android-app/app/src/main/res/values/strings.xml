@@ -2,109 +2,78 @@
 <resources>
 
     <string name="app_id">ScratchPaper</string>
-    <string name="app_name">草稿本</string>
-    <string name="app_chinese_name">草稿本</string>
-    <string name="app_version">草稿本 3.0版</string>
+    <string name="app_name">Scratch Paper</string>
+    <string name="app_chinese_name">Scratch Paper</string>
+    <string name="app_version">Scratch Paper Version 3.0</string>
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">设置</string>
-    <string name="title_activity_edit_paper">手写</string>
-    <string name="title_activity_set_paper">设置纸张材质</string>
-    <string name="title_activity_set_desk">设置桌面背景</string>
-    <string name="title_activity_browse_paper">内容浏览</string>
-    <string name="title_activity_settings">设置</string>
-    <string name="title_activity_help">帮助</string>
-    <string name="title_activity_saved_scratch_paper">保存的草稿纸</string>
-    <string name="yes">是</string>
-    <string name="no">否</string>
-    <string name="cancel">取消</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_edit_paper">Hand Writing</string>
+    <string name="title_activity_set_paper">Set the Paper</string>
+    <string name="title_activity_set_desk">Set the Desk Background</string>
+    <string name="title_activity_browse_paper">Browse Content</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_help">Help</string>
+    <string name="title_activity_saved_scratch_paper">Save the Paper</string>
+    <string name="yes">yes</string>
+    <string name="no">no</string>
+    <string name="cancel">Cancel</string>
 
     <!-- common -->
-    <string name="exit_with_save_file">文件被修改，是否保存文件？</string>
-    <string name="save_file">保存文件</string>
-    <string name="action">操作</string>
+    <string name="exit_with_save_file">File Changed，whether to save？</string>
+    <string name="save_file">Save File</string>
+    <string name="action">Action</string>
     <string name="drawer_open">open menu</string>
     <string name="drawer_close">close menu</string>
-    <string name="affirm">确定</string>
-    <string name="stroke_width">画笔宽度</string>
+    <string name="affirm">affirm</string>
+    <string name="stroke_width">Stroke Width</string>
 
     <!-- main activity -->
-    <string name="new_scratch_paper">新建草稿纸</string>
-    <string name="saved_scratch_paper">保存的草稿纸</string>
-    <string name="setting">设置</string>
-    <string name="help">帮助与使用说明</string>
-    <string name="app_help">帮助</string>
-    <string name="quit">退出</string>
+    <string name="new_scratch_paper">New Scratch Paper</string>
+    <string name="saved_scratch_paper">Save Scratch Paper</string>
+    <string name="setting">Setting</string>
+    <string name="help">Help and Instructions</string>
+    <string name="app_help">Help</string>
+    <string name="quit">Quit</string>
 
     <!-- tab -->
-    <string name="tab_bar_paper">草稿</string>
-    <string name="tab_bar_note">便签</string>
-    <string name="tab_bar_image">图片</string>
-    <string name="tab_bar_my">我的</string>
+    <string name="tab_bar_paper">Paper</string>
+    <string name="tab_bar_note">Note</string>
+    <string name="tab_bar_image">Picture</string>
+    <string name="tab_bar_my">My</string>
 
     <!-- edit paper acitivity -->
-    <string name="undo_title">撤消</string>
-    <string name="save_title">保存</string>
-    <string name="clear_all_title">清除所有内容</string>
-    <string name="paint_title">画笔</string>
-    <string name="black">黑色</string>
-    <string name="red">红色</string>
-    <string name="blue">蓝色</string>
-    <string name="eraser">橡皮擦</string>
-    <string name="affirm_clear_all">是否清除纸张内容?</string>
-    <string name="save_paper">保存草稿</string>
-    <string name="affirm_save_paper">是否保存草稿?</string>
-    <string name="affirm_back">是否复位设置?</string>
-    <string name="save_success">保存成功!</string>
-    <string name="saving">保存中...</string>
-    <string name="save_filename_">保存的文件名：</string>
-    <string name="save_filename_hint">请输入文件名</string>
-    <string name="affirm_save_current_paper">是否保存当前草稿纸</string>
-    <string name="change_success">切换成功</string>
-    <string name="full_screen">全屏切换</string>
-    <string name="choose_color">选择画笔颜色</string>
+    <string name="undo_title">Undo</string>
+    <string name="save_title">Save</string>
+    <string name="clear_all_title">Clear All</string>
+    <string name="paint_title">Paint</string>
+    <string name="black">Black</string>
+    <string name="red">Red</string>
+    <string name="blue">Blue</string>
+    <string name="eraser">Eraser</string>
+    <string name="affirm_clear_all">Whether to clear all?</string>
+    <string name="save_paper">Save Paper</string>
+    <string name="affirm_save_paper">Whether to save paper?</string>
+    <string name="save_success">Success to save!</string>
+    <string name="saving">Saving...</string>
+    <string name="affirm_save_current_paper">Whether to save current paper</string>
+    <string name="change_success">Success to switch</string>
+    <string name="choose_color">Choose the color of paint</string>
 
     <!-- dialog -->
-    <string name="alert">提醒</string>
-    <string name="input_name_hint">请输入新的文件名</string>
-    <string name="rename_success">重命名成功</string>
-    <string name="name_no_null">文件名不能为空</string>
-
-    <!-- help activity -->
-    <string name="use_title">使用说明</string>
-    <string name="help_title">帮助</string>
-    <string name="my_title">作者留言</string>
-    <string name="use_content">一、单指操作为绘图。\n\n二、双指操作为移动与缩放。\n\n三、手写页面左边侧滑可以拉出翻页菜单。</string>
-    <string name="help_content">一、最大撤消数指最大返回操作数，最好设为默认值。\n\n二、绘图进程数不宜设太多，最好设为默认值。\n\n三、APP中，纸张的所有编辑操作都不需要键盘，这才是作为草稿纸的本质意义，同时也是本APP与印象笔记和有道笔记的最本质区别。</string>
-    <string name="my_content">经过一年多的维护，草稿本已经完成2.0到3.0的升级，功能和界面都有了质的提升。大家宝贵的意见我都一条条看过了，非常感谢大家，以后我会抽空去完善它，不久将它放到GITHUB上去，欢迎新手来学习和Android大神来共同开发。\n\n感谢大家的使用!\n\nMusketeer.</string>
+    <string name="alert">Alert</string>
+    <string name="rename_success">Success to rename</string>
 
     <!-- saved scratch paper -->
-    <string name="look_content">查看</string>
-    <string name="edit_content">编辑</string>
-    <string name="rename">重命名</string>
-    <string name="share">分享</string>
-    <string name="delete">删除</string>
-    <string name="affirm_delete">是否删除草稿?</string>
-    <string name="add_new_paper">添加新草稿</string>
-
-    <!-- settings activity -->
-    <string name="base_set">基本设置</string>
-    <string name="senior_set">高级设置</string>
-    <string name="save">保存</string>
-    <string name="set_paper">设置纸张材质</string>
-    <string name="set_desk">设置桌面背景</string>
-    <string name="set_max_undo">最大撤消数</string>
-    <string name="set_thread_number">绘图线程数</string>
-    <string name="set_back_defalut">全部回到默认值</string>
-    <string name="set_success">设置成功!</string>
-    <string name="paper_size">纸张大小</string>
-    <string name="paper_row_number">展示列数</string>
+    <string name="look_content">Browse</string>
+    <string name="edit_content">Edit</string>
+    <string name="share">Share</string>
+    <string name="delete">Delete</string>
+    <string name="affirm_delete">Whether to delete paper?</string>
+    <string name="add_new_paper">Add new paper</string>
 
     <!-- browse activity -->
-    <string name="edit">编辑</string>
-    <string name="title_activity_paper_select">草稿纸选择</string>
+    <string name="edit">Edit</string>
+    <string name="title_activity_paper_select">Choose paper</string>
 
-    <string name="close_hint">关闭APP请再次点击返回键</string>
-
-    <!-- login -->
-    <string name="login_hint">点击登入</string>
+    <string name="close_hint">Click Again to Close the APP</string>
 </resources>
