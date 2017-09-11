@@ -2,7 +2,9 @@ package com.musketeer.scratchpaper.fileutils
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import com.musketeer.scratchpaper.bean.BitmapGroup
 import com.musketeer.scratchpaper.bean.ImageGroup
+import com.musketeer.scratchpaper.utils.BitmapUtils
 import com.musketeer.scratchpaper.utils.FileUtils
 import com.musketeer.scratchpaper.utils.ImageUtils
 import java.io.File
@@ -15,7 +17,10 @@ abstract class BaseFileUtils {
     companion object {
         val TAG = "PaperFileUtils"
     }
-    
+
+    var mBitmapGroup : MutableList<BitmapGroup> = mutableListOf<BitmapGroup>()
+    var mSortedBitmapGroup : MutableList<Bitmap> = mutableListOf<Bitmap>()
+
     abstract fun getCachePath(): String
     abstract fun getCachePathComp(): String
 
@@ -192,6 +197,24 @@ abstract class BaseFileUtils {
         return mImageGroupList
     }
 
+    // 读取文件，并转为Bitmap
+    fun readBitmapListGroup(reload : Boolean): MutableList<BitmapGroup> {
+        if (reload || this.mBitmapGroup.isEmpty()) {
+            val imageGroupList = readImageListGroup()
+            this.mBitmapGroup = mutableListOf<BitmapGroup>()
+            for (imageGroup in imageGroupList) {
+                var bitmapGroup = BitmapGroup(imageGroup.timeOfData)
+                for (imageFile in imageGroup.imageList) {
+                    var bitmap = BitmapUtils.getImageBitmap(imageFile)
+                    bitmapGroup.imageList.add(bitmap)
+                    bitmapGroup.imageNameMap.put(bitmap, imageFile.name)
+                }
+                this.mBitmapGroup.add(bitmapGroup)
+            }
+        }
+        return this.mBitmapGroup
+    }
+
     fun readSortedImageList(): MutableList<File> {
         val f = File(getCachePath())
         val files  = mutableListOf<File>()
@@ -211,5 +234,16 @@ abstract class BaseFileUtils {
             }
         })
         return files
+    }
+
+    fun readSortedBitmapList(reload : Boolean): List<Bitmap> {
+        if (reload || this.mSortedBitmapGroup.isEmpty()) {
+            val imageList = readSortedImageList()
+            this.mSortedBitmapGroup = mutableListOf<Bitmap>()
+            for (imageFile in imageList) {
+                this.mSortedBitmapGroup.add(BitmapUtils.getImageBitmap(imageFile))
+            }
+        }
+        return this.mSortedBitmapGroup
     }
 }

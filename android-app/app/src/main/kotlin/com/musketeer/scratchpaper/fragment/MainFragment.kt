@@ -88,8 +88,7 @@ class MainFragment: BaseSupportFragment() {
         }
         mAdapter.onItemLongClickListener = object : View.OnLongClickListener{
             override fun onLongClick(v: View?): Boolean {
-                val paperFile = v?.getTag() as File
-                val fileName = paperFile.name
+                val fileName = v?.getTag() as String
                 mDialog?.dismiss()
                 val builder = AlertDialog.Builder(activity)
                 val contentView = LayoutInflater.from(activity).inflate(R.layout.include_saved_paper_action, null)
@@ -161,12 +160,12 @@ class MainFragment: BaseSupportFragment() {
     }
 
     override fun initData() {
-        mAdapter.imageGroupList = PaperFileUtils.readImageListGroup()
+        mAdapter.imageGroupList = PaperFileUtils.readBitmapListGroup(false)
         mPaperListView.adapter = mAdapter
     }
 
     fun refreshViews() {
-        mAdapter.imageGroupList = PaperFileUtils.readImageListGroup()
+        mAdapter.imageGroupList = PaperFileUtils.readBitmapListGroup(true)
         mAdapter.notifyDataSetChanged()
     }
 

@@ -73,8 +73,7 @@ class NoteFragment: BaseSupportFragment() {
         }
         mAdapter.onItemLongClickListener = object : View.OnLongClickListener{
             override fun onLongClick(v: View?): Boolean {
-                val paperFile = v?.getTag() as File
-                val fileName = paperFile.name
+                val fileName = v?.getTag() as String
                 mDialog?.dismiss()
                 val builder = AlertDialog.Builder(activity)
                 val contentView = LayoutInflater.from(activity).inflate(R.layout.include_saved_paper_action, null)
@@ -146,12 +145,12 @@ class NoteFragment: BaseSupportFragment() {
     }
 
     override fun initData() {
-        mAdapter.imageGroupList = NoteFileUtils.readImageListGroup()
+        mAdapter.imageGroupList = NoteFileUtils.readBitmapListGroup(false)
         mNoteListView.adapter = mAdapter
     }
 
     fun refreshViews() {
-        mAdapter.imageGroupList = NoteFileUtils.readImageListGroup()
+        mAdapter.imageGroupList = NoteFileUtils.readBitmapListGroup(true)
         mAdapter.notifyDataSetChanged()
     }
 

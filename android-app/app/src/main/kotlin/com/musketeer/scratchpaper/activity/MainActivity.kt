@@ -95,6 +95,7 @@ class MainActivity : BaseFragmentActivity(){
         fragmentList.add(noteFragment)
         fragmentList.add(imageFragment)
         viewPager.adapter = FragmentAdapter(supportFragmentManager, fragmentList)
+        viewPager.offscreenPageLimit = 2
         viewPager.setCurrentItem(0)
         selectTab(0)
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{

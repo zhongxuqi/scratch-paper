@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.musketeer.scratchpaper.R
+import com.musketeer.scratchpaper.bean.BitmapGroup
 import com.musketeer.scratchpaper.bean.ImageGroup
 
 /**
@@ -16,7 +17,7 @@ class MainAdapter: RecyclerView.Adapter<MainViewHolder> {
         val TAG = "MainAdapter"
     }
     var context: Context? = null
-    var imageGroupList: MutableList<ImageGroup> = mutableListOf()
+    var imageGroupList: MutableList<BitmapGroup> = mutableListOf()
         set(value) {
             imageGroupList.clear()
             imageGroupList.addAll(value)
@@ -36,7 +37,7 @@ class MainAdapter: RecyclerView.Adapter<MainViewHolder> {
         var indexInner = 0
         imageGroupList.forEachIndexed { indexOfList, paperGroup ->
             paperGroup.imageList.forEachIndexed { indexOfGroup, s ->
-                if (s.name.contains(paper_name)) {
+                if (paperGroup.imageNameMap.containsKey(s) && paperGroup.imageNameMap.get(s)!!.contains(paper_name)) {
                     hasMatch = true
                     if (paperGroup.imageList.size == 1) {
                         indexOut = indexOfList
@@ -69,6 +70,7 @@ class MainAdapter: RecyclerView.Adapter<MainViewHolder> {
     }
 
     override fun onBindViewHolder(holder: MainViewHolder?, position: Int) {
-        holder?.bindData(imageGroupList[position].timeOfData, imageGroupList[position].imageList, position == 0, position + 1 == imageGroupList.size)
+        holder?.bindData(imageGroupList[position].timeOfData, imageGroupList[position].imageList, imageGroupList[position].imageNameMap,
+                position == 0, position + 1 == imageGroupList.size)
     }
 }

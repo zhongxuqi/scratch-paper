@@ -1,5 +1,6 @@
 package com.musketeer.scratchpaper.adapter
 
+import android.graphics.Bitmap
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -66,7 +67,7 @@ class MainViewHolder constructor(itemView: View?, adapter: MainAdapter): Recycle
         return f.toInt()
     }
 
-    fun bindData(timeOfDay: Long, fileList: List<File>, isTop: Boolean, isBottom: Boolean) {
+    fun bindData(timeOfDay: Long, bitmapList: List<Bitmap>, bitmapNameMap: Map<Bitmap, String>, isTop: Boolean, isBottom: Boolean) {
         val calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"))
         calendar.timeInMillis = timeOfDay
         mTimeLineText.setText("${calendar.get(Calendar.YEAR)}年${calendar.get(Calendar.MONTH)+1}月${calendar.get(Calendar.DAY_OF_MONTH)}日")
@@ -79,18 +80,18 @@ class MainViewHolder constructor(itemView: View?, adapter: MainAdapter): Recycle
             rowNum = 4
         }
 
-        for (i in 0..fileList.size step rowNum) {
+        for (i in 0..bitmapList.size step rowNum) {
             val container = initLineContainer()
 
             for (j in 0..(rowNum-1)) {
                 val cardView = LayoutInflater.from(adapter.context).inflate(R.layout.component_paper_card, null)
                 cardView.layoutParams = initCardLayoutParams()
-                if (i + j < fileList.size) {
+                if (i + j < bitmapList.size) {
                     val imageView = cardView.findViewById(R.id.paper_content) as ImageView
                     var offsetXY = IntArray(2)
-                    val bitmap = ImageUtils.drawImageDropShadow(BitmapUtils.getImageBitmap(fileList[i + j]), offsetXY)
+                    val bitmap = ImageUtils.drawImageDropShadow(bitmapList[i + j], offsetXY)
                     imageView.setImageBitmap(bitmap)
-                    imageView.setTag(fileList[i + j])
+                    imageView.setTag(bitmapNameMap.get(bitmapList[i + j]))
                     imageView.setOnClickListener(object: View.OnClickListener{
                         override fun onClick(v: View?) {
                             adapter.onItemClickListener?.onClick(v)
