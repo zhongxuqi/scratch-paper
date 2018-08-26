@@ -107,4 +107,6 @@
 
     <!-- login -->
     <string name="login_hint">点击登入</string>
+
+    <string name="easypass_adcontent">简单、安全的密码管理工具。支持IOS、Android和Web。欢迎使用!</string>
 </resources>

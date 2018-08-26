@@ -76,4 +76,6 @@
     <string name="title_activity_paper_select">Choose paper</string>
 
     <string name="close_hint">Click Again to Close the APP</string>
+
+    <string name="easypass_adcontent">A simple and safe password management app. Support IOS, Android and Web. Welcome to use!</string>
 </resources>

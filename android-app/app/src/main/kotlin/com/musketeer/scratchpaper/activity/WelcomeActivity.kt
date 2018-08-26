@@ -37,44 +37,41 @@ class WelcomeActivity : BaseActivity() {
 
     override fun initView() {
         supportActionBar!!.hide()
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_PHONE_STATE), REQUEST_PERMISSIONS)
-        }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_PERMISSIONS)
-        }
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_PERMISSIONS)
+//        }
         mImageView = findViewById(R.id.welcome_image) as ImageView
         mSkipButton = findViewById(R.id.skip_button) as TextView
         mWelcomeView = findViewById(R.id.adcontent) as RelativeLayout
-        SplashAD(this, mWelcomeView!!, mSkipButton, Contants.AD_APPID, Contants.AD_LARGE, object: SplashADListener{
-            override fun onNoAD(ecode: Int) {
-                LogUtils.d(TAG, "ecode:$ecode")
-            }
-
-            override fun onADDismissed() {
-                LogUtils.d(TAG, "onADDismissed")
-            }
-
-            override fun onADPresent() {
-                LogUtils.d(TAG, "onADPresent")
-                hasPresent = true
-                mImageView?.visibility = View.GONE
-            }
-
-            override fun onADClicked() {
-                LogUtils.d(TAG, "onADClicked")
-
-            }
-
-            override fun onADTick(millisUntilFinished: Long) {
-                val tickTime = Math.round(millisUntilFinished/1000F)
-                this@WelcomeActivity.mSkipButton?.setText("点击跳过 (${tickTime}s)")
-                if (millisUntilFinished - 1000 <= 0) {
-                    start()
-                }
-
-            }
-        }, 0)
+//        SplashAD(this, mWelcomeView!!, mSkipButton, Contants.AD_APPID, Contants.AD_LARGE, object: SplashADListener{
+//            override fun onNoAD(ecode: Int) {
+//                LogUtils.d(TAG, "ecode:$ecode")
+//            }
+//
+//            override fun onADDismissed() {
+//                LogUtils.d(TAG, "onADDismissed")
+//            }
+//
+//            override fun onADPresent() {
+//                LogUtils.d(TAG, "onADPresent")
+//                hasPresent = true
+//                mImageView?.visibility = View.GONE
+//            }
+//
+//            override fun onADClicked() {
+//                LogUtils.d(TAG, "onADClicked")
+//
+//            }
+//
+//            override fun onADTick(millisUntilFinished: Long) {
+//                val tickTime = Math.round(millisUntilFinished/1000F)
+//                this@WelcomeActivity.mSkipButton?.setText("点击跳过 (${tickTime}s)")
+//                if (millisUntilFinished - 1000 <= 0) {
+//                    start()
+//                }
+//
+//            }
+//        }, 0)
     }
 
     override fun initEvent() {
@@ -95,22 +92,18 @@ class WelcomeActivity : BaseActivity() {
 
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        when (requestCode) {
-            REQUEST_PERMISSIONS -> {
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_PHONE_STATE), REQUEST_PERMISSIONS)
-                    return
-                }
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_PERMISSIONS)
-                    return
-                }
-                startActivity(WelcomeActivity::class.java)
-                finish()
-            }
-        }
-    }
+//    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+//        when (requestCode) {
+//            REQUEST_PERMISSIONS -> {
+//                if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+//                    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_PERMISSIONS)
+//                    return
+//                }
+//                startActivity(WelcomeActivity::class.java)
+//                finish()
+//            }
+//        }
+//    }
 
     fun start() {
         synchronized(this) {

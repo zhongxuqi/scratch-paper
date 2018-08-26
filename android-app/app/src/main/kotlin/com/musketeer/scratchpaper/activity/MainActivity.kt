@@ -1,7 +1,9 @@
 package com.musketeer.scratchpaper.activity
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.graphics.drawable.DrawableCompat
@@ -64,12 +66,28 @@ class MainActivity : BaseFragmentActivity(){
         findViewById(R.id.tab_title_image) as TextView
     }
 
+    var mDialog: AlertDialog? = null
+
     override fun setContentView(savedInstanceState: Bundle?) {
         setContentView(R.layout.activity_main)
     }
 
     override fun initView() {
 
+        // 展示easypass广告
+        mDialog?.dismiss()
+        val builder = AlertDialog.Builder(this)
+        val contentView = LayoutInflater.from(this).inflate(R.layout.ad_easypass, null)
+        builder.setView(contentView)
+        contentView.findViewById(R.id.ad_easypass).setOnClickListener(object: View.OnClickListener{
+            override fun onClick(v: View?) {
+                val uri = Uri.parse("https://www.easypass.tech")
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                startActivity(intent)
+            }
+        })
+        mDialog = builder.create()
+        mDialog?.show()
     }
 
     override fun initEvent() {
@@ -159,50 +177,50 @@ class MainActivity : BaseFragmentActivity(){
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             var ret: Boolean = true
             if (System.currentTimeMillis() - closeTime > 2000) {
-                if (interstitialAD != null) {
-                    ret = false
-                }
+//                if (interstitialAD != null) {
+//                    ret = false
+//                }
                 closeTime = System.currentTimeMillis()
                 showCustomToast(R.string.close_hint)
             } else {
-                interstitialAD?.closePopupWindow()
+//                interstitialAD?.closePopupWindow()
                 finish()
             }
-            if (interstitialAD == null) {
-                interstitialAD = InterstitialAD(this, Contants.AD_APPID, Contants.AD_SMALL)
-                interstitialAD?.setADListener(object: InterstitialADListener{
-                    override fun onADExposure() {
-                        LogUtils.d(TAG, "onADExposure")
-                    }
-
-                    override fun onADOpened() {
-                        LogUtils.d(TAG, "onADOpened")
-                    }
-
-                    override fun onADClosed() {
-                        LogUtils.d(TAG, "onADClosed")
-                        interstitialAD = null
-                    }
-
-                    override fun onADLeftApplication() {
-                        LogUtils.d(TAG, "onADLeftApplication")
-                    }
-
-                    override fun onADReceive() {
-                        LogUtils.d(TAG, "onADReceive")
-                        interstitialAD?.show()
-                    }
-
-                    override fun onNoAD(p0: Int) {
-                        LogUtils.d(TAG, "onNoAD $p0")
-                    }
-
-                    override fun onADClicked() {
-                        LogUtils.d(TAG, "onADClicked")
-                    }
-                })
-                interstitialAD?.loadAD()
-            }
+//            if (interstitialAD == null) {
+//                interstitialAD = InterstitialAD(this, Contants.AD_APPID, Contants.AD_SMALL)
+//                interstitialAD?.setADListener(object: InterstitialADListener{
+//                    override fun onADExposure() {
+//                        LogUtils.d(TAG, "onADExposure")
+//                    }
+//
+//                    override fun onADOpened() {
+//                        LogUtils.d(TAG, "onADOpened")
+//                    }
+//
+//                    override fun onADClosed() {
+//                        LogUtils.d(TAG, "onADClosed")
+//                        interstitialAD = null
+//                    }
+//
+//                    override fun onADLeftApplication() {
+//                        LogUtils.d(TAG, "onADLeftApplication")
+//                    }
+//
+//                    override fun onADReceive() {
+//                        LogUtils.d(TAG, "onADReceive")
+//                        interstitialAD?.show()
+//                    }
+//
+//                    override fun onNoAD(p0: Int) {
+//                        LogUtils.d(TAG, "onNoAD $p0")
+//                    }
+//
+//                    override fun onADClicked() {
+//                        LogUtils.d(TAG, "onADClicked")
+//                    }
+//                })
+//                interstitialAD?.loadAD()
+//            }
             return ret
         }
         return false
