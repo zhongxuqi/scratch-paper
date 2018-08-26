@@ -10,3 +10,4 @@
 
 *.apk
 /android-app/app/build
+/android-app/app/release
