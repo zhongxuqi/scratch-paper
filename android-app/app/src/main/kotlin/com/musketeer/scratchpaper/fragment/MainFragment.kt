@@ -75,9 +75,9 @@ class MainFragment: BaseSupportFragment() {
         addNewScratchPaper.setOnClickListener(this)
         mAdapter.onItemClickListener = object: View.OnClickListener{
             override fun onClick(v: View?) {
-                val paperFile = v?.getTag() as File
+                val fileName = v?.getTag() as String
                 val bundle = Bundle()
-                bundle.putString("paper_name", paperFile.name)
+                bundle.putString("paper_name", fileName)
                 startActivityForResult(BrowsePaperActivity::class.java, bundle, Config.ACTION_EDIT_FILE)
 
                 if (mDialog != null) {

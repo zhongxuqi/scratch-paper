@@ -65,9 +65,9 @@ class NoteFragment: BaseSupportFragment() {
         addNewScratchNote.setOnClickListener(this)
         mAdapter.onItemClickListener = object: View.OnClickListener{
             override fun onClick(v: View?) {
-                val noteFile = v?.getTag() as File
+                val fileName = v?.getTag() as String
                 val bundle = Bundle()
-                bundle.putString("note_name", noteFile.name)
+                bundle.putString("note_name", fileName)
                 startActivityForResult(BrowseNoteActivity::class.java, bundle, Config.ACTION_EDIT_FILE)
             }
         }

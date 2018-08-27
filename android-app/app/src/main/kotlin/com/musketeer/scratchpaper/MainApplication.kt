@@ -15,6 +15,7 @@ package com.musketeer.scratchpaper
 import android.os.Environment
 
 import com.musketeer.scratchpaper.utils.FileUtils
+import com.musketeer.scratchpaper.utils.LogUtils
 import com.umeng.analytics.MobclickAgent
 import com.umeng.socialize.Config
 import com.umeng.socialize.PlatformConfig
@@ -74,7 +75,10 @@ class MainApplication : BaseApplication() {
      */
     private fun iniEnv() {
         // TODO Auto-generated method stub
-        val sdcard = getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!.absolutePath
+        var sdcard = getExternalFilesDir(Environment.DIRECTORY_PICTURES)?.absolutePath
+        if (sdcard == null) {
+            sdcard = Environment.getExternalStorageDirectory().absolutePath + "/Android/data/com.musketeer.scratchpaper/files/Pictures"
+        }
         FileUtils.createExternalStoragePublicPicture()
         mCachePath = sdcard + "/cache/image/"
         FileUtils.createDir(File(mCachePath))
@@ -88,5 +92,26 @@ class MainApplication : BaseApplication() {
         FileUtils.createDir(File(mCacheImagePath))
         mCacheImagePathComp = sdcard + "/cache/picture_comp/"
         FileUtils.createDir(File(mCacheImagePathComp))
+    }
+
+    private fun getSDCardPath(): String {
+        var mExternalDirectory = Environment.getExternalStorageDirectory()
+                .absolutePath
+        if (android.os.Build.DEVICE.contains("samsung") || android.os.Build.MANUFACTURER.contains("samsung")) {
+            var f = File(Environment.getExternalStorageDirectory()
+                    .parent + "/extSdCard" + "/myDirectory")
+            if (f.exists() && f.isDirectory) {
+                mExternalDirectory = Environment.getExternalStorageDirectory()
+                        .parent + "/extSdCard"
+            } else {
+                f = File(Environment.getExternalStorageDirectory()
+                        .absolutePath + "/external_sd" + "/myDirectory")
+                if (f.exists() && f.isDirectory) {
+                    mExternalDirectory = Environment
+                            .getExternalStorageDirectory().absolutePath + "/external_sd"
+                }
+            }
+        }
+        return mExternalDirectory
     }
 }

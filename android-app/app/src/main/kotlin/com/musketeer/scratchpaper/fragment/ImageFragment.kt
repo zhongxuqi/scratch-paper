@@ -64,9 +64,9 @@ class ImageFragment: BaseSupportFragment() {
         addNewScratchNote.setOnClickListener(this)
         mAdapter.onItemClickListener = object: View.OnClickListener{
             override fun onClick(v: View?) {
-                val imageFile = v?.getTag() as File
+                val fileName = v?.getTag() as String
                 val bundle = Bundle()
-                bundle.putString("image_name", imageFile.name)
+                bundle.putString("image_name", fileName)
                 startActivityForResult(BrowseImageActivity::class.java, bundle, Config.ACTION_EDIT_FILE)
             }
         }

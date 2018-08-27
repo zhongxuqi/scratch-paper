@@ -8,8 +8,8 @@ android {
         applicationId 'com.musketeer.scratchpaper'
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 21
-        versionName '3.3.1'
+        versionCode 24
+        versionName '3.3.4'
     }
     buildTypes {
         release {
@@ -40,7 +40,7 @@ dependencies {
     implementation files('libs/umeng_social_net.jar')
     implementation files('libs/umeng_social_shareview.jar')
     implementation files('libs/umeng_social_tool.jar')
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation files('libs/umeng_shareboard_widget.jar')
     implementation files('libs/umeng_social_shareview.jar')
     implementation project(':colorpicker-library')

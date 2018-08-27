@@ -86,6 +86,11 @@ class MainActivity : BaseFragmentActivity(){
                 startActivity(intent)
             }
         })
+        contentView.findViewById(R.id.close).setOnClickListener(object: View.OnClickListener{
+            override fun onClick(v: View?) {
+                mDialog?.dismiss()
+            }
+        })
         mDialog = builder.create()
         mDialog?.show()
     }
