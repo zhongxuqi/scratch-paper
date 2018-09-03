@@ -108,5 +108,6 @@
     <!-- login -->
     <string name="login_hint">点击登入</string>
 
-    <string name="easypass_adcontent">简单、安全的密码管理工具。支持IOS、Android和Web。欢迎使用!</string>
+    <string name="easypass_adcontent">神奇的密码工具。每天只需0.1元，就能保证帐号密码的安全。现已支持IOS、Android和Web。点击了解详情</string>
+    <string name="advertisement">广告</string>
 </resources>

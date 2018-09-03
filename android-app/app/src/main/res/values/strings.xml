@@ -77,5 +77,6 @@
 
     <string name="close_hint">Click Again to Close the APP</string>
 
-    <string name="easypass_adcontent">A simple and safe password management app. Support IOS, Android and Web. Welcome to use!</string>
+    <string name="easypass_adcontent">A amazing password tool. Only 0.01 USD to keep account and password safe. Now support IOS, Android and Web. Free for 30 days. Click to know details</string>
+    <string name="advertisement">Advertisement</string>
 </resources>

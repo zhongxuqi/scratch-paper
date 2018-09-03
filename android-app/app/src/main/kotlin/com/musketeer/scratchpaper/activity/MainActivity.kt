@@ -25,6 +25,7 @@ import com.qq.e.ads.interstitial.InterstitialAD
 import com.qq.e.ads.interstitial.InterstitialADListener
 import com.umeng.analytics.MobclickAgent
 import com.umeng.socialize.UMShareAPI
+import java.util.*
 
 class MainActivity : BaseFragmentActivity(){
     companion object {
@@ -79,14 +80,18 @@ class MainActivity : BaseFragmentActivity(){
         val builder = AlertDialog.Builder(this)
         val contentView = LayoutInflater.from(this).inflate(R.layout.ad_easypass, null)
         builder.setView(contentView)
-        contentView.findViewById(R.id.ad_easypass).setOnClickListener(object: View.OnClickListener{
+        contentView.findViewById<View>(R.id.ad_easypass).setOnClickListener(object: View.OnClickListener{
             override fun onClick(v: View?) {
-                val uri = Uri.parse("https://www.easypass.tech")
+                var lang = Locale.getDefault().language
+                if (lang.contains("zh")) {
+                    lang = "cn"
+                }
+                val uri = Uri.parse("https://www.easypass.tech?lang=$lang")
                 val intent = Intent(Intent.ACTION_VIEW, uri)
                 startActivity(intent)
             }
         })
-        contentView.findViewById(R.id.close).setOnClickListener(object: View.OnClickListener{
+        contentView.findViewById<View>(R.id.close).setOnClickListener(object: View.OnClickListener{
             override fun onClick(v: View?) {
                 mDialog?.dismiss()
             }
@@ -96,17 +101,17 @@ class MainActivity : BaseFragmentActivity(){
     }
 
     override fun initEvent() {
-        findViewById(R.id.tab_paper).setOnClickListener(object: View.OnClickListener{
+        findViewById<View>(R.id.tab_paper).setOnClickListener(object: View.OnClickListener{
             override fun onClick(v: View?) {
                 viewPager.setCurrentItem(0)
             }
         })
-        findViewById(R.id.tab_note).setOnClickListener(object: View.OnClickListener{
+        findViewById<View>(R.id.tab_note).setOnClickListener(object: View.OnClickListener{
             override fun onClick(v: View?) {
                 viewPager.setCurrentItem(1)
             }
         })
-        findViewById(R.id.tab_image).setOnClickListener(object: View.OnClickListener{
+        findViewById<View>(R.id.tab_image).setOnClickListener(object: View.OnClickListener{
             override fun onClick(v: View?) {
                 viewPager.setCurrentItem(2)
             }

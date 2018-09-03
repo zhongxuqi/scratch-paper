@@ -80,7 +80,7 @@ class NoteFragment: BaseSupportFragment() {
                 builder.setView(contentView)
                 mDialog = builder.create()
                 //编辑内容
-                val editButton = contentView.findViewById(R.id.edit)
+                val editButton = contentView.findViewById<View>(R.id.edit)
                 editButton.setOnClickListener {
                     // TODO Auto-generated method stub
                     val bundle = Bundle()
@@ -89,7 +89,7 @@ class NoteFragment: BaseSupportFragment() {
                     mDialog?.dismiss()
                 }
                 //删除内容
-                val deleteButton = contentView.findViewById(R.id.delete)
+                val deleteButton = contentView.findViewById<View>(R.id.delete)
                 deleteButton.setOnClickListener {
                     // TODO Auto-generated method stub
                     mDialog?.dismiss()
@@ -105,7 +105,7 @@ class NoteFragment: BaseSupportFragment() {
                     mDialog?.show()
                 }
                 //分享
-                val shareButton = contentView.findViewById(R.id.share)
+                val shareButton = contentView.findViewById<View>(R.id.share)
                 shareButton.setOnClickListener {
                     val filePath = PaperFileUtils.getImagePath(fileName)
                     val image = UMImage(activity, File(filePath))
