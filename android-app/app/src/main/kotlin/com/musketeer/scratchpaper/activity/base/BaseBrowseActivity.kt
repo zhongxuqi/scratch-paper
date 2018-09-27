@@ -1,6 +1,7 @@
 package com.musketeer.scratchpaper.activity.base
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.view.View
@@ -38,12 +39,14 @@ abstract class BaseBrowseActivity : BaseActivity() {
     }
 
     override fun initView() {
+        window.statusBarColor = Color.BLACK
+
         supportActionBar?.hide()
         fileBrowser.adapter = adapter
     }
 
     override fun initEvent() {
-        fileBrowser.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
+        fileBrowser.setOnPageChangeListener(object : ViewPager.OnPageChangeListener{
             override fun onPageScrollStateChanged(state: Int) {
 
             }

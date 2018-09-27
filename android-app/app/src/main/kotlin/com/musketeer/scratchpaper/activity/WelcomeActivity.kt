@@ -15,8 +15,6 @@ import com.musketeer.scratchpaper.R
 import com.musketeer.scratchpaper.common.Contants
 import com.musketeer.scratchpaper.utils.LogUtils
 import com.muskeeter.base.acitivity.BaseActivity
-import com.qq.e.ads.splash.SplashAD
-import com.qq.e.ads.splash.SplashADListener
 
 class WelcomeActivity : BaseActivity() {
     companion object {

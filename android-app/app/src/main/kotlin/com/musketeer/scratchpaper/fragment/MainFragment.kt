@@ -41,7 +41,7 @@ class MainFragment: BaseSupportFragment() {
         findViewById(R.id.main_paper_list) as RecyclerView
     }
     val mAdapter: MainAdapter by lazy {
-        MainAdapter(activity)
+        MainAdapter(activity!!)
     }
 
     val addNewScratchPaper: ImageView by lazy {

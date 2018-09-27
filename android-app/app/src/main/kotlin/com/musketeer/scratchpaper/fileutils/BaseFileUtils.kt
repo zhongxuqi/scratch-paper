@@ -82,11 +82,12 @@ abstract class BaseFileUtils {
      */
     fun getImageThumbNail(image_name: String): Bitmap? {
         if (FileUtils.isFileExist(getImageThumbNailPath(image_name))) {
-            return BitmapFactory.decodeFile(getImageThumbNailPath(image_name))
-                    .copy(Bitmap.Config.ARGB_8888, true)
-        } else {
-            return null
+            var bm = BitmapFactory.decodeFile(getImageThumbNailPath(image_name))
+            if (bm != null) {
+                return bm.copy(Bitmap.Config.ARGB_8888, true)
+            }
         }
+        return null
     }
 
     /**
@@ -206,8 +207,10 @@ abstract class BaseFileUtils {
                 var bitmapGroup = BitmapGroup(imageGroup.timeOfData)
                 for (imageFile in imageGroup.imageList) {
                     var bitmap = BitmapUtils.getImageBitmap(imageFile)
-                    bitmapGroup.imageList.add(bitmap)
-                    bitmapGroup.imageNameMap.put(bitmap, imageFile.name)
+                    if (bitmap != null) {
+                        bitmapGroup.imageList.add(bitmap)
+                        bitmapGroup.imageNameMap.put(bitmap, imageFile.name)
+                    }
                 }
                 this.mBitmapGroup.add(bitmapGroup)
             }
@@ -241,7 +244,10 @@ abstract class BaseFileUtils {
             val imageList = readSortedImageList()
             this.mSortedBitmapGroup = mutableListOf<Bitmap>()
             for (imageFile in imageList) {
-                this.mSortedBitmapGroup.add(BitmapUtils.getImageBitmap(imageFile))
+                var bm = BitmapUtils.getImageBitmap(imageFile)
+                if (bm != null) {
+                    this.mSortedBitmapGroup.add(bm)
+                }
             }
         }
         return this.mSortedBitmapGroup

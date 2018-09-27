@@ -61,7 +61,7 @@ class FileBrowserAdapter : PagerAdapter {
         notifyDataSetChanged()
     }
 
-    override fun isViewFromObject(view: View?, `object`: Any?): Boolean {
+    override fun isViewFromObject(view: View, `object`: Any): Boolean {
         return view == `object`
     }
 
@@ -69,17 +69,17 @@ class FileBrowserAdapter : PagerAdapter {
         return fileViewList.size
     }
 
-    override fun instantiateItem(container: ViewGroup?, position: Int): Any {
+    override fun instantiateItem(container: ViewGroup, position: Int): Any {
         container?.addView(fileViewList[position])
         return fileViewList[position]
     }
 
-    override fun getItemPosition(`object`: Any?): Int {
+    override fun getItemPosition(`object`: Any): Int {
         return this.fileViewList.indexOf(`object`)
     }
 
-    override fun destroyItem(container: ViewGroup?, position: Int, `object`: Any?) {
-        container?.removeView(fileViewList[position])
+    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
+        container.removeView(fileViewList[position])
     }
 
     override fun getPageTitle(position: Int): CharSequence {

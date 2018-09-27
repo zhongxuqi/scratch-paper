@@ -13,6 +13,7 @@
 package com.musketeer.scratchpaper
 
 import android.os.Environment
+import com.miui.zeus.mimo.sdk.MimoSdk
 
 import com.musketeer.scratchpaper.utils.FileUtils
 import com.musketeer.scratchpaper.utils.LogUtils
@@ -55,6 +56,8 @@ class MainApplication : BaseApplication() {
         // TODO Auto-generated method stub
         super.onCreate()
         instance = this
+
+        MimoSdk.init(this, "2882303761517276785", "fake_app_key", "fake_app_token")
 
         // init umeng
         MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL)

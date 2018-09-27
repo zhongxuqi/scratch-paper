@@ -40,7 +40,7 @@ class NoteFragment: BaseSupportFragment() {
         findViewById(R.id.main_note_list) as RecyclerView
     }
     val mAdapter: MainAdapter by lazy {
-        MainAdapter(activity)
+        MainAdapter(activity!!)
     }
 
     val addNewScratchNote: ImageView by lazy {

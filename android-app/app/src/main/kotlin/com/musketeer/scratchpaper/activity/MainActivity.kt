@@ -1,11 +1,17 @@
 package com.musketeer.scratchpaper.activity
 
+import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v4.view.ViewPager
 import android.view.*
@@ -16,16 +22,20 @@ import com.musketeer.scratchpaper.R
 import com.musketeer.scratchpaper.common.Contants
 import com.musketeer.scratchpaper.utils.LogUtils
 import com.muskeeter.base.acitivity.BaseFragmentActivity
+import com.musketeer.scratchpaper.activity.WelcomeActivity.Companion.REQUEST_PERMISSIONS
 import com.musketeer.scratchpaper.adapter.FragmentAdapter
 import com.musketeer.scratchpaper.config.Config
 import com.musketeer.scratchpaper.fragment.ImageFragment
 import com.musketeer.scratchpaper.fragment.MainFragment
 import com.musketeer.scratchpaper.fragment.NoteFragment
-import com.qq.e.ads.interstitial.InterstitialAD
-import com.qq.e.ads.interstitial.InterstitialADListener
 import com.umeng.analytics.MobclickAgent
 import com.umeng.socialize.UMShareAPI
-import java.util.*
+import com.xiaomi.ad.common.pojo.AdType
+import com.umeng.socialize.utils.DeviceConfig.context
+import com.miui.zeus.mimo.sdk.ad.AdWorkerFactory
+import com.miui.zeus.mimo.sdk.ad.IAdWorker
+import com.miui.zeus.mimo.sdk.listener.MimoAdListener
+
 
 class MainActivity : BaseFragmentActivity(){
     companion object {
@@ -41,7 +51,6 @@ class MainActivity : BaseFragmentActivity(){
     private val fragmentList = mutableListOf<Fragment>()
 
     private var closeTime: Long = 0
-    private var interstitialAD: InterstitialAD? = null
 
     private val mTabIconPaper: ImageView by lazy {
         findViewById(R.id.tab_icon_paper) as ImageView
@@ -68,36 +77,23 @@ class MainActivity : BaseFragmentActivity(){
     }
 
     var mDialog: AlertDialog? = null
+    var myAdWorker: IAdWorker? = null
 
     override fun setContentView(savedInstanceState: Bundle?) {
         setContentView(R.layout.activity_main)
     }
 
     override fun initView() {
+        window.statusBarColor = Color.BLACK
 
-        // 展示easypass广告
-        mDialog?.dismiss()
-        val builder = AlertDialog.Builder(this)
-        val contentView = LayoutInflater.from(this).inflate(R.layout.ad_easypass, null)
-        builder.setView(contentView)
-        contentView.findViewById<View>(R.id.ad_easypass).setOnClickListener(object: View.OnClickListener{
-            override fun onClick(v: View?) {
-                var lang = Locale.getDefault().language
-                if (lang.contains("zh")) {
-                    lang = "cn"
-                }
-                val uri = Uri.parse("https://www.easypass.tech?lang=$lang")
-                val intent = Intent(Intent.ACTION_VIEW, uri)
-                startActivity(intent)
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED ||
+                    ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_PERMISSIONS)
+                return
             }
-        })
-        contentView.findViewById<View>(R.id.close).setOnClickListener(object: View.OnClickListener{
-            override fun onClick(v: View?) {
-                mDialog?.dismiss()
-            }
-        })
-        mDialog = builder.create()
-        mDialog?.show()
+        }
+        showAD()
     }
 
     override fun initEvent() {
@@ -126,7 +122,7 @@ class MainActivity : BaseFragmentActivity(){
         viewPager.offscreenPageLimit = 2
         viewPager.setCurrentItem(0)
         selectTab(0)
-        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
+        viewPager.setOnPageChangeListener(object : ViewPager.OnPageChangeListener{
             override fun onPageScrollStateChanged(state: Int) {
 
             }
@@ -139,6 +135,59 @@ class MainActivity : BaseFragmentActivity(){
                 selectTab(position)
             }
         })
+    }
+
+    fun showAD() {
+        myAdWorker = AdWorkerFactory.getAdWorker(this, window.decorView as ViewGroup, object: MimoAdListener{
+            override fun onAdFailed(p0: String?) {
+                LogUtils.d(TAG, "onAdFailed")
+            }
+
+            override fun onAdDismissed() {
+                LogUtils.d(TAG, "onAdDismissed")
+            }
+
+            override fun onAdPresent() {
+                LogUtils.d(TAG, "onAdPresent")
+            }
+
+            override fun onAdClick() {
+                LogUtils.d(TAG, "onAdClick")
+            }
+
+            override fun onStimulateSuccess() {
+                LogUtils.d(TAG, "onStimulateSuccess")
+            }
+
+            override fun onAdLoaded(p0: Int) {
+                myAdWorker?.show()
+            }
+        }, AdType.AD_INTERSTITIAL)
+        myAdWorker?.load("4b03e72a3ff5c9faf676bd9f0e1e8266") //POSITION_ID: 广告位ID
+
+        // 展示easypass广告
+//        mDialog?.dismiss()
+//        val builder = AlertDialog.Builder(this)
+//        val contentView = LayoutInflater.from(this).inflate(R.layout.ad_easypass, null)
+//        builder.setView(contentView)
+//        contentView.findViewById<View>(R.id.ad_easypass).setOnClickListener(object: View.OnClickListener{
+//            override fun onClick(v: View?) {
+//                var lang = Locale.getDefault().language
+//                if (lang.contains("zh")) {
+//                    lang = "cn"
+//                }
+//                val uri = Uri.parse("https://www.easypass.tech?lang=$lang")
+//                val intent = Intent(Intent.ACTION_VIEW, uri)
+//                startActivity(intent)
+//            }
+//        })
+//        contentView.findViewById<View>(R.id.close).setOnClickListener(object: View.OnClickListener{
+//            override fun onClick(v: View?) {
+//                mDialog?.dismiss()
+//            }
+//        })
+//        mDialog = builder.create()
+//        mDialog?.show()
     }
 
     fun selectTab(position: Int) {
@@ -234,5 +283,13 @@ class MainActivity : BaseFragmentActivity(){
             return ret
         }
         return false
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        when (requestCode) {
+            REQUEST_PERMISSIONS -> {
+                showAD()
+            }
+        }
     }
 }

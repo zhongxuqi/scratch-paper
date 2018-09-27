@@ -24,7 +24,7 @@
     <string name="action">Action</string>
     <string name="drawer_open">open menu</string>
     <string name="drawer_close">close menu</string>
-    <string name="affirm">affirm</string>
+    <string name="affirm">conffirm</string>
     <string name="stroke_width">Stroke Width</string>
 
     <!-- main activity -->
@@ -79,4 +79,39 @@
 
     <string name="easypass_adcontent">A amazing password tool. Only 0.01 USD to keep account and password safe. Now support IOS, Android and Web. Free for 30 days. Click to know details</string>
     <string name="advertisement">Advertisement</string>
+
+    <string name="affirm_back">confirm reset app?</string>
+    <string name="save_filename_">save file name：</string>
+    <string name="save_filename_hint">Please input file name</string>
+    <string name="full_screen">full screen</string>
+
+
+    <string name="input_name_hint">请输入新的文件名</string>
+    <string name="name_no_null">文件名不能为空</string>
+
+    <!-- help activity -->
+    <string name="use_title">使用说明</string>
+    <string name="help_title">帮助</string>
+    <string name="my_title">作者留言</string>
+    <string name="use_content">一、单指操作为绘图。\n\n二、双指操作为移动与缩放。\n\n三、手写页面左边侧滑可以拉出翻页菜单。</string>
+    <string name="help_content">一、最大撤消数指最大返回操作数，最好设为默认值。\n\n二、绘图进程数不宜设太多，最好设为默认值。\n\n三、APP中，纸张的所有编辑操作都不需要键盘，这才是作为草稿纸的本质意义，同时也是本APP与印象笔记和有道笔记的最本质区别。</string>
+    <string name="my_content">经过一年多的维护，草稿本已经完成2.0到3.0的升级，功能和界面都有了质的提升。大家宝贵的意见我都一条条看过了，非常感谢大家，以后我会抽空去完善它，不久将它放到GITHUB上去，欢迎新手来学习和Android大神来共同开发。\n\n感谢大家的使用!\n\nMusketeer.</string>
+
+    <string name="rename">rename</string>
+
+    <!-- settings activity -->
+    <string name="base_set">基本设置</string>
+    <string name="senior_set">高级设置</string>
+    <string name="save">保存</string>
+    <string name="set_paper">设置纸张材质</string>
+    <string name="set_desk">设置桌面背景</string>
+    <string name="set_max_undo">最大撤消数</string>
+    <string name="set_thread_number">绘图线程数</string>
+    <string name="set_back_defalut">全部回到默认值</string>
+    <string name="set_success">设置成功!</string>
+    <string name="paper_size">纸张大小</string>
+    <string name="paper_row_number">展示列数</string>
+
+    <!-- login -->
+    <string name="login_hint">点击登入</string>
 </resources>

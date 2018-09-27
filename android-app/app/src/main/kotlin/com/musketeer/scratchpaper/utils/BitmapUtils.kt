@@ -14,8 +14,11 @@ object BitmapUtils {
      * *
      * @return
      */
-    fun getImageBitmap(image: File): Bitmap {
-        return BitmapFactory.decodeFile(image.absolutePath)
-                .copy(Bitmap.Config.ARGB_8888, true)
+    fun getImageBitmap(image: File): Bitmap? {
+        var bm = BitmapFactory.decodeFile(image.absolutePath)
+        if (bm == null) {
+            return null
+        }
+        return bm.copy(Bitmap.Config.ARGB_8888, true)
     }
 }

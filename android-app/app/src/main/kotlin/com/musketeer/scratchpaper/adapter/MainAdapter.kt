@@ -63,13 +63,13 @@ class MainAdapter: RecyclerView.Adapter<MainViewHolder> {
         return imageGroupList.size
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): MainViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.main_list_item, null)
         view.layoutParams = RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         return MainViewHolder(view, this)
     }
 
-    override fun onBindViewHolder(holder: MainViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
         holder?.bindData(imageGroupList[position].timeOfData, imageGroupList[position].imageList, imageGroupList[position].imageNameMap,
                 position == 0, position + 1 == imageGroupList.size)
     }

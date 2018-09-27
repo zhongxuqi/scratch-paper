@@ -40,7 +40,7 @@ abstract class BaseSupportFragment: Fragment(), View.OnClickListener, BaseFragme
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val metric = DisplayMetrics()
-        activity.windowManager.defaultDisplay.getMetrics(metric)
+        activity?.windowManager?.defaultDisplay?.getMetrics(metric)
         mScreenWidth = metric.widthPixels
         mScreenHeight = metric.heightPixels
         mDensity = metric.density
@@ -52,7 +52,7 @@ abstract class BaseSupportFragment: Fragment(), View.OnClickListener, BaseFragme
         mLoadingDialog = builder.create()
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         setContentView(inflater, container, savedInstanceState)
         initView()

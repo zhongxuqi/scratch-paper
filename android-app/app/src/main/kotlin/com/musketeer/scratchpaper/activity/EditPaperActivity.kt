@@ -98,6 +98,8 @@ class EditPaperActivity : BaseActivity(), OnItemClickListener, OnBMClickListener
     }
 
     override fun initView() {
+        window.statusBarColor = Color.BLACK
+
         // TODO Auto-generated method stub
         mDrawerLayout = findViewById(R.id.drawer_layout) as DrawerLayout
 

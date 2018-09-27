@@ -16,3 +16,6 @@
 #   public *;
 #}
 -dontwarn com.squareup.okhttp.**
+
+-keep class com.xiaomi.ad.**{*;}
+-keep class com.miui.zeus.**{*;}

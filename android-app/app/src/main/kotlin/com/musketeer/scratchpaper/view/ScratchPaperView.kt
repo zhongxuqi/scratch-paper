@@ -297,6 +297,9 @@ class ScratchPaperView : SurfaceView, SurfaceHolder.Callback {
                             pointLastLoca2 = PointF(event.getX(1), event.getY(1))
                             LastRange = Math.sqrt(Math.pow((pointLastLoca2.x - pointLastLoca1.x).toDouble(), 2.0) + Math.pow((pointLastLoca2.y - pointLastLoca1.y).toDouble(), 2.0)).toFloat()
                         }
+                        else -> {
+                            return true
+                        }
                     }
                     setStateByPointerCount(event.pointerCount)
                 }
@@ -315,6 +318,9 @@ class ScratchPaperView : SurfaceView, SurfaceHolder.Callback {
                             pointCurrLoca1 = PointF(event.getX(0), event.getY(0))
                             pointCurrLoca2 = PointF(event.getX(1), event.getY(1))
                             CurrRange = Math.sqrt(Math.pow((pointLastLoca2.x - pointLastLoca1.x).toDouble(), 2.0) + Math.pow((pointLastLoca2.y - pointLastLoca1.y).toDouble(), 2.0)).toFloat()
+                        }
+                        else -> {
+                            return true
                         }
                     }
 
@@ -342,6 +348,7 @@ class ScratchPaperView : SurfaceView, SurfaceHolder.Callback {
                             }
                         }
                         else -> {
+                            return true
                         }
                     }
                 }
@@ -352,6 +359,9 @@ class ScratchPaperView : SurfaceView, SurfaceHolder.Callback {
                     when (event.pointerCount) {
                         1 -> setStateByPointerCount(0)
                         2 -> setStateByPointerCount(0)
+                        else -> {
+                            return true
+                        }
                     }
                 }
             }
