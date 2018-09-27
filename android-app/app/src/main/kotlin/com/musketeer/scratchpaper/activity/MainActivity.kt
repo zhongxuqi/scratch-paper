@@ -5,15 +5,12 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
-import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v4.view.ViewPager
 import android.view.*
 import android.widget.ImageView
@@ -21,12 +18,10 @@ import android.widget.TextView
 import com.miui.zeus.mimo.sdk.MimoSdk
 
 import com.musketeer.scratchpaper.R
-import com.musketeer.scratchpaper.common.Contants
 import com.musketeer.scratchpaper.utils.LogUtils
 import com.muskeeter.base.acitivity.BaseFragmentActivity
 import com.musketeer.scratchpaper.activity.WelcomeActivity.Companion.REQUEST_PERMISSIONS
 import com.musketeer.scratchpaper.adapter.FragmentAdapter
-import com.musketeer.scratchpaper.config.Config
 import com.musketeer.scratchpaper.fragment.ImageFragment
 import com.musketeer.scratchpaper.fragment.MainFragment
 import com.musketeer.scratchpaper.fragment.NoteFragment
