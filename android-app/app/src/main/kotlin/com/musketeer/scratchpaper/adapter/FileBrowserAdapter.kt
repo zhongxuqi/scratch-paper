@@ -70,7 +70,7 @@ class FileBrowserAdapter : PagerAdapter {
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        container?.addView(fileViewList[position])
+        container.addView(fileViewList[position])
         return fileViewList[position]
     }
 

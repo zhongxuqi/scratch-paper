@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
@@ -17,6 +18,7 @@ import android.support.v4.view.ViewPager
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
+import com.miui.zeus.mimo.sdk.MimoSdk
 
 import com.musketeer.scratchpaper.R
 import com.musketeer.scratchpaper.common.Contants
@@ -138,6 +140,14 @@ class MainActivity : BaseFragmentActivity(){
     }
 
     fun showAD() {
+        if (!MimoSdk.isSdkReady()) {
+            Handler().postDelayed(object: Runnable{
+                override fun run() {
+                    this@MainActivity.showAD()
+                }
+            }, 1000)
+            return
+        }
         myAdWorker = AdWorkerFactory.getAdWorker(this, window.decorView as ViewGroup, object: MimoAdListener{
             override fun onAdFailed(p0: String?) {
                 LogUtils.d(TAG, "onAdFailed")
