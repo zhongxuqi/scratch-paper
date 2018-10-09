@@ -143,32 +143,69 @@ class MainActivity : BaseFragmentActivity(){
             }, 1000)
             return
         }
-        myAdWorker = AdWorkerFactory.getAdWorker(this, window.decorView as ViewGroup, object: MimoAdListener{
-            override fun onAdFailed(p0: String?) {
-                LogUtils.d(TAG, "onAdFailed")
-            }
+        val mContainer = findViewById(R.id.splash_ad_container) as ViewGroup
 
-            override fun onAdDismissed() {
-                LogUtils.d(TAG, "onAdDismissed")
-            }
+        try {
+            myAdWorker = AdWorkerFactory.getAdWorker(this, mContainer, object: MimoAdListener{
+                override fun onAdFailed(p0: String?) {
+                    LogUtils.d(TAG, "onAdFailed ${p0}")
 
-            override fun onAdPresent() {
-                LogUtils.d(TAG, "onAdPresent")
-            }
+                    // 开屏广告打开失败，就用插屏广告
+                    myAdWorker = AdWorkerFactory.getAdWorker(this@MainActivity, window.decorView as ViewGroup, object: MimoAdListener{
+                        override fun onAdFailed(p0: String?) {
+                            LogUtils.d(TAG, "onAdFailed")
+                        }
 
-            override fun onAdClick() {
-                LogUtils.d(TAG, "onAdClick")
-            }
+                        override fun onAdDismissed() {
+                            LogUtils.d(TAG, "onAdDismissed")
+                        }
 
-            override fun onStimulateSuccess() {
-                LogUtils.d(TAG, "onStimulateSuccess")
-            }
+                        override fun onAdPresent() {
+                            LogUtils.d(TAG, "onAdPresent")
+                        }
 
-            override fun onAdLoaded(p0: Int) {
-                myAdWorker?.show()
-            }
-        }, AdType.AD_INTERSTITIAL)
-        myAdWorker?.load("4b03e72a3ff5c9faf676bd9f0e1e8266") //POSITION_ID: 广告位ID
+                        override fun onAdClick() {
+                            LogUtils.d(TAG, "onAdClick")
+                        }
+
+                        override fun onStimulateSuccess() {
+                            LogUtils.d(TAG, "onStimulateSuccess")
+                        }
+
+                        override fun onAdLoaded(p0: Int) {
+                            myAdWorker?.show()
+                        }
+                    }, AdType.AD_INTERSTITIAL)
+                    myAdWorker?.load("4b03e72a3ff5c9faf676bd9f0e1e8266") //POSITION_ID: 广告位ID
+                }
+
+                override fun onAdDismissed() {
+                    LogUtils.d(TAG, "onAdDismissed")
+                }
+
+                override fun onAdPresent() {
+                    LogUtils.d(TAG, "onAdPresent")
+                }
+
+                override fun onAdClick() {
+                    LogUtils.d(TAG, "onAdClick")
+                }
+
+                override fun onStimulateSuccess() {
+                    LogUtils.d(TAG, "onStimulateSuccess")
+                }
+
+                override fun onAdLoaded(p0: Int) {
+                    LogUtils.d(TAG, "onAdLoaded")
+                }
+            }, AdType.AD_SPLASH)
+            myAdWorker?.loadAndShow("bd4f8b0f0e3821ca4e8b55c5e8799dc3")
+        } catch (e:Exception) {
+            e.printStackTrace()
+            mContainer.visibility = View.GONE
+        }
+
+
 
         // 展示easypass广告
 //        mDialog?.dismiss()
