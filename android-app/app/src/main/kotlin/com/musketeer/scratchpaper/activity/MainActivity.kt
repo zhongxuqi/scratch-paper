@@ -15,23 +15,21 @@ import android.support.v4.view.ViewPager
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
-import com.miui.zeus.mimo.sdk.MimoSdk
 
 import com.musketeer.scratchpaper.R
 import com.musketeer.scratchpaper.utils.LogUtils
 import com.muskeeter.base.acitivity.BaseFragmentActivity
 import com.musketeer.scratchpaper.activity.WelcomeActivity.Companion.REQUEST_PERMISSIONS
 import com.musketeer.scratchpaper.adapter.FragmentAdapter
+import com.musketeer.scratchpaper.common.Contants
 import com.musketeer.scratchpaper.fragment.ImageFragment
 import com.musketeer.scratchpaper.fragment.MainFragment
 import com.musketeer.scratchpaper.fragment.NoteFragment
 import com.umeng.analytics.MobclickAgent
 import com.umeng.socialize.UMShareAPI
-import com.xiaomi.ad.common.pojo.AdType
-import com.umeng.socialize.utils.DeviceConfig.context
-import com.miui.zeus.mimo.sdk.ad.AdWorkerFactory
-import com.miui.zeus.mimo.sdk.ad.IAdWorker
-import com.miui.zeus.mimo.sdk.listener.MimoAdListener
+import com.qq.e.ads.interstitial.InterstitialAD
+import com.qq.e.ads.interstitial.InterstitialADListener
+import com.qq.e.comm.util.AdError
 
 
 class MainActivity : BaseFragmentActivity(){
@@ -74,7 +72,6 @@ class MainActivity : BaseFragmentActivity(){
     }
 
     var mDialog: AlertDialog? = null
-    var myAdWorker: IAdWorker? = null
 
     override fun setContentView(savedInstanceState: Bundle?) {
         setContentView(R.layout.activity_main)
@@ -135,77 +132,39 @@ class MainActivity : BaseFragmentActivity(){
     }
 
     fun showAD() {
-        if (!MimoSdk.isSdkReady()) {
-            Handler().postDelayed(object: Runnable{
-                override fun run() {
-                    this@MainActivity.showAD()
-                }
-            }, 1000)
-            return
-        }
-        val mContainer = findViewById(R.id.splash_ad_container) as ViewGroup
+        LogUtils.d(TAG, "showAD")
+        val iad = InterstitialAD(this, Contants.AD_APPID, Contants.AD_SMALL)
+        iad.setADListener(object : InterstitialADListener {
+            override fun onADExposure() {
+                LogUtils.d(TAG, "onADExposure")
+            }
 
-        try {
-            myAdWorker = AdWorkerFactory.getAdWorker(this, mContainer, object: MimoAdListener{
-                override fun onAdFailed(p0: String?) {
-                    LogUtils.d(TAG, "onAdFailed ${p0}")
+            override fun onADOpened() {
+                LogUtils.d(TAG, "onADOpened")
+            }
 
-                    // 开屏广告打开失败，就用插屏广告
-                    myAdWorker = AdWorkerFactory.getAdWorker(this@MainActivity, window.decorView as ViewGroup, object: MimoAdListener{
-                        override fun onAdFailed(p0: String?) {
-                            LogUtils.d(TAG, "onAdFailed")
-                        }
+            override fun onADClosed() {
+                LogUtils.d(TAG, "onADClosed")
+            }
 
-                        override fun onAdDismissed() {
-                            LogUtils.d(TAG, "onAdDismissed")
-                        }
+            override fun onADLeftApplication() {
+                LogUtils.d(TAG, "onADLeftApplication")
+            }
 
-                        override fun onAdPresent() {
-                            LogUtils.d(TAG, "onAdPresent")
-                        }
+            override fun onADReceive() {
+                LogUtils.d(TAG, "onADReceive")
+                iad.show()
+            }
 
-                        override fun onAdClick() {
-                            LogUtils.d(TAG, "onAdClick")
-                        }
+            override fun onNoAD(p0: AdError?) {
+                LogUtils.i(TAG, String.format("LoadInterstitialAd Fail, error code: %d, error msg: %s", p0?.getErrorCode(), p0?.getErrorMsg()))
+            }
 
-                        override fun onStimulateSuccess() {
-                            LogUtils.d(TAG, "onStimulateSuccess")
-                        }
-
-                        override fun onAdLoaded(p0: Int) {
-                            myAdWorker?.show()
-                        }
-                    }, AdType.AD_INTERSTITIAL)
-                    myAdWorker?.load("4b03e72a3ff5c9faf676bd9f0e1e8266") //POSITION_ID: 广告位ID
-                }
-
-                override fun onAdDismissed() {
-                    LogUtils.d(TAG, "onAdDismissed")
-                }
-
-                override fun onAdPresent() {
-                    LogUtils.d(TAG, "onAdPresent")
-                }
-
-                override fun onAdClick() {
-                    LogUtils.d(TAG, "onAdClick")
-                }
-
-                override fun onStimulateSuccess() {
-                    LogUtils.d(TAG, "onStimulateSuccess")
-                }
-
-                override fun onAdLoaded(p0: Int) {
-                    LogUtils.d(TAG, "onAdLoaded")
-                }
-            }, AdType.AD_SPLASH)
-            myAdWorker?.loadAndShow("bd4f8b0f0e3821ca4e8b55c5e8799dc3")
-        } catch (e:Exception) {
-            e.printStackTrace()
-            mContainer.visibility = View.GONE
-        }
-
-
+            override fun onADClicked() {
+                LogUtils.d(TAG, "onADClicked")
+            }
+        })
+        iad.loadAD()
 
         // 展示easypass广告
 //        mDialog?.dismiss()
