@@ -57,7 +57,7 @@ class MainApplication : BaseApplication() {
         instance = this
 
         // init umeng
-        UMConfigure.init(this.applicationContext, "56ecff3ce0f55ac331000a80", "all", UMConfigure.DEVICE_TYPE_PHONE, null)
+        UMConfigure.init(this.applicationContext, "56ecff3ce0f55ac331000a80", "main", UMConfigure.DEVICE_TYPE_PHONE, null)
         MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.MANUAL)
 
         iniEnv()
