@@ -224,6 +224,7 @@ class EditPaperActivity : BaseActivity(), OnItemClickListener, OnBMClickListener
     override fun onPause() {
         // TODO Auto-generated method stub
         super.onPause()
+        mScratchPaper.stopDraw()
         MobclickAgent.onPause(this)
     }
 

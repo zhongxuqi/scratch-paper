@@ -19,20 +19,11 @@ import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import android.view.View
-import com.muskeeter.base.acitivity.BaseActivity
-import com.muskeeter.base.utils.ScreenUtils
-import com.musketeer.scratchpaper.MainApplication
 
 import com.musketeer.scratchpaper.R
-import com.musketeer.scratchpaper.utils.ImageUtils
 import com.musketeer.scratchpaper.utils.LogUtils
 
 import java.util.LinkedList
-import android.view.Display
-import com.umeng.socialize.utils.DeviceConfig.context
-import android.view.WindowManager
-
-
 
 /**
  * @author zhongxuqi
@@ -43,12 +34,6 @@ class ScratchPaperView : SurfaceView, SurfaceHolder.Callback {
     }
 
     //app config
-    /**
-     * @return the max_undo
-     */
-    /**
-     * @param max_undo the max_undo to set
-     */
     var max_undo = 100
 
     private val boundX = 20
@@ -177,7 +162,7 @@ class ScratchPaperView : SurfaceView, SurfaceHolder.Callback {
 
     override fun surfaceDestroyed(holder: SurfaceHolder) {
         // TODO Auto-generated method stub
-
+        isRun = false
     }
 
     override fun performClick(): Boolean {
@@ -188,11 +173,9 @@ class ScratchPaperView : SurfaceView, SurfaceHolder.Callback {
     internal inner class MainDrawRunable : Runnable {
 
         override fun run() {
-            // TODO Auto-generated method stub
-            var canvas: Canvas? = null
             while (isRun) {
                 try {
-                    canvas = mHolder!!.lockCanvas()
+                    val canvas = mHolder!!.lockCanvas()
                     //get canvas
                     if (canvas == null) {
                         return
@@ -203,45 +186,48 @@ class ScratchPaperView : SurfaceView, SurfaceHolder.Callback {
                             1.0f * height / mDeskBackGround!!.height.toFloat())
                     canvas.drawBitmap(mDeskBackGround!!, mDeskMatrix, null)
 
-                    //fix strokes
-                    if (mStrokeList.size > max_undo) {
-                        for (i in 0..mStrokeList.size - max_undo - 1) {
-                            val mCanvas = Canvas(mPaperBackGround!!)
-                            val realStartX = mStrokeList[0].startX
-                            val realStartY = mStrokeList[0].startY
-                            val realEndX = mStrokeList[0].endX
-                            val realEndY = mStrokeList[0].endY
+                    synchronized(mStrokeList) {
+
+                        //fix strokes
+                        if (mStrokeList.size > max_undo) {
+                            for (i in 0..mStrokeList.size - max_undo - 1) {
+                                val mCanvas = Canvas(mPaperBackGround!!)
+                                val realStartX = mStrokeList[0].startX
+                                val realStartY = mStrokeList[0].startY
+                                val realEndX = mStrokeList[0].endX
+                                val realEndY = mStrokeList[0].endY
+
+                                //check if inside of screen
+                                mPaint.color = mStrokeList[0].color
+                                mPaint.setStrokeWidth(if (mStrokeList[0].strokeWidth / maxScale >= 1)
+                                    mStrokeList[0].strokeWidth / maxScale
+                                else
+                                    1F)
+                                mCanvas.drawLine(realStartX, realStartY, realEndX, realEndY, mPaint)
+                                mStrokeList.removeAt(0)
+                            }
+                        }
+
+                        // draw paper background
+                        canvas.drawBitmap(mPaperBackGround!!, mMatrix, null)
+
+                        // draw strokes
+                        for (i in mStrokeList.indices) {
+                            val realStartX = LastLocation.x + mStrokeList[i].startX * LastScale
+                            val realStartY = LastLocation.y + mStrokeList[i].startY * LastScale
+                            val realEndX = LastLocation.x + mStrokeList[i].endX * LastScale
+                            val realEndY = LastLocation.y + mStrokeList[i].endY * LastScale
 
                             //check if inside of screen
-                            mPaint.color = mStrokeList[0].color
-                            mPaint.setStrokeWidth(if (mStrokeList[0].strokeWidth / maxScale >= 1)
-                                mStrokeList[0].strokeWidth / maxScale
-                            else
-                                1F)
-                            mCanvas.drawLine(realStartX, realStartY, realEndX, realEndY, mPaint)
-                            mStrokeList.removeAt(0)
-                        }
-                    }
-
-                    // draw paper background
-                    canvas.drawBitmap(mPaperBackGround!!, mMatrix, null)
-
-                    // draw strokes
-                    for (i in mStrokeList.indices) {
-                        val realStartX = LastLocation.x + mStrokeList[i].startX * LastScale
-                        val realStartY = LastLocation.y + mStrokeList[i].startY * LastScale
-                        val realEndX = LastLocation.x + mStrokeList[i].endX * LastScale
-                        val realEndY = LastLocation.y + mStrokeList[i].endY * LastScale
-
-                        //check if inside of screen
-                        if (realStartX > 0 && realStartX < width && realStartY > 0 && realStartY < height || realEndX > 0 && realEndX < width && realEndY > 0 && realEndY < height) {
-                            mPaint.color = mStrokeList[i].color
-                            // mPaint.setStrokeWidth(mStrokeList.get(i).strokeWidth);
-                            mPaint.setStrokeWidth(if (mStrokeList[i].strokeWidth * LastScale / maxScale >= 1)
-                                mStrokeList[i].strokeWidth * LastScale / maxScale
-                            else
-                                1F)
-                            canvas.drawLine(realStartX, realStartY, realEndX, realEndY, mPaint)
+                            if (realStartX > 0 && realStartX < width && realStartY > 0 && realStartY < height || realEndX > 0 && realEndX < width && realEndY > 0 && realEndY < height) {
+                                mPaint.color = mStrokeList[i].color
+                                // mPaint.setStrokeWidth(mStrokeList.get(i).strokeWidth);
+                                mPaint.setStrokeWidth(if (mStrokeList[i].strokeWidth * LastScale / maxScale >= 1)
+                                    mStrokeList[i].strokeWidth * LastScale / maxScale
+                                else
+                                    1F)
+                                canvas.drawLine(realStartX, realStartY, realEndX, realEndY, mPaint)
+                            }
                         }
                     }
 
@@ -259,10 +245,10 @@ class ScratchPaperView : SurfaceView, SurfaceHolder.Callback {
 
                     // point canvas
                     mHolder!!.unlockCanvasAndPost(canvas)
-                    canvas = null
-                    Thread.sleep(16)
+//                    Thread.sleep(16)
                 } catch (e: Exception) {
                     e.printStackTrace()
+                    break
                 }
 
             }
@@ -405,7 +391,9 @@ class ScratchPaperView : SurfaceView, SurfaceHolder.Callback {
             } else {
                 stroke.strokeWidth = strokeWidth
             }
-            mStrokeList.add(stroke)
+            synchronized(mStrokeList) {
+                mStrokeList.add(stroke)
+            }
         }
         isEdited = true
     }
@@ -483,13 +471,15 @@ class ScratchPaperView : SurfaceView, SurfaceHolder.Callback {
      * 删除最后一次操作
      */
     fun undoLastAction() {
-        if (mStrokeList.size > 0) {
-            var lastStroke = mStrokeList.get(mStrokeList.size - 1)
-            mStrokeList.removeAt(mStrokeList.size - 1)
-            while (mStrokeList.size > 0 && mStrokeList.get(mStrokeList.size - 1).endX == lastStroke.startX &&
-                    mStrokeList.get(mStrokeList.size - 1).endY == lastStroke.startY) {
-                lastStroke = mStrokeList.get(mStrokeList.size - 1)
+        synchronized(mStrokeList) {
+            if (mStrokeList.size > 0) {
+                var lastStroke = mStrokeList.get(mStrokeList.size - 1)
                 mStrokeList.removeAt(mStrokeList.size - 1)
+                while (mStrokeList.size > 0 && mStrokeList.get(mStrokeList.size - 1).endX == lastStroke.startX &&
+                        mStrokeList.get(mStrokeList.size - 1).endY == lastStroke.startY) {
+                    lastStroke = mStrokeList.get(mStrokeList.size - 1)
+                    mStrokeList.removeAt(mStrokeList.size - 1)
+                }
             }
         }
     }
@@ -498,7 +488,9 @@ class ScratchPaperView : SurfaceView, SurfaceHolder.Callback {
      * 清除所有操作
      */
     fun clearAll() {
-        mStrokeList.clear()
+        synchronized(mStrokeList) {
+            mStrokeList.clear()
+        }
         mPaperBackGround = BitmapFactory.decodeResource(resources,
                 mPaperId).copy(Bitmap.Config.ARGB_8888, true)
     }
@@ -513,19 +505,21 @@ class ScratchPaperView : SurfaceView, SurfaceHolder.Callback {
         canvas.drawBitmap(mPaperBackGround!!, 0f, 0f, null)
 
         //draw strokes
-        for (i in mStrokeList.indices) {
-            val realStartX = mStrokeList[i].startX
-            val realStartY = mStrokeList[i].startY
-            val realEndX = mStrokeList[i].endX
-            val realEndY = mStrokeList[i].endY
+        synchronized(mStrokeList) {
+            for (i in mStrokeList.indices) {
+                val realStartX = mStrokeList[i].startX
+                val realStartY = mStrokeList[i].startY
+                val realEndX = mStrokeList[i].endX
+                val realEndY = mStrokeList[i].endY
 
-            //check if inside of screen
-            mPaint.color = mStrokeList[i].color
-            mPaint.setStrokeWidth(if (mStrokeList[i].strokeWidth / maxScale >= 1)
-                mStrokeList[i].strokeWidth / maxScale
-            else
-                1F)
-            canvas.drawLine(realStartX, realStartY, realEndX, realEndY, mPaint)
+                //check if inside of screen
+                mPaint.color = mStrokeList[i].color
+                mPaint.setStrokeWidth(if (mStrokeList[i].strokeWidth / maxScale >= 1)
+                    mStrokeList[i].strokeWidth / maxScale
+                else
+                    1F)
+                canvas.drawLine(realStartX, realStartY, realEndX, realEndY, mPaint)
+            }
         }
     }
 
@@ -542,15 +536,17 @@ class ScratchPaperView : SurfaceView, SurfaceHolder.Callback {
         get() {
             val mCanvas = Canvas(mPaperBackGround!!)
 
-            for (i in mStrokeList.indices) {
-                val realStartX = mStrokeList[i].startX
-                val realStartY = mStrokeList[i].startY
-                val realEndX = mStrokeList[i].endX
-                val realEndY = mStrokeList[i].endY
-                if (realStartX > 0 && realStartX < width && realStartY > 0 && realStartY < height || realEndX > 0 && realEndX < width && realEndY > 0 && realEndY < height) {
-                    mPaint.color = mStrokeList[i].color
-                    mPaint.strokeWidth = mStrokeList[i].strokeWidth.toFloat()
-                    mCanvas.drawLine(realStartX, realStartY, realEndX, realEndY, mPaint)
+            synchronized(mStrokeList) {
+                for (i in mStrokeList.indices) {
+                    val realStartX = mStrokeList[i].startX
+                    val realStartY = mStrokeList[i].startY
+                    val realEndX = mStrokeList[i].endX
+                    val realEndY = mStrokeList[i].endY
+                    if (realStartX > 0 && realStartX < width && realStartY > 0 && realStartY < height || realEndX > 0 && realEndX < width && realEndY > 0 && realEndY < height) {
+                        mPaint.color = mStrokeList[i].color
+                        mPaint.strokeWidth = mStrokeList[i].strokeWidth.toFloat()
+                        mCanvas.drawLine(realStartX, realStartY, realEndX, realEndY, mPaint)
+                    }
                 }
             }
 

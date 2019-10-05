@@ -19,7 +19,7 @@ import com.musketeer.scratchpaper.utils.ImageUtils
 /**
  * Created by zhongxuqi on 08/07/2017.
  */
-class MainViewHolder constructor(itemView: View?, adapter: MainAdapter): RecyclerView.ViewHolder(itemView) {
+class MainViewHolder constructor(itemView: View?, adapter: MainAdapter): RecyclerView.ViewHolder(itemView!!) {
     val adapter: MainAdapter
 
     init {
